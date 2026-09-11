@@ -29,3 +29,6 @@ Thumbs.db
 *.md
 !README.md
 Liens.txt
+
+# Local video assets
+video/
