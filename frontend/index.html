@@ -24,6 +24,9 @@
         <span class="pulse-circle"></span>
         <span id="calle-status-text">CALL-E: Interactive Sandbox Mode</span>
       </div>
+      <button class="btn btn-primary" id="btn-open-audio-studio" style="padding: 0.45rem 0.85rem; background: linear-gradient(135deg, #06b6d4, #3b82f6); border: none; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;" title="Listen to 14 realistic human voice calls for demo video">
+        <span>🎧</span> Voice Studio <span class="badge" style="background: rgba(255,255,255,0.25); color: #fff; font-size: 0.7rem; padding: 0.15rem 0.45rem; border-radius: 99px;">14 Tracks</span>
+      </button>
       <button class="btn btn-secondary" id="btn-open-settings" style="padding: 0.45rem 0.85rem;" title="Configure CALL-E API Key">
         ⚙️ Settings
       </button>
@@ -301,6 +304,24 @@
           <!-- Dynamic Audio Soundwave Visualizer -->
           <div class="call-voice-wave-container">
             <canvas id="call-wave-canvas" width="600" height="70"></canvas>
+          </div>
+
+          <!-- Real Neural Audio Voice Player Bar -->
+          <div class="call-audio-player-bar" id="monitor-audio-player-bar" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+              <span class="badge" id="monitor-audio-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-size: 0.72rem; padding: 0.2rem 0.5rem; white-space: nowrap;">
+                🎙️ Neural Call Audio
+              </span>
+              <span id="monitor-audio-track-name" style="font-size: 0.82rem; color: var(--text-main); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                Apex Tile (Sarah Jenkins) ⟷ CALL-E AI
+              </span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+              <button class="btn btn-secondary" id="btn-play-monitor-audio" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35); color: var(--accent-cyan); font-weight: 600; display: flex; align-items: center; gap: 0.35rem;">
+                <span id="monitor-audio-play-icon">▶️</span>
+                <span id="monitor-audio-play-text">Play Audio Call</span>
+              </button>
+            </div>
           </div>
 
           <!-- Live Audio Dialogue Streaming Box -->
@@ -676,6 +697,74 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" id="btn-close-settings-2">Close</button>
         <button class="btn btn-primary" id="btn-save-calle-key">Save Settings</button>
+      </div>
+    </div>
+  <!-- ==================== Voice & Audio Studio Modal (14 Tracks) ==================== -->
+  <div class="modal-backdrop" id="modal-audio-studio">
+    <div class="modal-card" style="max-width: 820px; max-height: 88vh; display: flex; flex-direction: column;">
+      <div class="modal-header" style="flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">🎧</span>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem;">Neural Voice Demonstration Studio</h3>
+            <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+              14 authentic human voice recordings (Female & Male) for the Devpost Hackathon demo video
+            </p>
+          </div>
+        </div>
+        <button class="modal-close" id="btn-close-audio-studio">&times;</button>
+      </div>
+
+      <!-- Studio Filter Tabs -->
+      <div style="padding: 0.75rem 1.5rem; background: rgba(15, 23, 42, 0.6); border-bottom: 1px solid var(--border-color); display: flex; gap: 0.5rem; flex-wrap: wrap; flex-shrink: 0;">
+        <button class="btn btn-secondary btn-audio-tab active" data-tab="all" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+          All Tracks (14)
+        </button>
+        <button class="btn btn-secondary btn-audio-tab" data-tab="dialogue" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+          📞 2-Way Calls (4)
+        </button>
+        <button class="btn btn-secondary btn-audio-tab" data-tab="supplier" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+          🧱 Suppliers (5)
+        </button>
+        <button class="btn btn-secondary btn-audio-tab" data-tab="artisan" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+          🔨 Artisans & Trades (5)
+        </button>
+      </div>
+
+      <!-- Persistent Active Player Bar inside Modal -->
+      <div id="studio-active-player" style="background: rgba(8, 11, 19, 0.95); border-bottom: 1px solid rgba(6, 182, 212, 0.3); padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-shrink: 0;">
+        <div style="display: flex; align-items: center; gap: 0.8rem; min-width: 0;">
+          <button id="btn-studio-global-play" class="btn btn-primary" style="width: 38px; height: 38px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; background: var(--gradient-brand);">
+            ▶️
+          </button>
+          <div style="min-width: 0;">
+            <div id="studio-player-title" style="font-size: 0.88rem; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              Select a voice track below to play
+            </div>
+            <div id="studio-player-meta" style="font-size: 0.75rem; color: var(--text-muted);">
+              Ready to audition • Ultra-realistic human neural speech
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.8rem; flex-shrink: 0;">
+          <span id="studio-player-time" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan);">00:00 / 00:00</span>
+          <a id="btn-studio-download-current" href="audio/dialog_calle_and_apex_tile.mp3" download class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.78rem; text-decoration: none;" title="Download MP3 file for video editing">
+            ⬇️ Download MP3
+          </a>
+        </div>
+      </div>
+
+      <!-- Tracks Container -->
+      <div class="modal-body" id="studio-tracks-list" style="overflow-y: auto; flex: 1; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+        <!-- Injected via JS from manifest.json -->
+      </div>
+
+      <div class="modal-footer" style="flex-shrink: 0; justify-content: space-between; align-items: center;">
+        <span style="font-size: 0.78rem; color: var(--text-muted);">
+          📁 All files saved in <code style="color: var(--accent-cyan);">frontend/audio/</code> • Ready for video editors
+        </span>
+        <button class="btn btn-secondary" id="btn-close-audio-studio-2">Close</button>
       </div>
     </div>
   </div>

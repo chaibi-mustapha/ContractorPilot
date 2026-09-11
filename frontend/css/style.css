@@ -2486,6 +2486,48 @@ body {
   }
 }
 
+/* ------------------ Neural Voice Studio & Audio Player ------------------ */
+.btn-audio-tab {
+  transition: all 0.2s ease;
+  border-radius: var(--radius-pill);
+}
+
+.btn-audio-tab.active {
+  background: var(--gradient-brand) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+  font-weight: 600;
+}
+
+.studio-track-card {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.studio-track-card:hover {
+  background: rgba(30, 41, 59, 0.85) !important;
+  border-color: rgba(6, 182, 212, 0.35) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.btn-track-play {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-track-play:hover {
+  transform: scale(1.08);
+}
+
+.call-audio-player-bar {
+  transition: all 0.25s ease;
+}
+
+.call-audio-player-bar:hover {
+  border-color: rgba(6, 182, 212, 0.5) !important;
+  box-shadow: 0 0 16px rgba(6, 182, 212, 0.15);
+}
+
 /* ------------------ Print Media Query ------------------ */
 @media print {
   body {

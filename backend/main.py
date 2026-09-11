@@ -1365,10 +1365,13 @@ if os.path.exists(FRONTEND_DIR):
     app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
     css_dir = os.path.join(FRONTEND_DIR, "css")
     js_dir = os.path.join(FRONTEND_DIR, "js")
+    audio_dir = os.path.join(FRONTEND_DIR, "audio")
     if os.path.exists(css_dir):
         app.mount("/css", StaticFiles(directory=css_dir), name="css")
     if os.path.exists(js_dir):
         app.mount("/js", StaticFiles(directory=js_dir), name="js")
+    if os.path.exists(audio_dir):
+        app.mount("/audio", StaticFiles(directory=audio_dir), name="audio")
 
 
 @app.api_route("/", methods=["GET", "HEAD"])

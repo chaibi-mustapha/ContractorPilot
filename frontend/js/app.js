@@ -51,6 +51,7 @@ class ContractorPilotApp {
     this.setupStepper();
     this.setupSpeechRecognition();
     this.setupEventListeners();
+    this.initAudioStudio();
     await this.checkSettings();
     await this.loadProjectDetails(this.currentProjectId);
     if (window.calleCenter) {
@@ -636,12 +637,33 @@ class ContractorPilotApp {
       calls.slice(-8).reverse().forEach((call) => {
         const item = document.createElement("div");
         item.className = "call-history-item";
+
+        // Determine matching audio scenario
+        let scenarioKey = "apex_tile";
+        const nameLower = (call.target_name || "").toLowerCase();
+        const reqLower = (call.requirement_name || "").toLowerCase();
+
+        if (nameLower.includes("marcus") || reqLower.includes("tile") && call.trade) {
+          scenarioKey = "marcus_tiler";
+        } else if (nameLower.includes("sherwin") || reqLower.includes("paint")) {
+          scenarioKey = "sherwin_paint";
+        } else if (nameLower.includes("elena") || reqLower.includes("shower") || reqLower.includes("bath")) {
+          scenarioKey = "elena_artisan";
+        } else {
+          scenarioKey = "apex_tile";
+        }
+
         item.innerHTML = `
           <div>
             <strong>${call.target_name}</strong> (${call.requirement_name})
             <div style="font-size: 0.75rem; color: var(--text-muted);">${call.target_phone} • ${call.duration_seconds}s</div>
           </div>
-          <span style="color: var(--accent-emerald); font-weight: 600; font-size: 0.82rem;">✓ Negotiated</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <button class="btn btn-secondary" style="padding: 0.25rem 0.55rem; font-size: 0.75rem; background: rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.3); color: var(--accent-cyan); display: flex; align-items: center; gap: 0.25rem;" onclick="window.contractorPilotApp.playCallRecordAudio('${scenarioKey}')" title="Listen to authentic audio phone call">
+              <span>🎧</span> Listen
+            </button>
+            <span style="color: var(--accent-emerald); font-weight: 600; font-size: 0.82rem;">✓ Done</span>
+          </div>
         `;
         container.appendChild(item);
       });
@@ -960,6 +982,242 @@ class ContractorPilotApp {
     } catch (e) {
       console.warn(e);
     }
+  }
+
+  // ------------------ Neural Voice Demonstration Studio ------------------
+
+  playCallRecordAudio(scenarioKey) {
+    this.goToStep(3);
+    if (window.calleCenter) {
+      window.calleCenter.loadScenario(scenarioKey);
+      setTimeout(() => {
+        window.calleCenter.playCallAudio();
+      }, 400);
+    }
+    this.showToast(`Loading authentic audio call in live monitor...`, "info");
+  }
+
+  initAudioStudio() {
+    const modal = document.getElementById("modal-audio-studio");
+    const btnOpen = document.getElementById("btn-open-audio-studio");
+    const btnClose1 = document.getElementById("btn-close-audio-studio");
+    const btnClose2 = document.getElementById("btn-close-audio-studio-2");
+    const globalPlayBtn = document.getElementById("btn-studio-global-play");
+
+    this.studioAudio = null;
+    this.currentPlayingTrack = null;
+    this.activeStudioFilter = "all";
+    this.audioManifest = null;
+
+    if (btnOpen) {
+      btnOpen.addEventListener("click", () => {
+        if (modal) modal.classList.add("active");
+        if (!this.audioManifest) {
+          this.loadAudioManifest();
+        }
+      });
+    }
+
+    const closeModal = () => {
+      if (modal) modal.classList.remove("active");
+      if (this.studioAudio) {
+        this.studioAudio.pause();
+        if (globalPlayBtn) globalPlayBtn.innerText = "▶️";
+        this.renderAudioStudioTracks();
+      }
+    };
+
+    if (btnClose1) btnClose1.addEventListener("click", closeModal);
+    if (btnClose2) btnClose2.addEventListener("click", closeModal);
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    // Tabs
+    document.querySelectorAll(".btn-audio-tab").forEach((tabBtn) => {
+      tabBtn.addEventListener("click", () => {
+        document.querySelectorAll(".btn-audio-tab").forEach((b) => b.classList.remove("active"));
+        tabBtn.classList.add("active");
+        this.activeStudioFilter = tabBtn.getAttribute("data-tab");
+        this.renderAudioStudioTracks();
+      });
+    });
+
+    // Global play / pause button in studio bar
+    if (globalPlayBtn) {
+      globalPlayBtn.addEventListener("click", () => {
+        if (!this.studioAudio) {
+          if (this.audioManifest && this.audioManifest.dialogues && this.audioManifest.dialogues.length > 0) {
+            this.playStudioTrack(this.audioManifest.dialogues[0]);
+          }
+          return;
+        }
+        if (this.studioAudio.paused) {
+          this.studioAudio.play();
+          globalPlayBtn.innerText = "⏸️";
+        } else {
+          this.studioAudio.pause();
+          globalPlayBtn.innerText = "▶️";
+        }
+      });
+    }
+  }
+
+  async loadAudioManifest() {
+    try {
+      const res = await fetch("audio/manifest.json");
+      if (!res.ok) throw new Error("Could not load manifest.json");
+      this.audioManifest = await res.json();
+      this.renderAudioStudioTracks();
+    } catch (e) {
+      console.warn("loadAudioManifest fallback:", e);
+    }
+  }
+
+  renderAudioStudioTracks() {
+    const container = document.getElementById("studio-tracks-list");
+    if (!container || !this.audioManifest) return;
+
+    container.innerHTML = "";
+
+    // Combine tracks
+    let tracks = [];
+    const dialogues = (this.audioManifest.dialogues || []).map((d) => ({
+      ...d,
+      type: "dialogue",
+      gender: "2-Way",
+      role: "Full Telephone Call (CALL-E AI + Human)",
+      voice: "Andrew + Partner",
+    }));
+    const individuals = (this.audioManifest.individual_voices || []).map((i) => ({
+      ...i,
+      type: i.id.startsWith("sup_") ? "supplier" : "artisan",
+    }));
+
+    if (this.activeStudioFilter === "all") {
+      tracks = [...dialogues, ...individuals];
+    } else if (this.activeStudioFilter === "dialogue") {
+      tracks = dialogues;
+    } else if (this.activeStudioFilter === "supplier") {
+      tracks = individuals.filter((t) => t.type === "supplier");
+    } else if (this.activeStudioFilter === "artisan") {
+      tracks = individuals.filter((t) => t.type === "artisan");
+    }
+
+    tracks.forEach((t) => {
+      const isCurPlaying = this.currentPlayingTrack && this.currentPlayingTrack.filename === t.filename && this.studioAudio && !this.studioAudio.paused;
+      const card = document.createElement("div");
+      card.className = "studio-track-card";
+      card.style.cssText = "background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); padding: 0.85rem 1rem; transition: all 0.2s;";
+
+      const genderBadge = t.gender === "Female"
+        ? `<span class="badge" style="background: rgba(236,72,153,0.15); color: #f472b6; font-size: 0.72rem;">👩 Female Voice (${t.voice})</span>`
+        : t.gender === "Male"
+        ? `<span class="badge" style="background: rgba(59,130,246,0.15); color: #60a5fa; font-size: 0.72rem;">👨 Male Voice (${t.voice})</span>`
+        : `<span class="badge" style="background: rgba(16,185,129,0.15); color: #34d399; font-size: 0.72rem;">🎙️ 2-Way Live Dialogue</span>`;
+
+      const typeBadge = t.type === "dialogue"
+        ? `<span class="badge" style="background: rgba(147,51,234,0.15); color: #c084fc; font-size: 0.72rem;">📞 Full Call</span>`
+        : t.type === "supplier"
+        ? `<span class="badge" style="background: rgba(6,182,212,0.15); color: #22d3ee; font-size: 0.72rem;">🧱 Supplier Response</span>`
+        : `<span class="badge" style="background: rgba(245,158,11,0.15); color: #fbbf24; font-size: 0.72rem;">🔨 Trade Subcontractor</span>`;
+
+      let transcriptHtml = "";
+      if (t.text) {
+        transcriptHtml = `<div style="font-size: 0.8rem; color: #cbd5e1; margin-top: 0.5rem; line-height: 1.4; background: rgba(0,0,0,0.25); padding: 0.5rem 0.75rem; border-radius: 6px; font-style: italic;">"${t.text}"</div>`;
+      } else if (t.script) {
+        const dialogTurns = t.script.map((s) => `<div style="margin-bottom: 0.35rem;"><strong>${s.speaker}:</strong> ${s.text}</div>`).join("");
+        transcriptHtml = `<div style="font-size: 0.78rem; color: #cbd5e1; margin-top: 0.5rem; line-height: 1.4; background: rgba(0,0,0,0.25); padding: 0.5rem 0.75rem; border-radius: 6px;">${dialogTurns}</div>`;
+      }
+
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.8rem;">
+          <div style="display: flex; align-items: flex-start; gap: 0.8rem;">
+            <button class="btn btn-primary btn-track-play" style="width: 36px; height: 36px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; background: ${isCurPlaying ? 'var(--accent-emerald)' : 'var(--gradient-brand)'};">
+              ${isCurPlaying ? '⏸️' : '▶️'}
+            </button>
+            <div>
+              <div style="font-weight: 700; color: var(--text-main); font-size: 0.95rem;">${t.title}</div>
+              <div style="display: flex; gap: 0.4rem; align-items: center; margin-top: 0.25rem; flex-wrap: wrap;">
+                ${typeBadge}
+                ${genderBadge}
+                <span style="font-size: 0.75rem; color: var(--text-dim);">• ${t.trade || t.role}</span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;">
+            <a href="audio/${t.filename}" download="${t.filename}" class="btn btn-secondary" style="padding: 0.25rem 0.55rem; font-size: 0.72rem; text-decoration: none;" title="Download MP3 for video editing">
+              ⬇️ MP3
+            </a>
+          </div>
+        </div>
+        ${transcriptHtml}
+      `;
+
+      const playBtn = card.querySelector(".btn-track-play");
+      if (playBtn) {
+        playBtn.addEventListener("click", () => {
+          this.playStudioTrack(t);
+        });
+      }
+
+      container.appendChild(card);
+    });
+  }
+
+  playStudioTrack(track) {
+    const globalPlayBtn = document.getElementById("btn-studio-global-play");
+    const playerTitle = document.getElementById("studio-player-title");
+    const playerMeta = document.getElementById("studio-player-meta");
+    const playerTime = document.getElementById("studio-player-time");
+    const downloadBtn = document.getElementById("btn-studio-download-current");
+
+    if (this.currentPlayingTrack && this.currentPlayingTrack.filename === track.filename && this.studioAudio) {
+      if (!this.studioAudio.paused) {
+        this.studioAudio.pause();
+        if (globalPlayBtn) globalPlayBtn.innerText = "▶️";
+        this.renderAudioStudioTracks();
+        return;
+      } else {
+        this.studioAudio.play();
+        if (globalPlayBtn) globalPlayBtn.innerText = "⏸️";
+        this.renderAudioStudioTracks();
+        return;
+      }
+    }
+
+    if (this.studioAudio) {
+      this.studioAudio.pause();
+      this.studioAudio = null;
+    }
+
+    this.currentPlayingTrack = track;
+    this.studioAudio = new Audio(`audio/${track.filename}`);
+
+    if (playerTitle) playerTitle.innerText = track.title;
+    if (playerMeta) playerMeta.innerText = `${track.gender || "Neural"} Voice • ${track.trade || track.role}`;
+    if (downloadBtn) {
+      downloadBtn.href = `audio/${track.filename}`;
+      downloadBtn.download = track.filename;
+    }
+    if (globalPlayBtn) globalPlayBtn.innerText = "⏸️";
+
+    this.studioAudio.ontimeupdate = () => {
+      const cur = this.studioAudio.currentTime;
+      const dur = this.studioAudio.duration || 0;
+      const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+      if (playerTime) playerTime.innerText = `${fmt(cur)} / ${fmt(dur)}`;
+    };
+
+    this.studioAudio.onended = () => {
+      if (globalPlayBtn) globalPlayBtn.innerText = "▶️";
+      this.renderAudioStudioTracks();
+    };
+
+    this.studioAudio.play().catch((e) => console.warn(e));
+    this.renderAudioStudioTracks();
   }
 }
 
