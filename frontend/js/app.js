@@ -22,6 +22,8 @@ class ContractorPilotApp {
     this.recognition = null;
     this.recordTimerInterval = null;
     this.recordSeconds = 0;
+    // API Base URL (dynamic for localhost, cloud deployment, and remote hosts)
+    this.apiBase = (window.location.protocol.startsWith("http") && window.location.host) ? "" : "http://127.0.0.1:8000";
   }
 
   showToast(message, type = "info") {
@@ -349,7 +351,7 @@ class ContractorPilotApp {
 
   async loadProjectDetails(projectId) {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${projectId}`);
+      const res = await fetch(`${this.apiBase}/api/projects/${projectId}`);
       if (!res.ok) return;
       this.projectData = await res.json();
 
@@ -377,7 +379,7 @@ class ContractorPilotApp {
     }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${this.currentProjectId}/voice-extract`, {
+      const res = await fetch(`${this.apiBase}/api/projects/${this.currentProjectId}/voice-extract`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ voice_text: text, replace_existing: true }),
@@ -571,7 +573,7 @@ class ContractorPilotApp {
   async deleteRequirement(reqId) {
     if (!confirm("Are you sure you want to remove this item?")) return;
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${this.currentProjectId}/requirements/${reqId}`, {
+      const res = await fetch(`${this.apiBase}/api/projects/${this.currentProjectId}/requirements/${reqId}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -592,7 +594,7 @@ class ContractorPilotApp {
     if (stateText) stateText.innerText = "PROCUREMENT AGENTS ACTIVE...";
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/calls/batch-procurement`, {
+      const res = await fetch(`${this.apiBase}/api/calls/batch-procurement`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ project_id: this.currentProjectId, is_live: false }),
@@ -608,8 +610,10 @@ class ContractorPilotApp {
 
       // Animate showcase live call in monitor
       if (window.calleCenter) {
-        window.calleCenter.simulateLiveDemoCall();
+        window.calleCenter.simulateDemoCallFlow();
       }
+
+      this.showToast("CALL-E dispatched autonomous calls!", "success");
     } catch (e) {
       console.error(e);
     }
@@ -650,7 +654,7 @@ class ContractorPilotApp {
 
   async refreshQuote() {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/quotes/generate`, {
+      const res = await fetch(`${this.apiBase}/api/quotes/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -813,7 +817,7 @@ class ContractorPilotApp {
         };
 
         try {
-          const res = await fetch(`http://127.0.0.1:8000/api/projects/${this.currentProjectId}/requirements`, {
+          const res = await fetch(`${this.apiBase}/api/projects/${this.currentProjectId}/requirements`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
@@ -850,7 +854,7 @@ class ContractorPilotApp {
       btnSave.addEventListener("click", async () => {
         const key = inputKey.value.trim();
         try {
-          const res = await fetch("http://127.0.0.1:8000/api/settings", {
+          const res = await fetch(`${this.apiBase}/api/settings`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ calle_api_key: key }),
@@ -869,7 +873,7 @@ class ContractorPilotApp {
 
   async checkSettings() {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/settings");
+      const res = await fetch(`${this.apiBase}/api/settings`);
       if (!res.ok) return;
       const data = await res.json();
       const statusText = document.getElementById("calle-status-text");

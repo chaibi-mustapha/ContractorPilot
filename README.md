@@ -120,5 +120,31 @@ Open your browser at:
 
 ---
 
+## 🌐 Cloud Deployment & Publishing
+
+### Option A: 1-Click Full-Stack Deployment on Render (Recommended)
+ContractorPilot includes a turnkey [`render.yaml`](render.yaml) blueprint:
+1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New > Blueprint** (or **New > Web Service**).
+2. Connect this repository: `chaibi-mustapha/ContractorPilot`.
+3. Render automatically installs `requirements.txt` and starts `python run_server.py`.
+4. Your complete full-stack app (FastAPI backend + Live WebSockets + Responsive Dashboard) is instantly live with free SSL.
+
+### Option B: GitHub Pages (Instant Frontend Showcase)
+A pre-configured GitHub Actions workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) is included:
+1. In your GitHub repository, go to **Settings** > **Pages**.
+2. Under **Build and deployment** > **Source**, select **GitHub Actions**.
+3. Any push to `main` automatically builds and publishes the web application to:  
+   👉 `https://chaibi-mustapha.github.io/ContractorPilot/`
+
+### Option C: Docker Container
+A production-ready [`Dockerfile`](Dockerfile) is provided:
+```bash
+docker build -t contractorpilot .
+docker run -p 8000:8000 contractorpilot
+```
+
+---
+
 ## 👥 Authors
 Built for the **Devpost CALL-E Hackathon** (September 2026).
+
