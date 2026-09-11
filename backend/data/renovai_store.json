@@ -121,10 +121,10 @@
       "location": "742 Evergreen Terrace, Metro District",
       "surface_sqm": 120.8,
       "project_type": "Complete Residential Interior Remodel",
-      "status": "COMPARISON",
+      "status": "QUOTE_READY",
       "rooms": [
         {
-          "id": "room-salon",
+          "id": "cac5def2-70f2-4ab5-8e3d-a42c9433a02f",
           "name": "Open Living & Dining Room",
           "length": 25.0,
           "width": 16.0,
@@ -138,7 +138,7 @@
           "notes": "South-facing natural light, dimmable LED zones required."
         },
         {
-          "id": "room-cuisine",
+          "id": "f90368f0-a86e-4661-812c-d00c71199906",
           "name": "Chef's Kitchen",
           "length": 15.0,
           "width": 12.0,
@@ -149,10 +149,10 @@
             "Backsplash installation",
             "Plumbing rough-in & sink"
           ],
-          "notes": "Requires new dual undermount sink connections and island wiring."
+          "notes": "Requires dual undermount sink connections and island wiring."
         },
         {
-          "id": "room-sdb",
+          "id": "0fe53cd7-78b4-43b1-b8f9-6b3a99baf57d",
           "name": "Master Bathroom Suite",
           "length": 12.0,
           "width": 8.0,
@@ -169,9 +169,57 @@
       ],
       "requirements": [
         {
-          "id": "req-carrelage",
-          "room_id": "room-sdb",
-          "room_name": "Master Bath + Kitchen",
+          "id": "afe2c6bd-dc25-44df-a26a-c0edcaf4de56",
+          "room_id": null,
+          "room_name": "",
+          "category": "Tiler",
+          "item_name": "Tile & Substrate Installation (Master Tiler)",
+          "quantity": 4.0,
+          "unit": "days",
+          "item_type": "labor",
+          "estimated_unit_price": 425.0,
+          "notes": "520 sq ft porcelain layout, precision miter cuts, waterproof substrate."
+        },
+        {
+          "id": "cc26aa30-e755-43f1-92a4-9edc770ee0e3",
+          "room_id": null,
+          "room_name": "",
+          "category": "Painter",
+          "item_name": "Surface Prep & 2-Coat Painting (Finish Painter)",
+          "quantity": 3.0,
+          "unit": "days",
+          "item_type": "labor",
+          "estimated_unit_price": 360.0,
+          "notes": "Level 4 drywall prep, dust mitigation, primer plus 2 topcoats."
+        },
+        {
+          "id": "7c0b1d12-35a1-4a9d-85f7-e8566dc92abb",
+          "room_id": null,
+          "room_name": "",
+          "category": "Electrician",
+          "item_name": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
+          "quantity": 2.0,
+          "unit": "days",
+          "item_type": "labor",
+          "estimated_unit_price": 480.0,
+          "notes": "NEC compliance, smart dimmer switches, and dedicated circuits."
+        },
+        {
+          "id": "46145c6d-ea02-4301-b97a-a501ff853a47",
+          "room_id": null,
+          "room_name": "",
+          "category": "Plumber",
+          "item_name": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
+          "quantity": 2.0,
+          "unit": "days",
+          "item_type": "labor",
+          "estimated_unit_price": 490.0,
+          "notes": "PEX expansion lines, shower valves, and double vanity rough-ins."
+        },
+        {
+          "id": "b27919bb-a2b1-4710-aff6-592839d15ded",
+          "room_id": null,
+          "room_name": "",
           "category": "Flooring",
           "item_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "quantity": 520.0,
@@ -181,368 +229,966 @@
           "notes": "High-traffic porcelain, rectified edges with 10% cut allowance."
         },
         {
-          "id": "req-peinture",
-          "room_id": "room-salon",
-          "room_name": "Open Living & Dining Room",
+          "id": "ea769c91-4484-4319-9b05-1650d04289b8",
+          "room_id": null,
+          "room_name": "",
+          "category": "Flooring",
+          "item_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
+          "quantity": 45.0,
+          "unit": "sq ft",
+          "item_type": "material",
+          "estimated_unit_price": 6.5,
+          "notes": "Beveled glazed finish with stain-resistant epoxy grout."
+        },
+        {
+          "id": "3001ec82-7e5d-4db7-b642-a214db5a5b0d",
+          "room_id": null,
+          "room_name": "",
           "category": "Paint",
           "item_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
           "quantity": 10.0,
           "unit": "gal",
           "item_type": "material",
-          "estimated_unit_price": 65.0,
-          "notes": "Warm Alabaster tone, zero-VOC formula."
+          "estimated_unit_price": 60.0,
+          "notes": "Warm Alabaster shade, washable zero-VOC formula."
         },
         {
-          "id": "req-led",
-          "room_id": "room-salon",
-          "room_name": "Open Living & Dining Room",
+          "id": "b7abe768-063c-4d95-8da2-25b404987ee2",
+          "room_id": null,
+          "room_name": "",
           "category": "Electrical",
           "item_name": "7W Dimmable Recessed LED Downlights (3000K Warm White)",
           "quantity": 24.0,
           "unit": "units",
           "item_type": "material",
-          "estimated_unit_price": 22.0,
-          "notes": "IC-rated, airtight housing included."
+          "estimated_unit_price": 19.5,
+          "notes": "IC-rated, airtight housing with junction boxes included."
         },
         {
-          "id": "req-robinet",
-          "room_id": "room-sdb",
-          "room_name": "Master Bath & Kitchen",
+          "id": "586ff9de-48ea-4e40-aaec-3298ab2c9355",
+          "room_id": null,
+          "room_name": "",
           "category": "Plumbing",
           "item_name": "Designer Brushed Brass Thermostatic Mixer Faucets",
           "quantity": 3.0,
           "unit": "units",
           "item_type": "material",
-          "estimated_unit_price": 185.0,
-          "notes": "Solid brass body, ceramic disc cartridges."
-        },
-        {
-          "id": "req-labor-carreleur",
-          "room_id": "room-sdb",
-          "room_name": "Jobsite Wide",
-          "category": "Labor",
-          "item_name": "Tile & Substrate Installation (Master Tiler)",
-          "quantity": 4.0,
-          "unit": "days",
-          "item_type": "labor",
-          "estimated_unit_price": 450.0,
-          "notes": "520 sq ft porcelain layout + precision miter cuts."
-        },
-        {
-          "id": "req-labor-peintre",
-          "room_id": "room-salon",
-          "room_name": "Jobsite Wide",
-          "category": "Labor",
-          "item_name": "Surface Prep & 2-Coat Painting (Finish Painter)",
-          "quantity": 3.0,
-          "unit": "days",
-          "item_type": "labor",
-          "estimated_unit_price": 380.0,
-          "notes": "Level 4 drywall finish, masking, primer + 2 topcoats."
-        },
-        {
-          "id": "req-labor-plombier",
-          "room_id": "room-sdb",
-          "room_name": "Master Bath & Kitchen",
-          "category": "Labor",
-          "item_name": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
-          "quantity": 2.0,
-          "unit": "days",
-          "item_type": "labor",
-          "estimated_unit_price": 520.0,
-          "notes": "Shower valves, vanity lines, and kitchen sink rough-ins."
-        },
-        {
-          "id": "req-labor-elec",
-          "room_id": "room-salon",
-          "room_name": "Open Living Room",
-          "category": "Labor",
-          "item_name": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
-          "quantity": 2.0,
-          "unit": "days",
-          "item_type": "labor",
-          "estimated_unit_price": 500.0,
-          "notes": "NEC compliance, 3 dedicated circuits with smart control switches."
+          "estimated_unit_price": 175.0,
+          "notes": "Solid brass construction with ceramic disc valves."
         }
       ],
       "offers": [
         {
-          "id": "off-ceram-b",
+          "id": "bae4e920-c941-4fda-b9ec-ef744d42ae3d",
           "project_id": "proj-apt-f4",
-          "requirement_id": "req-carrelage",
+          "requirement_id": "afe2c6bd-dc25-44df-a26a-c0edcaf4de56",
+          "requirement_name": "Tile & Substrate Installation (Master Tiler)",
+          "target_type": "tradesperson",
+          "target_id": "trade-mohamed",
+          "target_name": "Marcus Reed (Master Tiler) (Master Tiler)",
+          "target_phone": "+1-555-018-1122",
+          "unit_price": 404.0,
+          "quantity_available": 4.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 95,
+          "calculated_score": 93.1,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
+          "created_at": "2026-09-11T14:15:44.238761"
+        },
+        {
+          "id": "3dbbc04f-75c1-44c7-b6aa-df42dfa05feb",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "afe2c6bd-dc25-44df-a26a-c0edcaf4de56",
+          "requirement_name": "Tile & Substrate Installation (Master Tiler)",
+          "target_type": "tradesperson",
+          "target_id": "trade-karim",
+          "target_name": "Kevin Vance (Tile Installer) (Master Tiler)",
+          "target_phone": "+1-555-018-2233",
+          "unit_price": 446.0,
+          "quantity_available": 4.0,
+          "discount_percent": 0.0,
+          "delivery_days": 5,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 83,
+          "calculated_score": 81.1,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Availability confirmed by CALL-E for mobilization in 5 days.",
+          "created_at": "2026-09-11T14:15:44.239090"
+        },
+        {
+          "id": "a1f7102c-d4d8-4dcf-bb23-a0aea7b766b9",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "cc26aa30-e755-43f1-92a4-9edc770ee0e3",
+          "requirement_name": "Surface Prep & 2-Coat Painting (Finish Painter)",
+          "target_type": "tradesperson",
+          "target_id": "trade-mustapha",
+          "target_name": "David Chen (Finish Painter) (Finish Painter)",
+          "target_phone": "+1-555-018-3344",
+          "unit_price": 342.0,
+          "quantity_available": 3.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 93,
+          "calculated_score": 92.9,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
+          "created_at": "2026-09-11T14:15:44.239381"
+        },
+        {
+          "id": "e22e595f-a68a-4bb3-9efc-32c6f4195ee8",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "7c0b1d12-35a1-4a9d-85f7-e8566dc92abb",
+          "requirement_name": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
+          "target_type": "tradesperson",
+          "target_id": "trade-sofiane",
+          "target_name": "Anthony Brooks (Master Electrician) (Master Electrician)",
+          "target_phone": "+1-555-018-5566",
+          "unit_price": 456.0,
+          "quantity_available": 2.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 91,
+          "calculated_score": 92.7,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
+          "created_at": "2026-09-11T14:15:44.239647"
+        },
+        {
+          "id": "9083a482-a049-435f-86f3-b9ad6ddedb74",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "46145c6d-ea02-4301-b97a-a501ff853a47",
+          "requirement_name": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
+          "target_type": "tradesperson",
+          "target_id": "trade-ali",
+          "target_name": "James Wilson (Licensed Plumber) (Licensed Plumber)",
+          "target_phone": "+1-555-018-4455",
+          "unit_price": 466.0,
+          "quantity_available": 2.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 90,
+          "calculated_score": 92.6,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
+          "created_at": "2026-09-11T14:15:44.239941"
+        },
+        {
+          "id": "579efb13-8691-4dac-afe7-7aa9116588a8",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "b27919bb-a2b1-4710-aff6-592839d15ded",
           "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "target_type": "supplier",
           "target_id": "sup-ceram-b",
           "target_name": "Apex Tile & Stone Direct (Supplier B)",
           "target_phone": "+1-555-019-2831",
-          "unit_price": 4.25,
-          "quantity_available": 650.0,
+          "unit_price": 4.23,
+          "quantity_available": 1300.0,
           "discount_percent": 5.0,
-          "delivery_days": 3,
+          "delivery_days": 1,
           "delivery_available": true,
           "delivery_cost": 0.0,
           "reliability_score": 92,
-          "calculated_score": 91.5,
+          "calculated_score": 94.8,
           "is_recommended": true,
           "is_selected": true,
-          "notes": "Balanced offer with 5% negotiated volume discount, in stock.",
-          "created_at": "2026-09-11T14:03:12.981654"
+          "notes": "Immediate inventory verified by CALL-E (1300 sq ft). Contractor trade discount: 5.0%.",
+          "created_at": "2026-09-11T14:15:44.241452"
         },
         {
-          "id": "off-ceram-a",
+          "id": "12b1f70d-0a18-4a3b-9e38-033d66d66b0f",
           "project_id": "proj-apt-f4",
-          "requirement_id": "req-carrelage",
+          "requirement_id": "b27919bb-a2b1-4710-aff6-592839d15ded",
           "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "target_type": "supplier",
           "target_id": "sup-ceram-a",
           "target_name": "Grand Surface Materials (Supplier A)",
           "target_phone": "+1-555-019-3344",
-          "unit_price": 4.8,
-          "quantity_available": 550.0,
-          "discount_percent": 0.0,
+          "unit_price": 4.68,
+          "quantity_available": 1300.0,
+          "discount_percent": 2.0,
+          "delivery_days": 3,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 85,
+          "calculated_score": 85.1,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Immediate inventory verified by CALL-E (1300 sq ft). Contractor trade discount: 2.0%.",
+          "created_at": "2026-09-11T14:15:44.241866"
+        },
+        {
+          "id": "b16124d4-fc3f-4c5b-82f2-425f8f997c22",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "ea769c91-4484-4319-9b05-1650d04289b8",
+          "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Apex Tile & Stone Direct (Supplier B)",
+          "target_phone": "+1-555-019-2831",
+          "unit_price": 6.11,
+          "quantity_available": 112.5,
+          "discount_percent": 5.0,
           "delivery_days": 1,
           "delivery_available": true,
-          "delivery_cost": 45.0,
-          "reliability_score": 85,
-          "calculated_score": 81.0,
-          "is_recommended": false,
-          "is_selected": false,
-          "notes": "Next-day delivery available but unit price is higher.",
-          "created_at": "2026-09-11T14:03:12.981732"
-        },
-        {
-          "id": "off-ceram-c",
-          "project_id": "proj-apt-f4",
-          "requirement_id": "req-carrelage",
-          "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
-          "target_type": "supplier",
-          "target_id": "sup-ceram-c",
-          "target_name": "Atlas Porcelain Warehouse (Supplier C)",
-          "target_phone": "+1-555-019-4455",
-          "unit_price": 3.95,
-          "quantity_available": 400.0,
-          "discount_percent": 0.0,
-          "delivery_days": 10,
-          "delivery_available": false,
           "delivery_cost": 0.0,
-          "reliability_score": 78,
-          "calculated_score": 72.0,
-          "is_recommended": false,
-          "is_selected": false,
-          "notes": "Lowest price, but 10-day lead time and customer pickup only.",
-          "created_at": "2026-09-11T14:03:12.981780"
+          "reliability_score": 92,
+          "calculated_score": 94.8,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Immediate inventory verified by CALL-E (112.5 sq ft). Contractor trade discount: 5.0%.",
+          "created_at": "2026-09-11T14:15:44.242350"
         },
         {
-          "id": "off-peint-a",
+          "id": "12e48a1c-e71f-4d15-8293-0f4f90e92926",
           "project_id": "proj-apt-f4",
-          "requirement_id": "req-peinture",
+          "requirement_id": "ea769c91-4484-4319-9b05-1650d04289b8",
+          "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Surface Materials (Supplier A)",
+          "target_phone": "+1-555-019-3344",
+          "unit_price": 6.76,
+          "quantity_available": 112.5,
+          "discount_percent": 2.0,
+          "delivery_days": 3,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 85,
+          "calculated_score": 85.1,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Immediate inventory verified by CALL-E (112.5 sq ft). Contractor trade discount: 2.0%.",
+          "created_at": "2026-09-11T14:15:44.242884"
+        },
+        {
+          "id": "2115e92a-f554-457e-97c8-2fe5a714f434",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "3001ec82-7e5d-4db7-b642-a214db5a5b0d",
           "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
           "target_type": "supplier",
           "target_id": "sup-peint-a",
           "target_name": "Sherwin ProFinish Coatings",
           "target_phone": "+1-555-019-5566",
-          "unit_price": 60.0,
-          "quantity_available": 50.0,
+          "unit_price": 56.4,
+          "quantity_available": 25.0,
           "discount_percent": 5.0,
           "delivery_days": 1,
           "delivery_available": true,
           "delivery_cost": 0.0,
           "reliability_score": 95,
-          "calculated_score": 94.0,
+          "calculated_score": 95.0,
           "is_recommended": true,
           "is_selected": true,
-          "notes": "Commercial contractor discount applied, immediate availability.",
-          "created_at": "2026-09-11T14:03:12.981809"
+          "notes": "Immediate inventory verified by CALL-E (25 gal). Contractor trade discount: 5.0%.",
+          "created_at": "2026-09-11T14:15:44.243222"
         },
         {
-          "id": "off-elec-a",
+          "id": "129b8db1-3b90-4b8d-b229-586f04d51dd0",
           "project_id": "proj-apt-f4",
-          "requirement_id": "req-led",
+          "requirement_id": "3001ec82-7e5d-4db7-b642-a214db5a5b0d",
+          "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
+          "target_type": "supplier",
+          "target_id": "sup-peint-b",
+          "target_name": "ColorCraft Express Supply",
+          "target_phone": "+1-555-019-6677",
+          "unit_price": 62.4,
+          "quantity_available": 25.0,
+          "discount_percent": 2.0,
+          "delivery_days": 3,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 82,
+          "calculated_score": 84.8,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Immediate inventory verified by CALL-E (25 gal). Contractor trade discount: 2.0%.",
+          "created_at": "2026-09-11T14:15:44.243466"
+        },
+        {
+          "id": "f1c82962-5840-42d1-ac03-b0b8f5bfc968",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "b7abe768-063c-4d95-8da2-25b404987ee2",
           "requirement_name": "7W Dimmable Recessed LED Downlights (3000K Warm White)",
           "target_type": "supplier",
           "target_id": "sup-elec-a",
           "target_name": "Metro Lighting & Electric Supply",
           "target_phone": "+1-555-019-7788",
-          "unit_price": 19.5,
-          "quantity_available": 100.0,
+          "unit_price": 18.33,
+          "quantity_available": 60.0,
           "discount_percent": 5.0,
           "delivery_days": 1,
           "delivery_available": true,
           "delivery_cost": 0.0,
           "reliability_score": 90,
-          "calculated_score": 91.5,
+          "calculated_score": 94.5,
           "is_recommended": true,
           "is_selected": true,
-          "notes": "Bulk pack pricing with free jobsite direct drop.",
-          "created_at": "2026-09-11T14:03:12.981834"
+          "notes": "Immediate inventory verified by CALL-E (60 units). Contractor trade discount: 5.0%.",
+          "created_at": "2026-09-11T14:15:44.243891"
         },
         {
-          "id": "off-plomb-a",
+          "id": "23a97000-0048-4c00-b371-b9582ccb7828",
           "project_id": "proj-apt-f4",
-          "requirement_id": "req-robinet",
+          "requirement_id": "586ff9de-48ea-4e40-aaec-3298ab2c9355",
           "requirement_name": "Designer Brushed Brass Thermostatic Mixer Faucets",
           "target_type": "supplier",
           "target_id": "sup-plomb-a",
           "target_name": "Prestige Bath & Plumbing Fixtures",
           "target_phone": "+1-555-019-8899",
-          "unit_price": 175.0,
-          "quantity_available": 12.0,
-          "discount_percent": 0.0,
-          "delivery_days": 2,
+          "unit_price": 164.5,
+          "quantity_available": 7.5,
+          "discount_percent": 5.0,
+          "delivery_days": 1,
           "delivery_available": true,
           "delivery_cost": 0.0,
           "reliability_score": 88,
-          "calculated_score": 89.0,
+          "calculated_score": 94.3,
           "is_recommended": true,
           "is_selected": true,
-          "notes": "5-year commercial manufacturer warranty included.",
-          "created_at": "2026-09-11T14:03:12.981858"
-        },
-        {
-          "id": "off-trade-mohamed",
-          "project_id": "proj-apt-f4",
-          "requirement_id": "req-labor-carreleur",
-          "requirement_name": "Tile & Substrate Installation (Master Tiler)",
-          "target_type": "tradesperson",
-          "target_id": "trade-mohamed",
-          "target_name": "Marcus Reed (Master Tiler)",
-          "target_phone": "+1-555-018-1122",
-          "unit_price": 425.0,
-          "quantity_available": 4.0,
-          "discount_percent": 0.0,
-          "delivery_days": 2,
-          "delivery_available": true,
-          "delivery_cost": 0.0,
-          "reliability_score": 95,
-          "calculated_score": 94.5,
-          "is_recommended": true,
-          "is_selected": true,
-          "notes": "Earliest start date: 3 business days, laser leveling equipment.",
-          "created_at": "2026-09-11T14:03:12.981882"
-        },
-        {
-          "id": "off-trade-mustapha",
-          "project_id": "proj-apt-f4",
-          "requirement_id": "req-labor-peintre",
-          "requirement_name": "Surface Prep & 2-Coat Painting (Finish Painter)",
-          "target_type": "tradesperson",
-          "target_id": "trade-mustapha",
-          "target_name": "David Chen (Finish Painter)",
-          "target_phone": "+1-555-018-3344",
-          "unit_price": 360.0,
-          "quantity_available": 3.0,
-          "discount_percent": 0.0,
-          "delivery_days": 3,
-          "delivery_available": true,
-          "delivery_cost": 0.0,
-          "reliability_score": 93,
-          "calculated_score": 92.5,
-          "is_recommended": true,
-          "is_selected": true,
-          "notes": "HEPA air scrubbers and floor protection tarps provided.",
-          "created_at": "2026-09-11T14:03:12.981906"
-        },
-        {
-          "id": "off-trade-ali",
-          "project_id": "proj-apt-f4",
-          "requirement_id": "req-labor-plombier",
-          "requirement_name": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
-          "target_type": "tradesperson",
-          "target_id": "trade-ali",
-          "target_name": "James Wilson (Licensed Plumber)",
-          "target_phone": "+1-555-018-4455",
-          "unit_price": 490.0,
-          "quantity_available": 2.0,
-          "discount_percent": 0.0,
-          "delivery_days": 2,
-          "delivery_available": true,
-          "delivery_cost": 0.0,
-          "reliability_score": 90,
-          "calculated_score": 91.0,
-          "is_recommended": true,
-          "is_selected": true,
-          "notes": "Master licensed, specialized in PEX expansion and brass trims.",
-          "created_at": "2026-09-11T14:03:12.981930"
-        },
-        {
-          "id": "off-trade-sofiane",
-          "project_id": "proj-apt-f4",
-          "requirement_id": "req-labor-elec",
-          "requirement_name": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
-          "target_type": "tradesperson",
-          "target_id": "trade-sofiane",
-          "target_name": "Anthony Brooks (Master Electrician)",
-          "target_phone": "+1-555-018-5566",
-          "unit_price": 480.0,
-          "quantity_available": 2.0,
-          "discount_percent": 0.0,
-          "delivery_days": 2,
-          "delivery_available": true,
-          "delivery_cost": 0.0,
-          "reliability_score": 91,
-          "calculated_score": 91.0,
-          "is_recommended": true,
-          "is_selected": true,
-          "notes": "Full municipal permit sign-off capable.",
-          "created_at": "2026-09-11T14:03:12.981953"
+          "notes": "Immediate inventory verified by CALL-E (7.5 units). Contractor trade discount: 5.0%.",
+          "created_at": "2026-09-11T14:15:44.244262"
         }
       ],
       "call_records": [
         {
-          "id": "call-rec-ceram-b",
+          "id": "10d4e543-4499-4060-af44-d21a7ab4a541",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-mohamed",
+          "target_name": "Marcus Reed (Master Tiler)",
+          "target_phone": "+1-555-018-1122",
+          "requirement_id": "afe2c6bd-dc25-44df-a26a-c0edcaf4de56",
+          "requirement_name": "Tile & Substrate Installation (Master Tiler)",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Marcus Reed (Master Tiler), calling on behalf of ContractorPilot for a project at 742 Evergreen Terrace, Metro District. Are you available for Tile & Substrate Installation (Master Tiler)?"
+            },
+            {
+              "speaker": "Marcus Reed (Master Tiler)",
+              "text": "Hi! Yes, I can start within 2 days. My day rate is $404/day with full commercial equipment."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Perfect, logged and submitted to the general contractor. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 404.0,
+            "lead_days": 2,
+            "trade": "Master Tiler"
+          },
+          "created_at": "2026-09-11T14:15:44.238944"
+        },
+        {
+          "id": "5c474670-a330-44ad-9fcc-5a7800f996b2",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-karim",
+          "target_name": "Kevin Vance (Tile Installer)",
+          "target_phone": "+1-555-018-2233",
+          "requirement_id": "afe2c6bd-dc25-44df-a26a-c0edcaf4de56",
+          "requirement_name": "Tile & Substrate Installation (Master Tiler)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Kevin Vance (Tile Installer), calling on behalf of ContractorPilot for a project at 742 Evergreen Terrace, Metro District. Are you available for Tile & Substrate Installation (Master Tiler)?"
+            },
+            {
+              "speaker": "Kevin Vance (Tile Installer)",
+              "text": "Hi! Yes, I can start within 5 days. My day rate is $446/day with full commercial equipment."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Perfect, logged and submitted to the general contractor. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 446.0,
+            "lead_days": 5,
+            "trade": "Master Tiler"
+          },
+          "created_at": "2026-09-11T14:15:44.239222"
+        },
+        {
+          "id": "d0d9a0e4-3a87-46d4-bf4d-009858d77dab",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-mustapha",
+          "target_name": "David Chen (Finish Painter)",
+          "target_phone": "+1-555-018-3344",
+          "requirement_id": "cc26aa30-e755-43f1-92a4-9edc770ee0e3",
+          "requirement_name": "Surface Prep & 2-Coat Painting (Finish Painter)",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello David Chen (Finish Painter), calling on behalf of ContractorPilot for a project at 742 Evergreen Terrace, Metro District. Are you available for Surface Prep & 2-Coat Painting (Finish Painter)?"
+            },
+            {
+              "speaker": "David Chen (Finish Painter)",
+              "text": "Hi! Yes, I can start within 2 days. My day rate is $342/day with full commercial equipment."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Perfect, logged and submitted to the general contractor. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 342.0,
+            "lead_days": 2,
+            "trade": "Finish Painter"
+          },
+          "created_at": "2026-09-11T14:15:44.239499"
+        },
+        {
+          "id": "98fc2bf6-d7a5-4ec1-8539-d017cf597ae9",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-sofiane",
+          "target_name": "Anthony Brooks (Master Electrician)",
+          "target_phone": "+1-555-018-5566",
+          "requirement_id": "7c0b1d12-35a1-4a9d-85f7-e8566dc92abb",
+          "requirement_name": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Anthony Brooks (Master Electrician), calling on behalf of ContractorPilot for a project at 742 Evergreen Terrace, Metro District. Are you available for Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)?"
+            },
+            {
+              "speaker": "Anthony Brooks (Master Electrician)",
+              "text": "Hi! Yes, I can start within 2 days. My day rate is $456/day with full commercial equipment."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Perfect, logged and submitted to the general contractor. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 456.0,
+            "lead_days": 2,
+            "trade": "Master Electrician"
+          },
+          "created_at": "2026-09-11T14:15:44.239782"
+        },
+        {
+          "id": "750ebe98-7b3c-4909-93d4-32ddac326adf",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-ali",
+          "target_name": "James Wilson (Licensed Plumber)",
+          "target_phone": "+1-555-018-4455",
+          "requirement_id": "46145c6d-ea02-4301-b97a-a501ff853a47",
+          "requirement_name": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello James Wilson (Licensed Plumber), calling on behalf of ContractorPilot for a project at 742 Evergreen Terrace, Metro District. Are you available for Sanitary Rough-in & Trim Installation (Licensed Plumber)?"
+            },
+            {
+              "speaker": "James Wilson (Licensed Plumber)",
+              "text": "Hi! Yes, I can start within 2 days. My day rate is $466/day with full commercial equipment."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Perfect, logged and submitted to the general contractor. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 466.0,
+            "lead_days": 2,
+            "trade": "Licensed Plumber"
+          },
+          "created_at": "2026-09-11T14:15:44.240055"
+        },
+        {
+          "id": "faf56239-b838-444b-9067-e1b16167716c",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-ceram-b",
           "target_name": "Apex Tile & Stone Direct (Supplier B)",
           "target_phone": "+1-555-019-2831",
-          "requirement_id": "req-carrelage",
-          "requirement_name": "Porcelain Floor Tiles 24x24",
+          "requirement_id": "b27919bb-a2b1-4710-aff6-592839d15ded",
+          "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "status": "completed",
-          "duration_seconds": 42,
-          "calle_call_id": "calle_live_09b8f21a",
+          "duration_seconds": 45,
+          "calle_call_id": null,
           "transcript": [
             {
-              "speaker": "AI",
-              "text": "Hi, I'm calling from ContractorPilot on behalf of a residential remodel jobsite. Do you have 520 sq ft of 24x24 Calacatta porcelain floor tiles in stock?"
+              "speaker": "CALL-E",
+              "text": "Hello Apex Tile & Stone Direct (Supplier B), I'm calling for ContractorPilot to check availability of 520 sq ft of Porcelain Floor Tiles 24x24 (Calacatta Marble Finish) delivered to site at 742 Evergreen Terrace, Metro District."
             },
             {
-              "speaker": "Contact",
-              "text": "Hello! Yes, we have 650 sq ft available right now in our regional warehouse."
+              "speaker": "Apex Tile & Stone Direct (Supplier B)",
+              "text": "Hello! We have that in stock right now. Unit price is $4.23 with a 5.0% volume trade discount."
             },
             {
-              "speaker": "AI",
-              "text": "Great. What is your wholesale contractor price per sq ft, and can you deliver to the jobsite?"
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 1 business day?"
             },
             {
-              "speaker": "Contact",
-              "text": "List is $4.50 per sq ft. For an order of 520 sq ft, we can apply a 5% trade discount down to $4.25. Free direct freight delivery in 3 business days."
+              "speaker": "Apex Tile & Stone Direct (Supplier B)",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
             },
             {
-              "speaker": "AI",
-              "text": "Confirmed: $4.25 per sq ft with a 5% discount, 650 sq ft in stock, delivery in 3 days. Thank you for the quick quote!"
-            },
-            {
-              "speaker": "Contact",
-              "text": "You're welcome! Let us know whenever you're ready to place the PO."
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
             }
           ],
           "extracted_data": {
-            "supplier": "Apex Tile & Stone Direct (Supplier B)",
-            "product": "Porcelain Floor Tiles 24x24",
-            "quantity_requested": 520.0,
-            "unit": "sq ft",
-            "unit_price": 4.25,
+            "unit_price": 4.23,
             "discount_percent": 5.0,
-            "availability": 650.0,
-            "delivery_days": 3,
-            "delivery_available": true
+            "delivery_days": 1,
+            "stock": 1300.0
           },
-          "created_at": "2026-09-11T14:03:12.981993"
+          "created_at": "2026-09-11T14:15:44.241620"
+        },
+        {
+          "id": "3378a6ca-e685-4241-824d-8a5dc68340be",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Surface Materials (Supplier A)",
+          "target_phone": "+1-555-019-3344",
+          "requirement_id": "b27919bb-a2b1-4710-aff6-592839d15ded",
+          "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
+          "status": "completed",
+          "duration_seconds": 50,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Grand Surface Materials (Supplier A), I'm calling for ContractorPilot to check availability of 520 sq ft of Porcelain Floor Tiles 24x24 (Calacatta Marble Finish) delivered to site at 742 Evergreen Terrace, Metro District."
+            },
+            {
+              "speaker": "Grand Surface Materials (Supplier A)",
+              "text": "Hello! We have that in stock right now. Unit price is $4.68 with a 2.0% volume trade discount."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 3 business days?"
+            },
+            {
+              "speaker": "Grand Surface Materials (Supplier A)",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 4.68,
+            "discount_percent": 2.0,
+            "delivery_days": 3,
+            "stock": 1300.0
+          },
+          "created_at": "2026-09-11T14:15:44.242109"
+        },
+        {
+          "id": "31456fe0-426c-4055-895a-b7d6692206a0",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Apex Tile & Stone Direct (Supplier B)",
+          "target_phone": "+1-555-019-2831",
+          "requirement_id": "ea769c91-4484-4319-9b05-1650d04289b8",
+          "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Apex Tile & Stone Direct (Supplier B), I'm calling for ContractorPilot to check availability of 45 sq ft of Subway Glazed Ceramic Wall Tile (Kitchen Backsplash) delivered to site at 742 Evergreen Terrace, Metro District."
+            },
+            {
+              "speaker": "Apex Tile & Stone Direct (Supplier B)",
+              "text": "Hello! We have that in stock right now. Unit price is $6.11 with a 5.0% volume trade discount."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 1 business day?"
+            },
+            {
+              "speaker": "Apex Tile & Stone Direct (Supplier B)",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 6.11,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 112.5
+          },
+          "created_at": "2026-09-11T14:15:44.242609"
+        },
+        {
+          "id": "39f3ed88-4676-4a1b-a5cc-21de72b1fd2e",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Surface Materials (Supplier A)",
+          "target_phone": "+1-555-019-3344",
+          "requirement_id": "ea769c91-4484-4319-9b05-1650d04289b8",
+          "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
+          "status": "completed",
+          "duration_seconds": 50,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Grand Surface Materials (Supplier A), I'm calling for ContractorPilot to check availability of 45 sq ft of Subway Glazed Ceramic Wall Tile (Kitchen Backsplash) delivered to site at 742 Evergreen Terrace, Metro District."
+            },
+            {
+              "speaker": "Grand Surface Materials (Supplier A)",
+              "text": "Hello! We have that in stock right now. Unit price is $6.76 with a 2.0% volume trade discount."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 3 business days?"
+            },
+            {
+              "speaker": "Grand Surface Materials (Supplier A)",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 6.76,
+            "discount_percent": 2.0,
+            "delivery_days": 3,
+            "stock": 112.5
+          },
+          "created_at": "2026-09-11T14:15:44.243084"
+        },
+        {
+          "id": "dfafe158-155b-41df-a1c1-f2132ad443d4",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-peint-a",
+          "target_name": "Sherwin ProFinish Coatings",
+          "target_phone": "+1-555-019-5566",
+          "requirement_id": "3001ec82-7e5d-4db7-b642-a214db5a5b0d",
+          "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Sherwin ProFinish Coatings, I'm calling for ContractorPilot to check availability of 10 gal of Premium Interior Velvet Matte Paint (Ultra Durable) delivered to site at 742 Evergreen Terrace, Metro District."
+            },
+            {
+              "speaker": "Sherwin ProFinish Coatings",
+              "text": "Hello! We have that in stock right now. Unit price is $56.40 with a 5.0% volume trade discount."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 1 business day?"
+            },
+            {
+              "speaker": "Sherwin ProFinish Coatings",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 56.4,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 25.0
+          },
+          "created_at": "2026-09-11T14:15:44.243337"
+        },
+        {
+          "id": "91c811bb-ea2d-487f-9b29-8f3050c64492",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-peint-b",
+          "target_name": "ColorCraft Express Supply",
+          "target_phone": "+1-555-019-6677",
+          "requirement_id": "3001ec82-7e5d-4db7-b642-a214db5a5b0d",
+          "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
+          "status": "completed",
+          "duration_seconds": 50,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello ColorCraft Express Supply, I'm calling for ContractorPilot to check availability of 10 gal of Premium Interior Velvet Matte Paint (Ultra Durable) delivered to site at 742 Evergreen Terrace, Metro District."
+            },
+            {
+              "speaker": "ColorCraft Express Supply",
+              "text": "Hello! We have that in stock right now. Unit price is $62.40 with a 2.0% volume trade discount."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 3 business days?"
+            },
+            {
+              "speaker": "ColorCraft Express Supply",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 62.4,
+            "discount_percent": 2.0,
+            "delivery_days": 3,
+            "stock": 25.0
+          },
+          "created_at": "2026-09-11T14:15:44.243637"
+        },
+        {
+          "id": "9d17b700-dcb7-4183-ac60-8626560b20fd",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-elec-a",
+          "target_name": "Metro Lighting & Electric Supply",
+          "target_phone": "+1-555-019-7788",
+          "requirement_id": "b7abe768-063c-4d95-8da2-25b404987ee2",
+          "requirement_name": "7W Dimmable Recessed LED Downlights (3000K Warm White)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Metro Lighting & Electric Supply, I'm calling for ContractorPilot to check availability of 24 units of 7W Dimmable Recessed LED Downlights (3000K Warm White) delivered to site at 742 Evergreen Terrace, Metro District."
+            },
+            {
+              "speaker": "Metro Lighting & Electric Supply",
+              "text": "Hello! We have that in stock right now. Unit price is $18.33 with a 5.0% volume trade discount."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 1 business day?"
+            },
+            {
+              "speaker": "Metro Lighting & Electric Supply",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 18.33,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 60.0
+          },
+          "created_at": "2026-09-11T14:15:44.244094"
+        },
+        {
+          "id": "9d9283e2-e341-4b4b-9a30-59f819002e2d",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-plomb-a",
+          "target_name": "Prestige Bath & Plumbing Fixtures",
+          "target_phone": "+1-555-019-8899",
+          "requirement_id": "586ff9de-48ea-4e40-aaec-3298ab2c9355",
+          "requirement_name": "Designer Brushed Brass Thermostatic Mixer Faucets",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Hello Prestige Bath & Plumbing Fixtures, I'm calling for ContractorPilot to check availability of 3 units of Designer Brushed Brass Thermostatic Mixer Faucets delivered to site at 742 Evergreen Terrace, Metro District."
+            },
+            {
+              "speaker": "Prestige Bath & Plumbing Fixtures",
+              "text": "Hello! We have that in stock right now. Unit price is $164.50 with a 5.0% volume trade discount."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Can you guarantee jobsite delivery within 1 business day?"
+            },
+            {
+              "speaker": "Prestige Bath & Plumbing Fixtures",
+              "text": "Yes absolutely, flatbed dispatch is scheduled for that window."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Confirmed, order hold logged for contractor signoff. Thank you!"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 164.5,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 7.5
+          },
+          "created_at": "2026-09-11T14:15:44.244413"
         }
       ],
-      "voice_notes": "",
-      "quote": null,
-      "created_at": "2026-09-11T14:03:12.982042"
+      "voice_notes": "Walkthrough notes for The Miller Residence, 1,300 sq ft luxury condo remodel. Living room 400 sq ft: porcelain tile, velvet paint, 24 recessed LED lights. Kitchen 180 sq ft: backsplash tile, brass faucet. Master bath 96 sq ft: curbless walk-in shower. Schedule master tiler 4 days, finish painter 3 days, master electrician 2 days, and licensed plumber 2 days.",
+      "quote": {
+        "id": "6316f1cc-0acb-4603-9169-b2f29beb7885",
+        "project_id": "proj-apt-f4",
+        "quote_number": "CP-2026-111",
+        "date_str": "Sep 11, 2026",
+        "materials_subtotal": 3773.37,
+        "labor_subtotal": 4306.56,
+        "base_cost_total": 8079.93,
+        "margin_percent": 20.0,
+        "margin_amount": 1615.99,
+        "expenses_amount": 0.0,
+        "tax_percent": 0.0,
+        "tax_amount": 0.0,
+        "grand_total": 9695.92,
+        "currency": "$",
+        "validity_days": 30,
+        "items": [
+          {
+            "category": "Tiler",
+            "description": "Tile & Substrate Installation (Master Tiler)",
+            "item_type": "labor",
+            "quantity": 4.0,
+            "unit": "days",
+            "unit_price": 404.0,
+            "discount_percent": 4.0,
+            "total_price": 1551.36,
+            "supplier_or_trade": "Marcus Reed (Master Tiler) (Master Tiler)"
+          },
+          {
+            "category": "Painter",
+            "description": "Surface Prep & 2-Coat Painting (Finish Painter)",
+            "item_type": "labor",
+            "quantity": 3.0,
+            "unit": "days",
+            "unit_price": 342.0,
+            "discount_percent": 4.0,
+            "total_price": 984.96,
+            "supplier_or_trade": "David Chen (Finish Painter) (Finish Painter)"
+          },
+          {
+            "category": "Electrician",
+            "description": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
+            "item_type": "labor",
+            "quantity": 2.0,
+            "unit": "days",
+            "unit_price": 456.0,
+            "discount_percent": 4.0,
+            "total_price": 875.52,
+            "supplier_or_trade": "Anthony Brooks (Master Electrician) (Master Electrician)"
+          },
+          {
+            "category": "Plumber",
+            "description": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
+            "item_type": "labor",
+            "quantity": 2.0,
+            "unit": "days",
+            "unit_price": 466.0,
+            "discount_percent": 4.0,
+            "total_price": 894.72,
+            "supplier_or_trade": "James Wilson (Licensed Plumber) (Licensed Plumber)"
+          },
+          {
+            "category": "Flooring",
+            "description": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
+            "item_type": "material",
+            "quantity": 520.0,
+            "unit": "sq ft",
+            "unit_price": 4.23,
+            "discount_percent": 5.0,
+            "total_price": 2089.62,
+            "supplier_or_trade": "Apex Tile & Stone Direct (Supplier B)"
+          },
+          {
+            "category": "Flooring",
+            "description": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
+            "item_type": "material",
+            "quantity": 45.0,
+            "unit": "sq ft",
+            "unit_price": 6.11,
+            "discount_percent": 5.0,
+            "total_price": 261.2,
+            "supplier_or_trade": "Apex Tile & Stone Direct (Supplier B)"
+          },
+          {
+            "category": "Paint",
+            "description": "Premium Interior Velvet Matte Paint (Ultra Durable)",
+            "item_type": "material",
+            "quantity": 10.0,
+            "unit": "gal",
+            "unit_price": 56.4,
+            "discount_percent": 5.0,
+            "total_price": 535.8,
+            "supplier_or_trade": "Sherwin ProFinish Coatings"
+          },
+          {
+            "category": "Electrical",
+            "description": "7W Dimmable Recessed LED Downlights (3000K Warm White)",
+            "item_type": "material",
+            "quantity": 24.0,
+            "unit": "units",
+            "unit_price": 18.33,
+            "discount_percent": 5.0,
+            "total_price": 417.92,
+            "supplier_or_trade": "Metro Lighting & Electric Supply"
+          },
+          {
+            "category": "Plumbing",
+            "description": "Designer Brushed Brass Thermostatic Mixer Faucets",
+            "item_type": "material",
+            "quantity": 3.0,
+            "unit": "units",
+            "unit_price": 164.5,
+            "discount_percent": 5.0,
+            "total_price": 468.82,
+            "supplier_or_trade": "Prestige Bath & Plumbing Fixtures"
+          }
+        ],
+        "status": "ready"
+      },
+      "created_at": "2026-09-11T14:13:04.625410"
     }
   ]
 }

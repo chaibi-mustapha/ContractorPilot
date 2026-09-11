@@ -277,316 +277,321 @@ async def delete_requirement(project_id: str, requirement_id: str) -> Dict[str, 
 
 
 def parse_voice_note_into_requirements(voice_text: str) -> Dict[str, Any]:
-    """Analyse les notes vocales de visite de chantier et extrait pièces, tâches par métier et matériaux."""
+    """Analyzes jobsite walkthrough notes and extracts rooms, trade subcontractor tasks, and materials."""
     text_lower = voice_text.lower()
 
-    # Détection des pièces et surfaces
+    # Room and area detection
     rooms_found: List[Room] = []
     
-    # 1. Grand Salon & Séjour
-    if any(k in text_lower for k in ["salon", "séjour", "living"]):
-        surface = 37.5
-        m = re.search(r"(?:salon|séjour)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*m", text_lower)
+    # 1. Living & Dining Room
+    if any(k in text_lower for k in ["living", "dining", "salon", "séjour"]):
+        surface = 400.0
+        m = re.search(r"(?:living|dining|salon)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:sq\s*ft|sqft|m2|m²|ft)", text_lower)
         if m:
             try:
                 surface = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         rooms_found.append(Room(
-            name="Grand Salon & Séjour",
-            length=round(surface / 5.0, 2),
-            width=5.0,
+            name="Open Living & Dining Room",
+            length=round(surface / 16.0, 1),
+            width=16.0,
+            height=9.0,
             surface=surface,
-            renovation_types=["Carrelage", "Peinture", "Électricité"],
-            notes="Dalle carrelée 60x60, peinture murs blanc satiné, spots LED."
+            renovation_types=["Wall & ceiling paint", "Recessed LED ceiling", "Hardwood flooring prep"],
+            notes="South-facing natural light, dimmable LED zones required."
         ))
 
-    # 2. Cuisine
-    if "cuisine" in text_lower:
-        surface = 15.75
-        m = re.search(r"cuisine[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*m", text_lower)
+    # 2. Kitchen
+    if "kitchen" in text_lower or "cuisine" in text_lower:
+        surface = 180.0
+        m = re.search(r"(?:kitchen|cuisine)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:sq\s*ft|sqft|m2|m²|ft)", text_lower)
         if m:
             try:
                 surface = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         rooms_found.append(Room(
-            name="Cuisine Ouverte",
-            length=round(surface / 3.5, 2),
-            width=3.5,
+            name="Chef's Kitchen",
+            length=round(surface / 12.0, 1),
+            width=12.0,
+            height=9.0,
             surface=surface,
-            renovation_types=["Plomberie", "Faïence", "Peinture"],
-            notes="Crédence faïence, mitigeur douchette, peinture anti-humidité."
+            renovation_types=["Porcelain floor tile", "Backsplash installation", "Plumbing rough-in & sink"],
+            notes="Requires dual undermount sink connections and island wiring."
         ))
 
-    # 3. Salle de bain
-    if any(k in text_lower for k in ["salle de bain", "sdb", "douche"]):
-        surface = 7.68
-        m = re.search(r"(?:salle de bain|sdb|douche)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*m", text_lower)
+    # 3. Master Bathroom
+    if any(k in text_lower for k in ["bath", "bathroom", "salle de bain", "sdb", "shower", "douche"]):
+        surface = 96.0
+        m = re.search(r"(?:bath|bathroom|salle de bain|shower)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:sq\s*ft|sqft|m2|m²|ft)", text_lower)
         if m:
             try:
                 surface = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         rooms_found.append(Room(
-            name="Salle de bain principale",
-            length=round(surface / 2.4, 2),
-            width=2.4,
+            name="Master Bathroom Suite",
+            length=round(surface / 8.0, 1),
+            width=8.0,
+            height=8.5,
             surface=surface,
-            renovation_types=["Plomberie", "Carrelage", "Sanitaire"],
-            notes="Douche à l'italienne, meuble vasque, mitigeur et carrelage antidérapant."
+            renovation_types=["Wall & floor tile", "Walk-in shower pan", "Vanity faucets", "Sanitary plumbing"],
+            notes="Full waterproof membrane waterproofing required for curbless shower."
         ))
 
-    # 4. Chambre
-    if "chambre" in text_lower:
-        surface = 14.0
-        m = re.search(r"chambre[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*m", text_lower)
+    # 4. Bedroom
+    if "bedroom" in text_lower or "chambre" in text_lower:
+        surface = 192.0
+        m = re.search(r"(?:bedroom|chambre)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:sq\s*ft|sqft|m2|m²|ft)", text_lower)
         if m:
             try:
                 surface = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         rooms_found.append(Room(
-            name="Chambre Principale",
-            length=round(surface / 3.5, 2),
-            width=3.5,
+            name="Primary Bedroom",
+            length=16.0,
+            width=12.0,
+            height=9.0,
             surface=surface,
-            renovation_types=["Peinture", "Sol"],
-            notes="Peinture satinée et plinthes."
+            renovation_types=["Wall paint", "Hardwood trim"],
+            notes="Baseboards and velvet matte paint."
         ))
 
-    # Pièce de secours si rien de reconnu
+    # Fallback room
     if not rooms_found:
         rooms_found.append(Room(
-            name="Espace Principal Rénové",
-            length=7.5,
-            width=5.0,
-            surface=37.5,
-            renovation_types=["Rénovation globale"],
-            notes="Zone métrée lors de la visite."
+            name="Main Living Area",
+            length=25.0,
+            width=16.0,
+            height=9.0,
+            surface=400.0,
+            renovation_types=["Complete interior remodel"],
+            notes="General measured walkthrough zone."
         ))
 
-    # Extraction des Tâches par Métier (Main-d'œuvre / Labor) et Matériaux
+    # Trade Labor tasks and Material Requirements
     tasks_by_trade: List[Requirement] = []
     materials: List[Requirement] = []
 
-    # Corps d'état 1: Carreleur & Carrelage
-    if any(k in text_lower for k in ["carrelage", "carreleur", "sol", "faïence", "grès"]):
+    # Trade 1: Master Tiler & Porcelain Tile
+    if any(k in text_lower for k in ["tile", "tiler", "porcelain", "carrelage", "carreleur", "flooring", "floor"]):
         carreleur_days = 4.0
-        m = re.search(r"carreleur[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*j", text_lower)
+        m = re.search(r"(?:tiler|carreleur)[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*(?:day|days|j)", text_lower)
         if m:
             try:
                 carreleur_days = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         tasks_by_trade.append(Requirement(
-            category="Carreleur",
-            item_name="Pose carrelage 60x60 & plinthes assorties (Salon & SDB)",
+            category="Tiler",
+            item_name="Tile & Substrate Installation (Master Tiler)",
             quantity=carreleur_days,
-            unit="jours",
+            unit="days",
             item_type="labor",
-            estimated_unit_price=14500.0,
-            notes="Préparation chape, double encollage et joints de dilatation."
+            estimated_unit_price=425.0,
+            notes="520 sq ft porcelain layout, precision miter cuts, waterproof substrate."
         ))
 
-        carrelage_qty = 48.0
-        m = re.search(r"carrelage[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:m2|m²)", text_lower)
+        carrelage_qty = 520.0
+        m = re.search(r"(?:tile|porcelain|carrelage)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:sq\s*ft|sqft|m2|m²)", text_lower)
         if m:
             try:
                 carrelage_qty = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         materials.append(Requirement(
-            category="Sol / Carrelage",
-            item_name="Carrelage Grès Cérame 60x60 Rectifié 1er Choix",
+            category="Flooring",
+            item_name="Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
             quantity=carrelage_qty,
-            unit="m²",
+            unit="sq ft",
             item_type="material",
-            estimated_unit_price=2600.0,
-            notes="Format 60x60 cm effet marbre satiné, haute résistance."
+            estimated_unit_price=4.50,
+            notes="High-traffic porcelain, rectified edges with 10% cut allowance."
         ))
 
-        if any(k in text_lower for k in ["faïence", "crédence", "crédence cuisine"]):
+        if any(k in text_lower for k in ["backsplash", "crédence", "faïence"]):
             materials.append(Requirement(
-                category="Sol / Carrelage",
-                item_name="Faïence murale crédence cuisine (Style Métro)",
-                quantity=10.0,
-                unit="m²",
+                category="Flooring",
+                item_name="Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
+                quantity=45.0,
+                unit="sq ft",
                 item_type="material",
-                estimated_unit_price=2400.0,
-                notes="Finition émaillée brillante facile d'entretien."
+                estimated_unit_price=6.50,
+                notes="Beveled glazed finish with stain-resistant epoxy grout."
             ))
 
-    # Corps d'état 2: Peintre & Peinture
-    if any(k in text_lower for k in ["peintre", "peinture", "murs", "plafond", "satiné", "blanc"]):
+    # Trade 2: Finish Painter & Interior Paint
+    if any(k in text_lower for k in ["paint", "painter", "drywall", "peintre", "peinture", "wall", "ceiling"]):
         peintre_days = 3.0
-        m = re.search(r"peintre[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*j", text_lower)
+        m = re.search(r"(?:painter|peintre)[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*(?:day|days|j)", text_lower)
         if m:
             try:
                 peintre_days = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         tasks_by_trade.append(Requirement(
-            category="Peintre",
-            item_name="Préparation supports, enduisage & peinture 2 couches",
+            category="Painter",
+            item_name="Surface Prep & 2-Coat Painting (Finish Painter)",
             quantity=peintre_days,
-            unit="jours",
+            unit="days",
             item_type="labor",
-            estimated_unit_price=15000.0,
-            notes="Rebouchage fissures, ponçage dépoussiéré et 2 couches lavables."
+            estimated_unit_price=360.0,
+            notes="Level 4 drywall prep, dust mitigation, primer plus 2 topcoats."
         ))
 
-        peinture_liters = 35.0
-        m = re.search(r"peinture[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:l|litres)", text_lower)
+        paint_gal = 10.0
+        m = re.search(r"(?:paint|peinture)[^\d]{0,25}(\d+(?:[\.,]\d+)?)\s*(?:gal|gallon|gallons|l|liters)", text_lower)
         if m:
             try:
-                peinture_liters = float(m.group(1).replace(",", "."))
+                paint_gal = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         materials.append(Requirement(
-            category="Peinture",
-            item_name="Peinture murale satinée lavable haute opacité (Blanc)",
-            quantity=peinture_liters,
-            unit="L",
+            category="Paint",
+            item_name="Premium Interior Velvet Matte Paint (Ultra Durable)",
+            quantity=paint_gal,
+            unit="gal",
             item_type="material",
-            estimated_unit_price=1200.0,
-            notes="Rendement 10-12 m²/L par couche, lessivable."
+            estimated_unit_price=60.0,
+            notes="Warm Alabaster shade, washable zero-VOC formula."
         ))
 
-    # Corps d'état 3: Électricien & Électricité / Spots LED
-    if any(k in text_lower for k in ["électricien", "electricien", "led", "spots", "éclairage", "variateur"]):
+    # Trade 3: Master Electrician & Recessed LED Lights
+    if any(k in text_lower for k in ["electrician", "electric", "lighting", "light", "led", "spot", "dimmer", "électricien", "électricité"]):
         elec_days = 2.0
-        m = re.search(r"électricien[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*j", text_lower)
+        m = re.search(r"(?:electrician|électricien)[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*(?:day|days|j)", text_lower)
         if m:
             try:
                 elec_days = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         tasks_by_trade.append(Requirement(
-            category="Électricien",
-            item_name="Raccordement électrique faux-plafond & variateurs",
+            category="Electrician",
+            item_name="Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
             quantity=elec_days,
-            unit="jours",
+            unit="days",
             item_type="labor",
-            estimated_unit_price=17500.0,
-            notes="Création des lignes, incorporation gaines et raccordement variateurs."
+            estimated_unit_price=480.0,
+            notes="NEC compliance, smart dimmer switches, and dedicated circuits."
         ))
 
-        spots_count = 12.0
-        m = re.search(r"(\d+)\s*spots", text_lower)
+        spots_count = 24.0
+        m = re.search(r"(\d+)\s*(?:lights|downlights|spots|fixtures)", text_lower)
         if m:
             try:
                 spots_count = float(m.group(1))
             except Exception:
                 pass
         materials.append(Requirement(
-            category="Électricité",
-            item_name="Spots encastrés LED 7W dimmables (Blanc Chaud)",
+            category="Electrical",
+            item_name="7W Dimmable Recessed LED Downlights (3000K Warm White)",
             quantity=spots_count,
-            unit="unités",
+            unit="units",
             item_type="material",
-            estimated_unit_price=1200.0,
-            notes="Alimentation driver incluse, étanche IP44."
+            estimated_unit_price=19.50,
+            notes="IC-rated, airtight housing with junction boxes included."
         ))
 
-    # Corps d'état 4: Plombier & Sanitaire / Robinetterie
-    if any(k in text_lower for k in ["plombier", "plomberie", "mitigeur", "douche", "vasque", "robinetterie", "évier"]):
+    # Trade 4: Licensed Plumber & Fixtures
+    if any(k in text_lower for k in ["plumber", "plumbing", "faucet", "valve", "shower", "sink", "plombier", "plomberie", "mitigeur"]):
         plomb_days = 2.0
-        m = re.search(r"plombier[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*j", text_lower)
+        m = re.search(r"(?:plumber|plombier)[^\d]{0,15}(\d+(?:[\.,]\d+)?)\s*(?:day|days|j)", text_lower)
         if m:
             try:
                 plomb_days = float(m.group(1).replace(",", "."))
             except Exception:
                 pass
         tasks_by_trade.append(Requirement(
-            category="Plombier",
-            item_name="Raccordements eau, évacuations & pose sanitaires",
+            category="Plumber",
+            item_name="Sanitary Rough-in & Trim Installation (Licensed Plumber)",
             quantity=plomb_days,
-            unit="jours",
+            unit="days",
             item_type="labor",
-            estimated_unit_price=16000.0,
-            notes="Raccordement cuivre/multicouche et test étanchéité."
+            estimated_unit_price=490.0,
+            notes="PEX expansion lines, shower valves, and double vanity rough-ins."
         ))
 
         materials.append(Requirement(
-            category="Plomberie / Sanitaire",
-            item_name="Mitigeurs céramique design (Évier + Vasque + Douche)",
+            category="Plumbing",
+            item_name="Designer Brushed Brass Thermostatic Mixer Faucets",
             quantity=3.0,
-            unit="unités",
+            unit="units",
             item_type="material",
-            estimated_unit_price=10500.0,
-            notes="Cartouche céramique haute durabilité avec flexibles inox."
+            estimated_unit_price=175.0,
+            notes="Solid brass construction with ceramic disc valves."
         ))
 
-    # Si la note vocale était très courte ou générale, assurer au minimum les 4 postes clés
+    # Default fallback scopes if minimal voice input
     if not tasks_by_trade:
         tasks_by_trade = [
             Requirement(
-                category="Carreleur",
-                item_name="Pose carrelage sol 60x60 & plinthes",
+                category="Tiler",
+                item_name="Tile & Substrate Installation (Master Tiler)",
                 quantity=4.0,
-                unit="jours",
+                unit="days",
                 item_type="labor",
-                estimated_unit_price=14500.0,
+                estimated_unit_price=425.0,
             ),
             Requirement(
-                category="Peintre",
-                item_name="Préparation murs & peinture satinée",
+                category="Painter",
+                item_name="Surface Prep & 2-Coat Painting (Finish Painter)",
                 quantity=3.0,
-                unit="jours",
+                unit="days",
                 item_type="labor",
-                estimated_unit_price=15000.0,
+                estimated_unit_price=360.0,
             ),
             Requirement(
-                category="Électricien",
-                item_name="Pose éclairage spots & variateurs",
+                category="Electrician",
+                item_name="Recessed Lighting Circuitry & Smart Dimmer Trim",
                 quantity=2.0,
-                unit="jours",
+                unit="days",
                 item_type="labor",
-                estimated_unit_price=17500.0,
+                estimated_unit_price=480.0,
             ),
             Requirement(
-                category="Plombier",
-                item_name="Raccordement plomberie & sanitaires",
+                category="Plumber",
+                item_name="Sanitary Rough-in & Trim Installation",
                 quantity=2.0,
-                unit="jours",
+                unit="days",
                 item_type="labor",
-                estimated_unit_price=16000.0,
+                estimated_unit_price=490.0,
             ),
         ]
     if not materials:
         materials = [
             Requirement(
-                category="Sol / Carrelage",
-                item_name="Carrelage Grès Cérame 60x60 Rectifié",
-                quantity=48.0,
-                unit="m²",
+                category="Flooring",
+                item_name="Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
+                quantity=520.0,
+                unit="sq ft",
                 item_type="material",
-                estimated_unit_price=2600.0,
+                estimated_unit_price=4.50,
             ),
             Requirement(
-                category="Peinture",
-                item_name="Peinture murale satinée lavable blanche",
-                quantity=35.0,
-                unit="L",
+                category="Paint",
+                item_name="Premium Interior Velvet Matte Paint (Ultra Durable)",
+                quantity=10.0,
+                unit="gal",
                 item_type="material",
-                estimated_unit_price=1200.0,
+                estimated_unit_price=60.0,
             ),
             Requirement(
-                category="Électricité",
-                item_name="Spots encastrés LED 7W dimmables",
-                quantity=12.0,
-                unit="unités",
+                category="Electrical",
+                item_name="7W Dimmable Recessed LED Downlights (3000K Warm White)",
+                quantity=24.0,
+                unit="units",
                 item_type="material",
-                estimated_unit_price=1200.0,
+                estimated_unit_price=19.50,
             ),
             Requirement(
-                category="Plomberie / Sanitaire",
-                item_name="Mitigeurs céramique design (x3)",
+                category="Plumbing",
+                item_name="Designer Brushed Brass Thermostatic Mixer Faucets",
                 quantity=3.0,
-                unit="unités",
+                unit="units",
                 item_type="material",
-                estimated_unit_price=10500.0,
+                estimated_unit_price=175.0,
             ),
         ]
 
@@ -599,10 +604,10 @@ def parse_voice_note_into_requirements(voice_text: str) -> Dict[str, Any]:
 
 @app.post("/api/projects/{project_id}/voice-extract")
 async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict[str, Any]:
-    """Analyse la note vocale du chantier, extrait pièces, travaux selon métier et matériaux."""
+    """Analyzes the walkthrough voice dictation and extracts rooms, trade subcontractor scopes, and materials."""
     proj = store.projects.get(project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     parsed = parse_voice_note_into_requirements(req.voice_text)
     proj.voice_notes = req.voice_text
@@ -611,7 +616,6 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
         proj.rooms = parsed["rooms"]
         proj.requirements = parsed["tasks_by_trade"] + parsed["materials"]
     else:
-        # Fusion
         existing_names = {r.item_name.lower() for r in proj.requirements}
         for item in parsed["tasks_by_trade"] + parsed["materials"]:
             if item.item_name.lower() not in existing_names:
@@ -627,119 +631,118 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
         "success": True,
         "transcription": req.voice_text,
         "rooms": [r.model_dump() for r in proj.rooms],
-        "tasks_by_trade": [t.model_dump() for t in proj.requirements if t.item_type == "labor" or t.category == "Main-d'œuvre" or t.category in ["Carreleur", "Peintre", "Électricien", "Plombier", "Menuisier"]],
-        "materials": [m.model_dump() for m in proj.requirements if m.item_type == "material" and m.category not in ["Main-d'œuvre", "Carreleur", "Peintre", "Électricien", "Plombier", "Menuisier"]],
+        "tasks_by_trade": [t.model_dump() for t in proj.requirements if t.item_type == "labor"],
+        "materials": [m.model_dump() for m in proj.requirements if m.item_type == "material"],
         "all_requirements": [r.model_dump() for r in proj.requirements],
     }
 
 
 @app.post("/api/projects/{project_id}/ai-generate-requirements")
 async def ai_generate_requirements(project_id: str) -> Dict[str, Any]:
-    """Génère automatiquement la liste des matériaux et main d'œuvre à partir des pièces."""
+    """Automatically generates material takeoffs and labor days from measured rooms."""
     proj = store.projects.get(project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     new_requirements: List[Requirement] = []
 
     for room in proj.rooms:
-        wall_surface = round(2 * (room.length + room.width) * room.height, 2)
-        floor_surface = round(room.length * room.width, 2)
+        wall_surface = round(2 * (room.length + room.width) * room.height, 1)
+        floor_surface = round(room.length * room.width, 1)
 
         for work in room.renovation_types:
             work_lower = work.lower()
-            if "peinture" in work_lower:
-                liters = round(wall_surface / 6.0, 1)  # 6m² par litre 2 couches
+            if "paint" in work_lower or "peinture" in work_lower:
+                gallons = max(round(wall_surface / 350.0, 1), 2.0)  # ~350 sq ft per gallon 2 coats
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Peinture",
-                    item_name="Peinture murale satinée lavable",
-                    quantity=liters,
-                    unit="L",
+                    category="Paint",
+                    item_name="Premium Interior Velvet Matte Paint",
+                    quantity=gallons,
+                    unit="gal",
                     item_type="material",
-                    estimated_unit_price=1200.0,
+                    estimated_unit_price=60.0,
                 ))
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Main-d'œuvre",
-                    item_name=f"Application peinture ({room.name})",
-                    quantity=max(round(wall_surface / 40.0, 1), 1.5),
-                    unit="jours",
+                    category="Painter",
+                    item_name=f"Surface prep & painting ({room.name})",
+                    quantity=max(round(wall_surface / 500.0, 1), 1.5),
+                    unit="days",
                     item_type="labor",
-                    estimated_unit_price=15000.0,
+                    estimated_unit_price=360.0,
                 ))
 
-            if "carrelage" in work_lower or "sol" in work_lower:
-                sqm = round(floor_surface * 1.10, 1)  # +10% de chutes
+            if "tile" in work_lower or "carrelage" in work_lower or "floor" in work_lower:
+                sqft = round(floor_surface * 1.10, 1)  # +10% cut allowance
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Sol",
-                    item_name="Carrelage Grès Cérame 60x60",
-                    quantity=sqm,
-                    unit="m²",
+                    category="Flooring",
+                    item_name="Porcelain Floor Tiles 24x24",
+                    quantity=sqft,
+                    unit="sq ft",
                     item_type="material",
-                    estimated_unit_price=2600.0,
+                    estimated_unit_price=4.50,
                 ))
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Main-d'œuvre",
-                    item_name=f"Pose carrelage & plinthes ({room.name})",
-                    quantity=max(round(sqm / 15.0, 1), 1.0),
-                    unit="jours",
+                    category="Tiler",
+                    item_name=f"Tile installation & prep ({room.name})",
+                    quantity=max(round(sqft / 130.0, 1), 1.0),
+                    unit="days",
                     item_type="labor",
-                    estimated_unit_price=14500.0,
+                    estimated_unit_price=425.0,
                 ))
 
-            if "led" in work_lower or "éclairage" in work_lower or "spots" in work_lower:
-                spots_count = max(int(floor_surface / 1.5), 6)
+            if "led" in work_lower or "light" in work_lower or "spots" in work_lower:
+                spots_count = max(int(floor_surface / 25), 6)
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Électricité",
-                    item_name="Spots encastrés LED 7W dimmables",
+                    category="Electrical",
+                    item_name="7W Dimmable Recessed LED Downlights",
                     quantity=float(spots_count),
-                    unit="unités",
+                    unit="units",
                     item_type="material",
-                    estimated_unit_price=1200.0,
+                    estimated_unit_price=19.50,
                 ))
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Main-d'œuvre",
-                    item_name="Raccordement spots & variateur",
+                    category="Electrician",
+                    item_name=f"Ceiling circuit & dimmer install ({room.name})",
                     quantity=1.0,
-                    unit="jours",
+                    unit="days",
                     item_type="labor",
-                    estimated_unit_price=17500.0,
+                    estimated_unit_price=480.0,
                 ))
 
-            if "plomberie" in work_lower or "douche" in work_lower or "robinetterie" in work_lower or "évier" in work_lower:
+            if "plumbing" in work_lower or "shower" in work_lower or "faucet" in work_lower:
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Plomberie",
-                    item_name="Mitigeurs et robinetterie sanitaire",
+                    category="Plumbing",
+                    item_name="Designer Thermostatic Mixer Faucets",
                     quantity=2.0,
-                    unit="unités",
+                    unit="units",
                     item_type="material",
-                    estimated_unit_price=10500.0,
+                    estimated_unit_price=175.0,
                 ))
                 new_requirements.append(Requirement(
                     room_id=room.id,
                     room_name=room.name,
-                    category="Main-d'œuvre",
-                    item_name="Raccordements et pose plomberie",
+                    category="Plumber",
+                    item_name=f"Sanitary plumbing rough-in ({room.name})",
                     quantity=2.0,
-                    unit="jours",
+                    unit="days",
                     item_type="labor",
-                    estimated_unit_price=16000.0,
+                    estimated_unit_price=490.0,
                 ))
 
-    # Fusionne ou remplace
     proj.requirements.extend(new_requirements)
     proj.status = "REQUIREMENTS_READY"
     store.save()
@@ -918,20 +921,22 @@ async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
     generated_calls: List[CallRecord] = []
 
     for req_item in proj.requirements:
-        is_labor = (req_item.item_type == "labor" or req_item.category in ["Carreleur", "Peintre", "Électricien", "Plombier", "Menuisier", "Main-d'œuvre"])
+        is_labor = (
+            req_item.item_type == "labor"
+            or req_item.category in ["Tiler", "Painter", "Electrician", "Plumber", "Carpenter", "Labor", "Carreleur", "Peintre", "Électricien", "Plombier", "Menuisier", "Main-d'œuvre"]
+        )
 
         if is_labor:
-            # Chercher des artisans correspondants
+            # Find matching subcontractors
             trade_matches = [t for t in store.tradespeople if t.trade.lower() in req_item.category.lower() or t.trade.lower() in req_item.item_name.lower()]
             if not trade_matches:
                 trade_matches = store.tradespeople[:2]
             else:
                 trade_matches = trade_matches[:2]
 
-            base_rate = req_item.estimated_unit_price or 15000.0
+            base_rate = req_item.estimated_unit_price or 420.0
 
             for idx, artisan in enumerate(trade_matches):
-                # Variation de tarif
                 rate_factor = 0.95 if idx == 0 else 1.05
                 unit_price = round(base_rate * rate_factor, 0)
                 lead_days = 2 if idx == 0 else 5
@@ -963,11 +968,11 @@ async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
                     calculated_score=score,
                     is_recommended=(idx == 0),
                     is_selected=(idx == 0),
-                    notes=f"Disponibilité confirmée par CALL-E pour démarrage sous {lead_days} jours.",
+                    notes=f"Availability confirmed by CALL-E for mobilization in {lead_days} days.",
                 )
                 generated_offers.append(offer)
 
-                # Appel vocal associé
+                # Associated voice call record
                 call_rec = CallRecord(
                     project_id=proj.id,
                     target_type="tradesperson",
@@ -979,9 +984,9 @@ async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
                     status="completed",
                     duration_seconds=38 + idx * 7,
                     transcript=[
-                        {"speaker": "CALL-E", "text": f"Bonjour {artisan.name}, je vous contacte pour un chantier à {proj.location}. Êtes-vous disponible pour {req_item.item_name} ?"},
-                        {"speaker": artisan.name, "text": f"Bonjour ! Oui, je suis disponible d'ici {lead_days} jours. Mon tarif est de {int(unit_price):,} DA/jour avec matériel pro complet."},
-                        {"speaker": "CALL-E", "text": "Parfait, c'est noté et transmis à l'entrepreneur. Merci !"}
+                        {"speaker": "CALL-E", "text": f"Hello {artisan.name}, calling on behalf of ContractorPilot for a project at {proj.location}. Are you available for {req_item.item_name}?"},
+                        {"speaker": artisan.name, "text": f"Hi! Yes, I can start within {lead_days} days. My day rate is ${int(unit_price):,}/day with full commercial equipment."},
+                        {"speaker": "CALL-E", "text": "Perfect, logged and submitted to the general contractor. Thank you!"}
                     ],
                     extracted_data={
                         "unit_price": unit_price,
@@ -992,18 +997,18 @@ async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
                 generated_calls.append(call_rec)
 
         else:
-            # Matériaux : Chercher fournisseurs adaptés
+            # Materials: Match suitable suppliers
             cat_matches = [s for s in store.suppliers if s.category.lower() in req_item.category.lower() or req_item.category.lower() in s.category.lower()]
             if not cat_matches:
                 cat_matches = store.suppliers[:2]
             else:
                 cat_matches = cat_matches[:2]
 
-            base_price = req_item.estimated_unit_price or 2500.0
+            base_price = req_item.estimated_unit_price or 4.50
 
             for idx, supplier in enumerate(cat_matches):
                 rate_factor = 0.94 if idx == 0 else 1.04
-                unit_price = round(base_price * rate_factor, 0)
+                unit_price = round(base_price * rate_factor, 2)
                 lead_days = 1 if idx == 0 else 3
                 discount = 5.0 if idx == 0 else 2.0
                 qty_avail = req_item.quantity * 2.5
@@ -1034,7 +1039,7 @@ async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
                     calculated_score=score,
                     is_recommended=(idx == 0),
                     is_selected=(idx == 0),
-                    notes=f"Stock immédiat vérifié par CALL-E ({qty_avail:g} {req_item.unit}). Remise accordée : {discount}%.",
+                    notes=f"Immediate inventory verified by CALL-E ({qty_avail:g} {req_item.unit}). Contractor trade discount: {discount}%.",
                 )
                 generated_offers.append(offer)
 
@@ -1049,11 +1054,11 @@ async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
                     status="completed",
                     duration_seconds=45 + idx * 5,
                     transcript=[
-                        {"speaker": "CALL-E", "text": f"Bonjour {supplier.name}, je recherche {req_item.quantity:g} {req_item.unit} de {req_item.item_name} pour livraison sur chantier à {proj.location}."},
-                        {"speaker": supplier.name, "text": f"Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de {int(unit_price):,} DA avec une remise de {discount}% pour ce volume."},
-                        {"speaker": "CALL-E", "text": f"Pouvez-vous livrer sous {lead_days} jours ?"},
-                        {"speaker": supplier.name, "text": f"Oui tout à fait, camion plateau disponible dès demain."},
-                        {"speaker": "CALL-E", "text": "Entendu, commande préparée pour confirmation. Merci !"}
+                        {"speaker": "CALL-E", "text": f"Hello {supplier.name}, I'm calling for ContractorPilot to check availability of {req_item.quantity:g} {req_item.unit} of {req_item.item_name} delivered to site at {proj.location}."},
+                        {"speaker": supplier.name, "text": f"Hello! We have that in stock right now. Unit price is ${unit_price:,.2f} with a {discount}% volume trade discount."},
+                        {"speaker": "CALL-E", "text": f"Can you guarantee jobsite delivery within {lead_days} business day{'s' if lead_days > 1 else ''}?"},
+                        {"speaker": supplier.name, "text": "Yes absolutely, flatbed dispatch is scheduled for that window."},
+                        {"speaker": "CALL-E", "text": "Confirmed, order hold logged for contractor signoff. Thank you!"}
                     ],
                     extracted_data={
                         "unit_price": unit_price,
@@ -1183,12 +1188,12 @@ async def websocket_calls(websocket: WebSocket, project_id: str) -> None:
 
             if action == "start_call_stream":
                 target_type = data.get("target_type", "supplier")
-                target_name = data.get("target_name", "Fournisseur")
-                target_phone = data.get("target_phone", "+213550000000")
+                target_name = data.get("target_name", "Supplier Direct")
+                target_phone = data.get("target_phone", "+1 312 555 0142")
                 requirement_id = data.get("requirement_id")
-                requirement_name = data.get("requirement_name", "Carrelage 48 m²")
-                quantity = float(data.get("quantity", 48.0))
-                unit = data.get("unit", "m²")
+                requirement_name = data.get("requirement_name", "Porcelain Floor Tiles 520 sq ft")
+                quantity = float(data.get("quantity", 520.0))
+                unit = data.get("unit", "sq ft")
                 target_id = data.get("target_id", "target-generic")
 
                 # Diffuse les étapes de l'appel
