@@ -1,0 +1,1257 @@
+{
+  "suppliers": [
+    {
+      "id": "sup-ceram-b",
+      "name": "Comptoir Céramique Moderne (Fournisseur B)",
+      "phone": "+213550112233",
+      "category": "Sol & Carrelage",
+      "city": "Alger",
+      "rating": 4.8,
+      "reliability_score": 92
+    },
+    {
+      "id": "sup-ceram-a",
+      "name": "Grand Décor Carrelage (Fournisseur A)",
+      "phone": "+213551223344",
+      "category": "Sol & Carrelage",
+      "city": "Alger",
+      "rating": 4.5,
+      "reliability_score": 85
+    },
+    {
+      "id": "sup-ceram-c",
+      "name": "Atlas Sanitaire & Faïence (Fournisseur C)",
+      "phone": "+213552334455",
+      "category": "Sol & Carrelage",
+      "city": "Blida",
+      "rating": 4.2,
+      "reliability_score": 78
+    },
+    {
+      "id": "sup-peint-a",
+      "name": "Peintures & Nuances Pro",
+      "phone": "+213553445566",
+      "category": "Peinture & Revêtements",
+      "city": "Alger",
+      "rating": 4.9,
+      "reliability_score": 95
+    },
+    {
+      "id": "sup-peint-b",
+      "name": "Coloris Express Matériaux",
+      "phone": "+213554556677",
+      "category": "Peinture & Revêtements",
+      "city": "Alger",
+      "rating": 4.3,
+      "reliability_score": 82
+    },
+    {
+      "id": "sup-elec-a",
+      "name": "Luminaire & Élec Distribution",
+      "phone": "+213555667788",
+      "category": "Électricité & Éclairage",
+      "city": "Alger",
+      "rating": 4.7,
+      "reliability_score": 90
+    },
+    {
+      "id": "sup-plomb-a",
+      "name": "Robinetterie & Bain Prestige",
+      "phone": "+213556778899",
+      "category": "Plomberie & Sanitaire",
+      "city": "Alger",
+      "rating": 4.6,
+      "reliability_score": 88
+    }
+  ],
+  "tradespeople": [
+    {
+      "id": "trade-mohamed",
+      "name": "Artisan Mohamed (Carreleur)",
+      "phone": "+213661112233",
+      "trade": "Carreleur",
+      "city": "Alger",
+      "rating": 4.9,
+      "reliability_score": 95
+    },
+    {
+      "id": "trade-karim",
+      "name": "Artisan Karim (Carreleur)",
+      "phone": "+213662223344",
+      "trade": "Carreleur",
+      "city": "Alger",
+      "rating": 4.4,
+      "reliability_score": 83
+    },
+    {
+      "id": "trade-mustapha",
+      "name": "Artisan Mustapha (Peintre)",
+      "phone": "+213663334455",
+      "trade": "Peintre",
+      "city": "Alger",
+      "rating": 4.8,
+      "reliability_score": 93
+    },
+    {
+      "id": "trade-ali",
+      "name": "Artisan Ali (Plombier)",
+      "phone": "+213664445566",
+      "trade": "Plombier",
+      "city": "Alger",
+      "rating": 4.7,
+      "reliability_score": 90
+    },
+    {
+      "id": "trade-sofiane",
+      "name": "Artisan Sofiane (Électricien)",
+      "phone": "+213665556677",
+      "trade": "Électricien",
+      "city": "Alger",
+      "rating": 4.8,
+      "reliability_score": 91
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-apt-f4",
+      "name": "Rénovation Appartement F4 — 120 m²",
+      "client_name": "Famille Benali",
+      "client_phone": "+213555998877",
+      "client_email": "benali.renov@example.com",
+      "location": "Sidi Yahia, Hydra, Alger",
+      "surface_sqm": 120.0,
+      "project_type": "Rénovation complète d'intérieur",
+      "status": "QUOTE_READY",
+      "rooms": [
+        {
+          "id": "4441c513-d537-4eed-a893-882b5ab170c8",
+          "name": "Grand Salon & Séjour",
+          "length": 7.6,
+          "width": 5.0,
+          "height": 2.7,
+          "surface": 38.0,
+          "renovation_types": [
+            "Carrelage",
+            "Peinture",
+            "Électricité"
+          ],
+          "notes": "Dalle carrelée 60x60, peinture murs blanc satiné, spots LED."
+        },
+        {
+          "id": "e2dad2a8-2135-476b-ab30-1ce8a1a05c36",
+          "name": "Cuisine Ouverte",
+          "length": 4.57,
+          "width": 3.5,
+          "height": 2.7,
+          "surface": 16.0,
+          "renovation_types": [
+            "Plomberie",
+            "Faïence",
+            "Peinture"
+          ],
+          "notes": "Crédence faïence, mitigeur douchette, peinture anti-humidité."
+        },
+        {
+          "id": "d64eac22-8ead-4b12-8960-33cbeb532b95",
+          "name": "Salle de bain principale",
+          "length": 3.33,
+          "width": 2.4,
+          "height": 2.7,
+          "surface": 8.0,
+          "renovation_types": [
+            "Plomberie",
+            "Carrelage",
+            "Sanitaire"
+          ],
+          "notes": "Douche à l'italienne, meuble vasque, mitigeur et carrelage antidérapant."
+        }
+      ],
+      "requirements": [
+        {
+          "id": "7007f22d-1bda-49e8-be11-d8ef66d25774",
+          "room_id": null,
+          "room_name": "",
+          "category": "Carreleur",
+          "item_name": "Pose carrelage 60x60 & plinthes assorties (Salon & SDB)",
+          "quantity": 4.0,
+          "unit": "jours",
+          "item_type": "labor",
+          "estimated_unit_price": 14500.0,
+          "notes": "Préparation chape, double encollage et joints de dilatation."
+        },
+        {
+          "id": "911573da-0909-4a55-b522-faff0af2cdc3",
+          "room_id": null,
+          "room_name": "",
+          "category": "Peintre",
+          "item_name": "Préparation supports, enduisage & peinture 2 couches",
+          "quantity": 3.0,
+          "unit": "jours",
+          "item_type": "labor",
+          "estimated_unit_price": 15000.0,
+          "notes": "Rebouchage fissures, ponçage dépoussiéré et 2 couches lavables."
+        },
+        {
+          "id": "8818e402-2837-4703-97dc-2a240a4e1c29",
+          "room_id": null,
+          "room_name": "",
+          "category": "Électricien",
+          "item_name": "Raccordement électrique faux-plafond & variateurs",
+          "quantity": 2.0,
+          "unit": "jours",
+          "item_type": "labor",
+          "estimated_unit_price": 17500.0,
+          "notes": "Création des lignes, incorporation gaines et raccordement variateurs."
+        },
+        {
+          "id": "fdf7a200-f82f-4dc9-8631-8e3e7ed9dc85",
+          "room_id": null,
+          "room_name": "",
+          "category": "Plombier",
+          "item_name": "Raccordements eau, évacuations & pose sanitaires",
+          "quantity": 2.0,
+          "unit": "jours",
+          "item_type": "labor",
+          "estimated_unit_price": 16000.0,
+          "notes": "Raccordement cuivre/multicouche et test étanchéité."
+        },
+        {
+          "id": "82657c08-c93a-4574-ae98-e7515c8fadc1",
+          "room_id": null,
+          "room_name": "",
+          "category": "Sol / Carrelage",
+          "item_name": "Carrelage Grès Cérame 60x60 Rectifié 1er Choix",
+          "quantity": 48.0,
+          "unit": "m²",
+          "item_type": "material",
+          "estimated_unit_price": 2600.0,
+          "notes": "Format 60x60 cm effet marbre satiné, haute résistance."
+        },
+        {
+          "id": "21e9c9c5-2783-4699-9a29-573cf5514080",
+          "room_id": null,
+          "room_name": "",
+          "category": "Sol / Carrelage",
+          "item_name": "Faïence murale crédence cuisine (Style Métro)",
+          "quantity": 10.0,
+          "unit": "m²",
+          "item_type": "material",
+          "estimated_unit_price": 2400.0,
+          "notes": "Finition émaillée brillante facile d'entretien."
+        },
+        {
+          "id": "2f9a794a-214b-4ee6-bb26-9acf0f916775",
+          "room_id": null,
+          "room_name": "",
+          "category": "Peinture",
+          "item_name": "Peinture murale satinée lavable haute opacité (Blanc)",
+          "quantity": 35.0,
+          "unit": "L",
+          "item_type": "material",
+          "estimated_unit_price": 1200.0,
+          "notes": "Rendement 10-12 m²/L par couche, lessivable."
+        },
+        {
+          "id": "09a00df1-ec91-4925-b1a9-04b5184a03bd",
+          "room_id": null,
+          "room_name": "",
+          "category": "Électricité",
+          "item_name": "Spots encastrés LED 7W dimmables (Blanc Chaud)",
+          "quantity": 12.0,
+          "unit": "unités",
+          "item_type": "material",
+          "estimated_unit_price": 1200.0,
+          "notes": "Alimentation driver incluse, étanche IP44."
+        },
+        {
+          "id": "2f4e8da7-ad24-4787-bff4-afa9112b6eb9",
+          "room_id": null,
+          "room_name": "",
+          "category": "Plomberie / Sanitaire",
+          "item_name": "Mitigeurs céramique design (Évier + Vasque + Douche)",
+          "quantity": 3.0,
+          "unit": "unités",
+          "item_type": "material",
+          "estimated_unit_price": 10500.0,
+          "notes": "Cartouche céramique haute durabilité avec flexibles inox."
+        }
+      ],
+      "offers": [
+        {
+          "id": "97f48efa-8b0b-4b4f-8874-70490e0b2025",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "7007f22d-1bda-49e8-be11-d8ef66d25774",
+          "requirement_name": "Pose carrelage 60x60 & plinthes assorties (Salon & SDB)",
+          "target_type": "tradesperson",
+          "target_id": "trade-mohamed",
+          "target_name": "Artisan Mohamed (Carreleur) (Carreleur)",
+          "target_phone": "+213661112233",
+          "unit_price": 13775.0,
+          "quantity_available": 4.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 95,
+          "calculated_score": 93.1,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Disponibilité confirmée par CALL-E pour démarrage sous 2 jours.",
+          "created_at": "2026-09-11T12:30:12.576265"
+        },
+        {
+          "id": "873de928-23c9-41b6-b356-cc02fecf3829",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "7007f22d-1bda-49e8-be11-d8ef66d25774",
+          "requirement_name": "Pose carrelage 60x60 & plinthes assorties (Salon & SDB)",
+          "target_type": "tradesperson",
+          "target_id": "trade-karim",
+          "target_name": "Artisan Karim (Carreleur) (Carreleur)",
+          "target_phone": "+213662223344",
+          "unit_price": 15225.0,
+          "quantity_available": 4.0,
+          "discount_percent": 0.0,
+          "delivery_days": 5,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 83,
+          "calculated_score": 81.1,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Disponibilité confirmée par CALL-E pour démarrage sous 5 jours.",
+          "created_at": "2026-09-11T12:30:12.576550"
+        },
+        {
+          "id": "3083b658-daf2-42b1-b3b5-d0fc0242912b",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "911573da-0909-4a55-b522-faff0af2cdc3",
+          "requirement_name": "Préparation supports, enduisage & peinture 2 couches",
+          "target_type": "tradesperson",
+          "target_id": "trade-mustapha",
+          "target_name": "Artisan Mustapha (Peintre) (Peintre)",
+          "target_phone": "+213663334455",
+          "unit_price": 14250.0,
+          "quantity_available": 3.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 93,
+          "calculated_score": 92.9,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Disponibilité confirmée par CALL-E pour démarrage sous 2 jours.",
+          "created_at": "2026-09-11T12:30:12.576807"
+        },
+        {
+          "id": "e36467a1-82c9-46a4-89df-488dda6bdc22",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "8818e402-2837-4703-97dc-2a240a4e1c29",
+          "requirement_name": "Raccordement électrique faux-plafond & variateurs",
+          "target_type": "tradesperson",
+          "target_id": "trade-sofiane",
+          "target_name": "Artisan Sofiane (Électricien) (Électricien)",
+          "target_phone": "+213665556677",
+          "unit_price": 16625.0,
+          "quantity_available": 2.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 91,
+          "calculated_score": 92.7,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Disponibilité confirmée par CALL-E pour démarrage sous 2 jours.",
+          "created_at": "2026-09-11T12:30:12.577603"
+        },
+        {
+          "id": "cdd5302b-e24d-406d-a3a3-ec39f224ebb5",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "fdf7a200-f82f-4dc9-8631-8e3e7ed9dc85",
+          "requirement_name": "Raccordements eau, évacuations & pose sanitaires",
+          "target_type": "tradesperson",
+          "target_id": "trade-ali",
+          "target_name": "Artisan Ali (Plombier) (Plombier)",
+          "target_phone": "+213664445566",
+          "unit_price": 15200.0,
+          "quantity_available": 2.0,
+          "discount_percent": 4.0,
+          "delivery_days": 2,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 90,
+          "calculated_score": 92.6,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Disponibilité confirmée par CALL-E pour démarrage sous 2 jours.",
+          "created_at": "2026-09-11T12:30:12.578512"
+        },
+        {
+          "id": "809666ef-80c9-4adf-952c-1a2a446f28d7",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "82657c08-c93a-4574-ae98-e7515c8fadc1",
+          "requirement_name": "Carrelage Grès Cérame 60x60 Rectifié 1er Choix",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Comptoir Céramique Moderne (Fournisseur B)",
+          "target_phone": "+213550112233",
+          "unit_price": 2444.0,
+          "quantity_available": 120.0,
+          "discount_percent": 5.0,
+          "delivery_days": 1,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 92,
+          "calculated_score": 94.8,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Stock immédiat vérifié par CALL-E (120 m²). Remise accordée : 5.0%.",
+          "created_at": "2026-09-11T12:30:12.578850"
+        },
+        {
+          "id": "6660836e-135b-4e93-bc4d-25aa2ddd4bc0",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "82657c08-c93a-4574-ae98-e7515c8fadc1",
+          "requirement_name": "Carrelage Grès Cérame 60x60 Rectifié 1er Choix",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Décor Carrelage (Fournisseur A)",
+          "target_phone": "+213551223344",
+          "unit_price": 2704.0,
+          "quantity_available": 120.0,
+          "discount_percent": 2.0,
+          "delivery_days": 3,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 85,
+          "calculated_score": 85.1,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Stock immédiat vérifié par CALL-E (120 m²). Remise accordée : 2.0%.",
+          "created_at": "2026-09-11T12:30:12.579092"
+        },
+        {
+          "id": "81a07be5-392a-4dc5-807d-b294b19ff95e",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "21e9c9c5-2783-4699-9a29-573cf5514080",
+          "requirement_name": "Faïence murale crédence cuisine (Style Métro)",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Comptoir Céramique Moderne (Fournisseur B)",
+          "target_phone": "+213550112233",
+          "unit_price": 2256.0,
+          "quantity_available": 25.0,
+          "discount_percent": 5.0,
+          "delivery_days": 1,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 92,
+          "calculated_score": 94.8,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Stock immédiat vérifié par CALL-E (25 m²). Remise accordée : 5.0%.",
+          "created_at": "2026-09-11T12:30:12.579406"
+        },
+        {
+          "id": "2ed8bfd7-af6e-4fcc-9da5-5d1c860ef286",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "21e9c9c5-2783-4699-9a29-573cf5514080",
+          "requirement_name": "Faïence murale crédence cuisine (Style Métro)",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Décor Carrelage (Fournisseur A)",
+          "target_phone": "+213551223344",
+          "unit_price": 2496.0,
+          "quantity_available": 25.0,
+          "discount_percent": 2.0,
+          "delivery_days": 3,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 85,
+          "calculated_score": 85.1,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Stock immédiat vérifié par CALL-E (25 m²). Remise accordée : 2.0%.",
+          "created_at": "2026-09-11T12:30:12.579648"
+        },
+        {
+          "id": "323d215d-b155-4e1f-8f10-96b6df5fbd47",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "2f9a794a-214b-4ee6-bb26-9acf0f916775",
+          "requirement_name": "Peinture murale satinée lavable haute opacité (Blanc)",
+          "target_type": "supplier",
+          "target_id": "sup-peint-a",
+          "target_name": "Peintures & Nuances Pro",
+          "target_phone": "+213553445566",
+          "unit_price": 1128.0,
+          "quantity_available": 87.5,
+          "discount_percent": 5.0,
+          "delivery_days": 1,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 95,
+          "calculated_score": 95.0,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Stock immédiat vérifié par CALL-E (87.5 L). Remise accordée : 5.0%.",
+          "created_at": "2026-09-11T12:30:12.579965"
+        },
+        {
+          "id": "f518ab96-919e-41ed-8305-cf8e62d8d5bb",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "2f9a794a-214b-4ee6-bb26-9acf0f916775",
+          "requirement_name": "Peinture murale satinée lavable haute opacité (Blanc)",
+          "target_type": "supplier",
+          "target_id": "sup-peint-b",
+          "target_name": "Coloris Express Matériaux",
+          "target_phone": "+213554556677",
+          "unit_price": 1248.0,
+          "quantity_available": 87.5,
+          "discount_percent": 2.0,
+          "delivery_days": 3,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 82,
+          "calculated_score": 84.8,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Stock immédiat vérifié par CALL-E (87.5 L). Remise accordée : 2.0%.",
+          "created_at": "2026-09-11T12:30:12.580191"
+        },
+        {
+          "id": "b930bbd6-2e5a-4c08-b64e-5c53331ac5c2",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "09a00df1-ec91-4925-b1a9-04b5184a03bd",
+          "requirement_name": "Spots encastrés LED 7W dimmables (Blanc Chaud)",
+          "target_type": "supplier",
+          "target_id": "sup-elec-a",
+          "target_name": "Luminaire & Élec Distribution",
+          "target_phone": "+213555667788",
+          "unit_price": 1128.0,
+          "quantity_available": 30.0,
+          "discount_percent": 5.0,
+          "delivery_days": 1,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 90,
+          "calculated_score": 94.5,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Stock immédiat vérifié par CALL-E (30 unités). Remise accordée : 5.0%.",
+          "created_at": "2026-09-11T12:30:12.580446"
+        },
+        {
+          "id": "d7229cd4-e7ec-47e7-aa0d-0c7d3e7cd6b4",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "2f4e8da7-ad24-4787-bff4-afa9112b6eb9",
+          "requirement_name": "Mitigeurs céramique design (Évier + Vasque + Douche)",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Comptoir Céramique Moderne (Fournisseur B)",
+          "target_phone": "+213550112233",
+          "unit_price": 9870.0,
+          "quantity_available": 7.5,
+          "discount_percent": 5.0,
+          "delivery_days": 1,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 92,
+          "calculated_score": 94.8,
+          "is_recommended": true,
+          "is_selected": true,
+          "notes": "Stock immédiat vérifié par CALL-E (7.5 unités). Remise accordée : 5.0%.",
+          "created_at": "2026-09-11T12:30:12.580699"
+        },
+        {
+          "id": "7b728f43-8390-42b6-928c-26b89cf0692f",
+          "project_id": "proj-apt-f4",
+          "requirement_id": "2f4e8da7-ad24-4787-bff4-afa9112b6eb9",
+          "requirement_name": "Mitigeurs céramique design (Évier + Vasque + Douche)",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Décor Carrelage (Fournisseur A)",
+          "target_phone": "+213551223344",
+          "unit_price": 10920.0,
+          "quantity_available": 7.5,
+          "discount_percent": 2.0,
+          "delivery_days": 3,
+          "delivery_available": true,
+          "delivery_cost": 0.0,
+          "reliability_score": 85,
+          "calculated_score": 85.1,
+          "is_recommended": false,
+          "is_selected": false,
+          "notes": "Stock immédiat vérifié par CALL-E (7.5 unités). Remise accordée : 2.0%.",
+          "created_at": "2026-09-11T12:30:12.580931"
+        }
+      ],
+      "call_records": [
+        {
+          "id": "d0253409-c8fd-4bb4-8042-04e182f89751",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-mohamed",
+          "target_name": "Artisan Mohamed (Carreleur)",
+          "target_phone": "+213661112233",
+          "requirement_id": "7007f22d-1bda-49e8-be11-d8ef66d25774",
+          "requirement_name": "Pose carrelage 60x60 & plinthes assorties (Salon & SDB)",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Artisan Mohamed (Carreleur), je vous contacte pour un chantier à Sidi Yahia, Hydra, Alger. Êtes-vous disponible pour Pose carrelage 60x60 & plinthes assorties (Salon & SDB) ?"
+            },
+            {
+              "speaker": "Artisan Mohamed (Carreleur)",
+              "text": "Bonjour ! Oui, je suis disponible d'ici 2 jours. Mon tarif est de 13,775 DA/jour avec matériel pro complet."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Parfait, c'est noté et transmis à l'entrepreneur. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 13775.0,
+            "lead_days": 2,
+            "trade": "Carreleur"
+          },
+          "created_at": "2026-09-11T12:30:12.576412"
+        },
+        {
+          "id": "7c4aae1d-b495-4145-83ba-32d310613d71",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-karim",
+          "target_name": "Artisan Karim (Carreleur)",
+          "target_phone": "+213662223344",
+          "requirement_id": "7007f22d-1bda-49e8-be11-d8ef66d25774",
+          "requirement_name": "Pose carrelage 60x60 & plinthes assorties (Salon & SDB)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Artisan Karim (Carreleur), je vous contacte pour un chantier à Sidi Yahia, Hydra, Alger. Êtes-vous disponible pour Pose carrelage 60x60 & plinthes assorties (Salon & SDB) ?"
+            },
+            {
+              "speaker": "Artisan Karim (Carreleur)",
+              "text": "Bonjour ! Oui, je suis disponible d'ici 5 jours. Mon tarif est de 15,225 DA/jour avec matériel pro complet."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Parfait, c'est noté et transmis à l'entrepreneur. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 15225.0,
+            "lead_days": 5,
+            "trade": "Carreleur"
+          },
+          "created_at": "2026-09-11T12:30:12.576656"
+        },
+        {
+          "id": "3e2a8ea9-3391-4c65-84d0-3bb3252e81f9",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-mustapha",
+          "target_name": "Artisan Mustapha (Peintre)",
+          "target_phone": "+213663334455",
+          "requirement_id": "911573da-0909-4a55-b522-faff0af2cdc3",
+          "requirement_name": "Préparation supports, enduisage & peinture 2 couches",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Artisan Mustapha (Peintre), je vous contacte pour un chantier à Sidi Yahia, Hydra, Alger. Êtes-vous disponible pour Préparation supports, enduisage & peinture 2 couches ?"
+            },
+            {
+              "speaker": "Artisan Mustapha (Peintre)",
+              "text": "Bonjour ! Oui, je suis disponible d'ici 2 jours. Mon tarif est de 14,250 DA/jour avec matériel pro complet."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Parfait, c'est noté et transmis à l'entrepreneur. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 14250.0,
+            "lead_days": 2,
+            "trade": "Peintre"
+          },
+          "created_at": "2026-09-11T12:30:12.577308"
+        },
+        {
+          "id": "5e03c7d9-9c44-41f8-bd47-3221adec46e8",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-sofiane",
+          "target_name": "Artisan Sofiane (Électricien)",
+          "target_phone": "+213665556677",
+          "requirement_id": "8818e402-2837-4703-97dc-2a240a4e1c29",
+          "requirement_name": "Raccordement électrique faux-plafond & variateurs",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Artisan Sofiane (Électricien), je vous contacte pour un chantier à Sidi Yahia, Hydra, Alger. Êtes-vous disponible pour Raccordement électrique faux-plafond & variateurs ?"
+            },
+            {
+              "speaker": "Artisan Sofiane (Électricien)",
+              "text": "Bonjour ! Oui, je suis disponible d'ici 2 jours. Mon tarif est de 16,625 DA/jour avec matériel pro complet."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Parfait, c'est noté et transmis à l'entrepreneur. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 16625.0,
+            "lead_days": 2,
+            "trade": "Électricien"
+          },
+          "created_at": "2026-09-11T12:30:12.577715"
+        },
+        {
+          "id": "b32db482-db4b-4258-8781-d5071fe066b3",
+          "project_id": "proj-apt-f4",
+          "target_type": "tradesperson",
+          "target_id": "trade-ali",
+          "target_name": "Artisan Ali (Plombier)",
+          "target_phone": "+213664445566",
+          "requirement_id": "fdf7a200-f82f-4dc9-8631-8e3e7ed9dc85",
+          "requirement_name": "Raccordements eau, évacuations & pose sanitaires",
+          "status": "completed",
+          "duration_seconds": 38,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Artisan Ali (Plombier), je vous contacte pour un chantier à Sidi Yahia, Hydra, Alger. Êtes-vous disponible pour Raccordements eau, évacuations & pose sanitaires ?"
+            },
+            {
+              "speaker": "Artisan Ali (Plombier)",
+              "text": "Bonjour ! Oui, je suis disponible d'ici 2 jours. Mon tarif est de 15,200 DA/jour avec matériel pro complet."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Parfait, c'est noté et transmis à l'entrepreneur. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 15200.0,
+            "lead_days": 2,
+            "trade": "Plombier"
+          },
+          "created_at": "2026-09-11T12:30:12.578672"
+        },
+        {
+          "id": "63d22ab9-839a-436d-9ad4-08667e897313",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Comptoir Céramique Moderne (Fournisseur B)",
+          "target_phone": "+213550112233",
+          "requirement_id": "82657c08-c93a-4574-ae98-e7515c8fadc1",
+          "requirement_name": "Carrelage Grès Cérame 60x60 Rectifié 1er Choix",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Comptoir Céramique Moderne (Fournisseur B), je recherche 48 m² de Carrelage Grès Cérame 60x60 Rectifié 1er Choix pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Comptoir Céramique Moderne (Fournisseur B)",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 2,444 DA avec une remise de 5.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 1 jours ?"
+            },
+            {
+              "speaker": "Comptoir Céramique Moderne (Fournisseur B)",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 2444.0,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 120.0
+          },
+          "created_at": "2026-09-11T12:30:12.578969"
+        },
+        {
+          "id": "d33f11d3-4d90-4e98-8397-af8474e63a51",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Décor Carrelage (Fournisseur A)",
+          "target_phone": "+213551223344",
+          "requirement_id": "82657c08-c93a-4574-ae98-e7515c8fadc1",
+          "requirement_name": "Carrelage Grès Cérame 60x60 Rectifié 1er Choix",
+          "status": "completed",
+          "duration_seconds": 50,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Grand Décor Carrelage (Fournisseur A), je recherche 48 m² de Carrelage Grès Cérame 60x60 Rectifié 1er Choix pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Grand Décor Carrelage (Fournisseur A)",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 2,704 DA avec une remise de 2.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 3 jours ?"
+            },
+            {
+              "speaker": "Grand Décor Carrelage (Fournisseur A)",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 2704.0,
+            "discount_percent": 2.0,
+            "delivery_days": 3,
+            "stock": 120.0
+          },
+          "created_at": "2026-09-11T12:30:12.579194"
+        },
+        {
+          "id": "cf80f895-43a7-4bbc-9c6e-23ba579f68c9",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Comptoir Céramique Moderne (Fournisseur B)",
+          "target_phone": "+213550112233",
+          "requirement_id": "21e9c9c5-2783-4699-9a29-573cf5514080",
+          "requirement_name": "Faïence murale crédence cuisine (Style Métro)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Comptoir Céramique Moderne (Fournisseur B), je recherche 10 m² de Faïence murale crédence cuisine (Style Métro) pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Comptoir Céramique Moderne (Fournisseur B)",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 2,256 DA avec une remise de 5.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 1 jours ?"
+            },
+            {
+              "speaker": "Comptoir Céramique Moderne (Fournisseur B)",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 2256.0,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 25.0
+          },
+          "created_at": "2026-09-11T12:30:12.579511"
+        },
+        {
+          "id": "c9fefde1-be03-44f8-9965-707b4839248d",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Décor Carrelage (Fournisseur A)",
+          "target_phone": "+213551223344",
+          "requirement_id": "21e9c9c5-2783-4699-9a29-573cf5514080",
+          "requirement_name": "Faïence murale crédence cuisine (Style Métro)",
+          "status": "completed",
+          "duration_seconds": 50,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Grand Décor Carrelage (Fournisseur A), je recherche 10 m² de Faïence murale crédence cuisine (Style Métro) pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Grand Décor Carrelage (Fournisseur A)",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 2,496 DA avec une remise de 2.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 3 jours ?"
+            },
+            {
+              "speaker": "Grand Décor Carrelage (Fournisseur A)",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 2496.0,
+            "discount_percent": 2.0,
+            "delivery_days": 3,
+            "stock": 25.0
+          },
+          "created_at": "2026-09-11T12:30:12.579785"
+        },
+        {
+          "id": "26970658-09f1-4d24-85fc-8cd30f9c9472",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-peint-a",
+          "target_name": "Peintures & Nuances Pro",
+          "target_phone": "+213553445566",
+          "requirement_id": "2f9a794a-214b-4ee6-bb26-9acf0f916775",
+          "requirement_name": "Peinture murale satinée lavable haute opacité (Blanc)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Peintures & Nuances Pro, je recherche 35 L de Peinture murale satinée lavable haute opacité (Blanc) pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Peintures & Nuances Pro",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 1,128 DA avec une remise de 5.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 1 jours ?"
+            },
+            {
+              "speaker": "Peintures & Nuances Pro",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 1128.0,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 87.5
+          },
+          "created_at": "2026-09-11T12:30:12.580078"
+        },
+        {
+          "id": "9fcca9c3-7a99-4fce-b0e1-0f2cc0c33767",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-peint-b",
+          "target_name": "Coloris Express Matériaux",
+          "target_phone": "+213554556677",
+          "requirement_id": "2f9a794a-214b-4ee6-bb26-9acf0f916775",
+          "requirement_name": "Peinture murale satinée lavable haute opacité (Blanc)",
+          "status": "completed",
+          "duration_seconds": 50,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Coloris Express Matériaux, je recherche 35 L de Peinture murale satinée lavable haute opacité (Blanc) pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Coloris Express Matériaux",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 1,248 DA avec une remise de 2.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 3 jours ?"
+            },
+            {
+              "speaker": "Coloris Express Matériaux",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 1248.0,
+            "discount_percent": 2.0,
+            "delivery_days": 3,
+            "stock": 87.5
+          },
+          "created_at": "2026-09-11T12:30:12.580304"
+        },
+        {
+          "id": "d1a71871-af31-4d2c-bd8e-800952e4f1bc",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-elec-a",
+          "target_name": "Luminaire & Élec Distribution",
+          "target_phone": "+213555667788",
+          "requirement_id": "09a00df1-ec91-4925-b1a9-04b5184a03bd",
+          "requirement_name": "Spots encastrés LED 7W dimmables (Blanc Chaud)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Luminaire & Élec Distribution, je recherche 12 unités de Spots encastrés LED 7W dimmables (Blanc Chaud) pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Luminaire & Élec Distribution",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 1,128 DA avec une remise de 5.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 1 jours ?"
+            },
+            {
+              "speaker": "Luminaire & Élec Distribution",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 1128.0,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 30.0
+          },
+          "created_at": "2026-09-11T12:30:12.580556"
+        },
+        {
+          "id": "dd1c682e-eb69-4eba-8d91-c8b2a8d2d343",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-b",
+          "target_name": "Comptoir Céramique Moderne (Fournisseur B)",
+          "target_phone": "+213550112233",
+          "requirement_id": "2f4e8da7-ad24-4787-bff4-afa9112b6eb9",
+          "requirement_name": "Mitigeurs céramique design (Évier + Vasque + Douche)",
+          "status": "completed",
+          "duration_seconds": 45,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Comptoir Céramique Moderne (Fournisseur B), je recherche 3 unités de Mitigeurs céramique design (Évier + Vasque + Douche) pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Comptoir Céramique Moderne (Fournisseur B)",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 9,870 DA avec une remise de 5.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 1 jours ?"
+            },
+            {
+              "speaker": "Comptoir Céramique Moderne (Fournisseur B)",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 9870.0,
+            "discount_percent": 5.0,
+            "delivery_days": 1,
+            "stock": 7.5
+          },
+          "created_at": "2026-09-11T12:30:12.580809"
+        },
+        {
+          "id": "d455e2e0-1134-4c7e-8692-f61d1975281f",
+          "project_id": "proj-apt-f4",
+          "target_type": "supplier",
+          "target_id": "sup-ceram-a",
+          "target_name": "Grand Décor Carrelage (Fournisseur A)",
+          "target_phone": "+213551223344",
+          "requirement_id": "2f4e8da7-ad24-4787-bff4-afa9112b6eb9",
+          "requirement_name": "Mitigeurs céramique design (Évier + Vasque + Douche)",
+          "status": "completed",
+          "duration_seconds": 50,
+          "calle_call_id": null,
+          "transcript": [
+            {
+              "speaker": "CALL-E",
+              "text": "Bonjour Grand Décor Carrelage (Fournisseur A), je recherche 3 unités de Mitigeurs céramique design (Évier + Vasque + Douche) pour livraison sur chantier à Sidi Yahia, Hydra, Alger."
+            },
+            {
+              "speaker": "Grand Décor Carrelage (Fournisseur A)",
+              "text": "Bonjour. Nous en avons en stock immédiat. Le prix unitaire est de 10,920 DA avec une remise de 2.0% pour ce volume."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Pouvez-vous livrer sous 3 jours ?"
+            },
+            {
+              "speaker": "Grand Décor Carrelage (Fournisseur A)",
+              "text": "Oui tout à fait, camion plateau disponible dès demain."
+            },
+            {
+              "speaker": "CALL-E",
+              "text": "Entendu, commande préparée pour confirmation. Merci !"
+            }
+          ],
+          "extracted_data": {
+            "unit_price": 10920.0,
+            "discount_percent": 2.0,
+            "delivery_days": 3,
+            "stock": 7.5
+          },
+          "created_at": "2026-09-11T12:30:12.581039"
+        }
+      ],
+      "voice_notes": "Visite Appartement F4 120m2 chez Famille Benali. Grand Salon de 38m2 : carrelage 60x60 et peinture blanche satinée avec 12 spots dimmables. Cuisine 16m2 faïence et mitigeur. SDB 8m2 douche italienne. Prévoir carreleur 4 jours, peintre 3 jours, électricien 2 jours et plombier 2 jours.",
+      "quote": {
+        "id": "213e2ee7-6579-4205-b3d0-7d716cc35c94",
+        "project_id": "proj-apt-f4",
+        "quote_number": "REN-2026-331",
+        "date_str": "11/09/2026",
+        "materials_subtotal": 211373.1,
+        "labor_subtotal": 155040.0,
+        "base_cost_total": 366413.1,
+        "margin_percent": 20.0,
+        "margin_amount": 73282.62,
+        "expenses_amount": 0.0,
+        "tax_percent": 0.0,
+        "tax_amount": 0.0,
+        "grand_total": 439695.72,
+        "currency": "DA",
+        "validity_days": 30,
+        "items": [
+          {
+            "category": "Carreleur",
+            "description": "Pose carrelage 60x60 & plinthes assorties (Salon & SDB)",
+            "item_type": "labor",
+            "quantity": 4.0,
+            "unit": "jours",
+            "unit_price": 13775.0,
+            "discount_percent": 4.0,
+            "total_price": 52896.0,
+            "supplier_or_trade": "Artisan Mohamed (Carreleur) (Carreleur)"
+          },
+          {
+            "category": "Peintre",
+            "description": "Préparation supports, enduisage & peinture 2 couches",
+            "item_type": "labor",
+            "quantity": 3.0,
+            "unit": "jours",
+            "unit_price": 14250.0,
+            "discount_percent": 4.0,
+            "total_price": 41040.0,
+            "supplier_or_trade": "Artisan Mustapha (Peintre) (Peintre)"
+          },
+          {
+            "category": "Électricien",
+            "description": "Raccordement électrique faux-plafond & variateurs",
+            "item_type": "labor",
+            "quantity": 2.0,
+            "unit": "jours",
+            "unit_price": 16625.0,
+            "discount_percent": 4.0,
+            "total_price": 31920.0,
+            "supplier_or_trade": "Artisan Sofiane (Électricien) (Électricien)"
+          },
+          {
+            "category": "Plombier",
+            "description": "Raccordements eau, évacuations & pose sanitaires",
+            "item_type": "labor",
+            "quantity": 2.0,
+            "unit": "jours",
+            "unit_price": 15200.0,
+            "discount_percent": 4.0,
+            "total_price": 29184.0,
+            "supplier_or_trade": "Artisan Ali (Plombier) (Plombier)"
+          },
+          {
+            "category": "Sol / Carrelage",
+            "description": "Carrelage Grès Cérame 60x60 Rectifié 1er Choix",
+            "item_type": "material",
+            "quantity": 48.0,
+            "unit": "m²",
+            "unit_price": 2444.0,
+            "discount_percent": 5.0,
+            "total_price": 111446.4,
+            "supplier_or_trade": "Comptoir Céramique Moderne (Fournisseur B)"
+          },
+          {
+            "category": "Sol / Carrelage",
+            "description": "Faïence murale crédence cuisine (Style Métro)",
+            "item_type": "material",
+            "quantity": 10.0,
+            "unit": "m²",
+            "unit_price": 2256.0,
+            "discount_percent": 5.0,
+            "total_price": 21432.0,
+            "supplier_or_trade": "Comptoir Céramique Moderne (Fournisseur B)"
+          },
+          {
+            "category": "Peinture",
+            "description": "Peinture murale satinée lavable haute opacité (Blanc)",
+            "item_type": "material",
+            "quantity": 35.0,
+            "unit": "L",
+            "unit_price": 1128.0,
+            "discount_percent": 5.0,
+            "total_price": 37506.0,
+            "supplier_or_trade": "Peintures & Nuances Pro"
+          },
+          {
+            "category": "Électricité",
+            "description": "Spots encastrés LED 7W dimmables (Blanc Chaud)",
+            "item_type": "material",
+            "quantity": 12.0,
+            "unit": "unités",
+            "unit_price": 1128.0,
+            "discount_percent": 5.0,
+            "total_price": 12859.2,
+            "supplier_or_trade": "Luminaire & Élec Distribution"
+          },
+          {
+            "category": "Plomberie / Sanitaire",
+            "description": "Mitigeurs céramique design (Évier + Vasque + Douche)",
+            "item_type": "material",
+            "quantity": 3.0,
+            "unit": "unités",
+            "unit_price": 9870.0,
+            "discount_percent": 5.0,
+            "total_price": 28129.5,
+            "supplier_or_trade": "Comptoir Céramique Moderne (Fournisseur B)"
+          }
+        ],
+        "status": "ready"
+      },
+      "created_at": "2026-09-10T14:54:30.671986"
+    }
+  ]
+}
