@@ -1,104 +1,104 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ContractorPilot — De la Note Vocale de Chantier au Devis Pro avec CALL-E</title>
-  <meta name="description" content="L'entrepreneur enregistre ses notes vocales sur le chantier, l'IA génère les travaux par métier et les matériaux, puis CALL-E appelle automatiquement artisans et fournisseurs pour dresser le devis final.">
+  <title>ContractorPilot — Autonomous Voice Copilot: Jobsite Walkthrough to Proposal</title>
+  <meta name="description" content="Contractors dictate walkthrough voice notes on site. AI structures trade scopes and materials, then CALL-E autonomously calls suppliers and subcontractors to build winning quotes.">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-  <!-- ==================== Header Épuré ==================== -->
+  <!-- ==================== Minimalist Modern Header ==================== -->
   <header class="app-header">
     <div class="brand-wrapper">
       <div class="brand-icon">🎙️</div>
       <div class="brand-text">
         <h1>ContractorPilot <span class="edition-badge">CALL-E Edition</span></h1>
-        <div class="brand-subtitle">Assistant Vocal Autonome : Visite de Chantier & Devis</div>
+        <div class="brand-subtitle">Autonomous Voice Copilot: Jobsite Walkthrough to Signed Proposal</div>
       </div>
     </div>
 
     <div class="header-actions">
-      <div class="calle-badge-status" id="header-calle-status" title="Statut de l'agent CALL-E">
+      <div class="calle-badge-status" id="header-calle-status" title="CALL-E agent connection status">
         <span class="pulse-circle"></span>
-        <span id="calle-status-text">CALL-E : Mode Démo Interactif</span>
+        <span id="calle-status-text">CALL-E: Interactive Sandbox Mode</span>
       </div>
-      <button class="btn btn-secondary" id="btn-open-settings" style="padding: 0.45rem 0.85rem;" title="Configuration clé CALL-E">
-        ⚙️ Config
+      <button class="btn btn-secondary" id="btn-open-settings" style="padding: 0.45rem 0.85rem;" title="Configure CALL-E API Key">
+        ⚙️ Settings
       </button>
     </div>
   </header>
 
-  <!-- ==================== Stepper Guidé en 4 Étapes ==================== -->
-  <nav class="stepper-nav" aria-label="Progression du chantier">
+  <!-- ==================== 4-Step Guided Stepper ==================== -->
+  <nav class="stepper-nav" aria-label="Remodel Project Workflow">
     <button class="step-btn active" data-step="1" id="step-btn-1">
       <div class="step-num">1</div>
       <div class="step-info">
-        <span class="step-title">🎙️ Visite & Note Vocale</span>
-        <span class="step-desc">Dictée sur chantier</span>
+        <span class="step-title">🎙️ Jobsite Walkthrough</span>
+        <span class="step-desc">Voice dictation on site</span>
       </div>
     </button>
     <div class="step-divider"></div>
     <button class="step-btn" data-step="2" id="step-btn-2">
       <div class="step-num">2</div>
       <div class="step-info">
-        <span class="step-title">📋 Travaux & Matériaux</span>
-        <span class="step-desc">Par métier & validation</span>
+        <span class="step-title">📋 Scopes & Materials</span>
+        <span class="step-desc">Trade & item breakdown</span>
       </div>
     </button>
     <div class="step-divider"></div>
     <button class="step-btn" data-step="3" id="step-btn-3">
       <div class="step-num">3</div>
       <div class="step-info">
-        <span class="step-title">🤖 Appels CALL-E</span>
-        <span class="step-desc">Consultation en direct</span>
+        <span class="step-title">📞 CALL-E Voice Agents</span>
+        <span class="step-desc">Autonomous live calling</span>
       </div>
     </button>
     <div class="step-divider"></div>
     <button class="step-btn" data-step="4" id="step-btn-4">
       <div class="step-num">4</div>
       <div class="step-info">
-        <span class="step-title">🏆 Bilan & Devis Pro</span>
-        <span class="step-desc">Classement & export</span>
+        <span class="step-title">🏆 Review & Proposal</span>
+        <span class="step-desc">Smart scoring & export</span>
       </div>
     </button>
   </nav>
 
-  <!-- ==================== Contenu Principal ==================== -->
+  <!-- ==================== Main Workspace Content ==================== -->
   <main class="main-content">
 
     <!-- ============================================================== -->
-    <!-- ÉTAPE 1 : VISITE DE CHANTIER & DICTÉE VOCALE                   -->
+    <!-- STEP 1 : JOBSITE WALKTHROUGH & VOICE NOTE CAPTURE              -->
     <!-- ============================================================== -->
     <section class="step-pane active" id="pane-step-1">
       <div class="step-welcome-card card">
         <div class="step-welcome-header">
           <div>
-            <h2>🎙️ Étape 1 : Visite de Chantier & Dictée Vocale</h2>
+            <h2>🎙️ Step 1: Jobsite Walkthrough & Voice Note Capture</h2>
             <p>
-              Sur le chantier, dictez vos observations à voix haute. Décrivez les pièces, les travaux à réaliser (carrelage, peinture, électricité, plomberie) et les matériaux souhaités.
+              On the jobsite, dictate your observations out loud. Describe rooms, measurements, work to perform (tile, paint, electrical, plumbing), and specified materials.
             </p>
           </div>
           <div class="badge-tag" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid rgba(6,182,212,0.3);">
-            👂 IA à l'écoute
+            👂 AI Listening
           </div>
         </div>
 
-        <!-- Studio d'enregistrement vocal -->
+        <!-- Voice Recording Studio -->
         <div class="voice-studio-box">
           <div class="voice-mic-container">
-            <button class="mic-record-btn" id="btn-toggle-mic" title="Cliquez pour démarrer la dictée vocale">
+            <button class="mic-record-btn" id="btn-toggle-mic" title="Click to start voice walkthrough dictation">
               <span class="mic-icon" id="mic-icon-symbol">🎙️</span>
               <span class="mic-pulse-ring"></span>
             </button>
             <div class="mic-status-label" id="mic-status-text">
-              Cliquez sur le micro pour dicter vos notes en direct
+              Click the microphone to dictate your jobsite notes live
             </div>
             <div class="mic-timer" id="mic-timer-display">00:00</div>
           </div>
 
-          <!-- Onde sonore visuelle -->
+          <!-- Dynamic Soundwave Bars -->
           <div class="audio-waveform-bar-container" id="audio-waveform-bars">
             <span class="wave-bar"></span>
             <span class="wave-bar"></span>
@@ -118,46 +118,46 @@
             <span class="wave-bar"></span>
           </div>
 
-          <!-- Raccourcis rapides d'exemples de chantier -->
+          <!-- Quick Demo Walkthrough Presets -->
           <div class="demo-voice-prompts">
-            <span class="demo-prompt-label">💡 Ou injectez un enregistrement de visite :</span>
+            <span class="demo-prompt-label">💡 Or load a walkthrough preset:</span>
             <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-complete">
-              🏢 Visite Complète F4 120 m² (Salon + Cuisine + SDB)
+              🏢 Full Remodel 1,300 sq ft (Living + Kitchen + Bath)
             </button>
             <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-light">
-              ⚡ Pack Électricité & Peinture Satinée
+              ⚡ Lighting & Velvet Paint Package
             </button>
             <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-bath">
-              🛁 Rénovation Salle de Bain & Sanitaires
+              🛁 Master Bathroom Suite Remodel
             </button>
           </div>
 
-          <!-- Zone d'affichage et d'édition de la transcription -->
+          <!-- Transcription Display & Edit Box -->
           <div class="transcription-wrapper">
             <div class="transcription-header">
               <label for="voice-transcription-input">
-                <strong>📝 Transcription de la note vocale :</strong>
-                <span style="font-weight: 400; color: var(--text-muted); font-size: 0.8rem;">(Éditable avant analyse)</span>
+                <strong>📝 Walkthrough Voice Transcription:</strong>
+                <span style="font-weight: 400; color: var(--text-muted); font-size: 0.8rem;">(Editable before AI analysis)</span>
               </label>
-              <button class="btn-clean-text" id="btn-clear-transcript" title="Effacer le texte">Effacer</button>
+              <button class="btn-clean-text" id="btn-clear-transcript" title="Clear text">Clear</button>
             </div>
             <textarea 
               id="voice-transcription-input" 
               class="voice-textarea" 
               rows="6" 
-              placeholder="Exemple : Visite Appartement F4 120m2. Salon de 38m² : déposer l'ancien carrelage, poser du carrelage grès cérame 60x60 effet marbre avec plinthes, peinture murs blanc satiné, 12 spots LED dimmables. Cuisine 16m² : faïence crédence, mitigeur douchette, peinture anti-humidité. Salle de bain 8m² : douche à l'italienne, meuble vasque, mitigeur noir mat. Prévoir carreleur 4 jours, peintre 3 jours, électricien 2 jours et plombier 2 jours..."
+              placeholder="Example: Walkthrough notes for The Miller Residence, 1,300 sq ft condo remodel. Living room (400 sq ft): prep walls, 2 coats of washable velvet matte paint, install 24 recessed LED downlights on smart dimmers. Kitchen (180 sq ft) and Master Bath (96 sq ft): install 520 sq ft of 24x24 porcelain floor tiles. In master bath: curbless walk-in shower waterproofing, double vanity, and designer brass thermostatic mixer faucets. Schedule master tiler for 4 days, finish painter for 3 days, licensed plumber for 2 days, and master electrician for 2 days..."
             ></textarea>
           </div>
 
-          <!-- Bouton d'action principal Étape 1 -->
+          <!-- Step 1 Action Footer -->
           <div class="step-actions-footer">
             <div>
               <span id="transcription-word-count" style="font-size: 0.85rem; color: var(--text-muted);">
-                0 mot
+                0 words
               </span>
             </div>
             <button class="btn btn-primary btn-lg" id="btn-extract-voice">
-              ⚡ Analyser la note vocale & Générer les besoins ➔
+              ⚡ Analyze Walkthrough & Generate Remodel Scopes ➔
             </button>
           </div>
         </div>
@@ -165,211 +165,211 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- ÉTAPE 2 : VALIDATION TRAVAUX PAR MÉTIER & MATÉRIAUX           -->
+    <!-- STEP 2 : SCOPES & MATERIALS BREAKDOWN                          -->
     <!-- ============================================================== -->
     <section class="step-pane" id="pane-step-2">
       <div class="step-nav-bar">
         <div>
-          <h2>📋 Étape 2 : Vérification des Travaux & Matériaux</h2>
-          <p>L'IA a extrait les corps de métier et les matériaux requis. Vérifiez, ajustez ou ajoutez des éléments manuellement.</p>
+          <h2>📋 Step 2: Remodel Scope & Material Verification</h2>
+          <p>AI extracted trade subcontractor tasks and required materials. Review, adjust quantities, or add custom items.</p>
         </div>
         <div class="step-nav-buttons">
-          <button class="btn btn-secondary" onclick="window.renovaiApp.goToStep(1)">
-            ⬅ Revenir aux notes
+          <button class="btn btn-secondary" onclick="window.contractorPilotApp.goToStep(1)">
+            ⬅ Back to Notes
           </button>
           <button class="btn btn-primary" id="btn-start-consultation-step2">
-            📞 Consulter & Appeler Artisans et Fournisseurs ➔
+            📞 Launch CALL-E Autonomous Sourcing Calls ➔
           </button>
         </div>
       </div>
 
-      <!-- Résumé des Pièces Détectées -->
+      <!-- Identified Rooms Summary -->
       <div class="detected-rooms-bar card">
-        <span class="bar-title">🏠 Pièces & Métrés identifiés :</span>
+        <span class="bar-title">🏠 Measured Rooms & Areas:</span>
         <div class="room-chips-list" id="detected-rooms-container">
-          <!-- Injecté par JS -->
+          <!-- Injected via JS -->
         </div>
       </div>
 
-      <!-- Filtres et Vue Synthétique -->
+      <!-- Filter Tabs & Estimate Pill -->
       <div class="needs-filter-bar card">
         <div class="filter-tabs">
-          <button class="filter-tab active" data-filter="all" id="filter-tab-all">Tous les besoins (<span id="filter-count-all">0</span>)</button>
-          <button class="filter-tab" data-filter="labor" id="filter-tab-labor">🔨 Main-d'œuvre & Métiers (<span id="filter-count-labor">0</span>)</button>
-          <button class="filter-tab" data-filter="material" id="filter-tab-material">🧱 Matériaux & Fournitures (<span id="filter-count-material">0</span>)</button>
+          <button class="filter-tab active" data-filter="all" id="filter-tab-all">All Items (<span id="filter-count-all">0</span>)</button>
+          <button class="filter-tab" data-filter="labor" id="filter-tab-labor">🔨 Subcontractors & Trades (<span id="filter-count-labor">0</span>)</button>
+          <button class="filter-tab" data-filter="material" id="filter-tab-material">🧱 Materials & Supplies (<span id="filter-count-material">0</span>)</button>
         </div>
         <div class="needs-estimate-pill" id="needs-pre-estimate">
-          Total estimatif indicatif : <strong id="pre-estimate-val">0 DA</strong>
+          Indicative pre-negotiation cost: <strong id="pre-estimate-val">$0</strong>
         </div>
       </div>
 
-      <!-- Double Grille : Travaux par Métier vs Matériaux -->
+      <!-- Split Grid: Trade Scopes vs Materials -->
       <div class="needs-split-grid" id="needs-split-grid-container">
 
-        <!-- Colonne Gauche : Travaux par Corps d'État (Main-d'œuvre) -->
+        <!-- Left Column: Trade Subcontractor Scopes -->
         <div class="card needs-column-card">
           <div class="column-header">
             <div class="column-title-group">
               <span class="column-icon">🔨</span>
               <div>
-                <h3>Tâches & Travaux selon Métier</h3>
-                <span class="column-subtitle" id="trades-count-label">Main-d'œuvre qualifiée requise</span>
+                <h3>Trade Subcontractor Tasks</h3>
+                <span class="column-subtitle" id="trades-count-label">Licensed labor required</span>
               </div>
             </div>
             <button class="btn btn-secondary btn-sm" id="btn-add-labor-manual">
-              + Ajouter une tâche
+              + Add Trade Task
             </button>
           </div>
 
           <div class="needs-items-list" id="trades-tasks-list">
-            <!-- Liste injectée par JS -->
+            <!-- Injected via JS -->
           </div>
         </div>
 
-        <!-- Colonne Droite : Liste des Matériaux & Fournitures -->
+        <!-- Right Column: Materials & Supplies -->
         <div class="card needs-column-card">
           <div class="column-header">
             <div class="column-title-group">
               <span class="column-icon">🧱</span>
               <div>
-                <h3>Matériaux & Fournitures</h3>
-                <span class="column-subtitle" id="materials-count-label">Volumes et stocks à sourcer</span>
+                <h3>Materials & Supplies</h3>
+                <span class="column-subtitle" id="materials-count-label">Quantities & warehouse stocks to source</span>
               </div>
             </div>
             <button class="btn btn-secondary btn-sm" id="btn-add-material-manual">
-              + Ajouter un matériau
+              + Add Material
             </button>
           </div>
 
           <div class="needs-items-list" id="materials-items-list">
-            <!-- Liste injectée par JS -->
+            <!-- Injected via JS -->
           </div>
         </div>
 
       </div>
 
-      <!-- Bouton d'action bas de page -->
+      <!-- Footer Action -->
       <div class="card-footer-action">
         <button class="btn btn-primary btn-lg" id="btn-consult-all-bottom">
-          📞 Lancer la consultation CALL-E pour l'ensemble des besoins ➔
+          📞 Launch CALL-E Autonomous Procurement for All Items ➔
         </button>
       </div>
     </section>
 
     <!-- ============================================================== -->
-    <!-- ÉTAPE 3 : CONSULTATION & APPELS VOCAUX CALL-E EN DIRECT        -->
+    <!-- STEP 3 : CALL-E AUTONOMOUS VOICE PROCUREMENT & CALLS           -->
     <!-- ============================================================== -->
     <section class="step-pane" id="pane-step-3">
       <div class="step-nav-bar">
         <div>
-          <h2>🤖 Étape 3 : Consultation & Appels Vocaux Autonomes CALL-E</h2>
-          <p>CALL-E téléphone en direct aux artisans et fournisseurs pour négocier tarifs fermes, stocks et disponibilités.</p>
+          <h2>📞 Step 3: CALL-E Autonomous Voice Procurement</h2>
+          <p>CALL-E dials vendors and subcontractors live to negotiate firm contractor pricing, warehouse stock, and availability.</p>
         </div>
         <div class="step-nav-buttons">
-          <button class="btn btn-secondary" onclick="window.renovaiApp.goToStep(2)">
-            ⬅ Revenir aux besoins
+          <button class="btn btn-secondary" onclick="window.contractorPilotApp.goToStep(2)">
+            ⬅ Back to Scopes
           </button>
-          <button class="btn btn-primary" onclick="window.renovaiApp.goToStep(4)">
-            🏆 Voir le Bilan & Classement des Offres ➔
+          <button class="btn btn-primary" onclick="window.contractorPilotApp.goToStep(4)">
+            🏆 View Comparison & Client Proposal ➔
           </button>
         </div>
       </div>
 
-      <!-- Console d'Appels Live CALL-E -->
+      <!-- CALL-E Live Call Center Dashboard -->
       <div class="call-center-dashboard-grid">
         
-        <!-- Moniteur d'Appel en Cours -->
+        <!-- Live Call Monitor -->
         <div class="card call-monitor-card">
           <div class="monitor-header">
             <div class="call-badge-indicator" id="monitor-badge-status">
               <span class="pulse-circle"></span>
-              <span id="monitor-call-state-text">AGENT PRÊT</span>
+              <span id="monitor-call-state-text">AGENT READY</span>
             </div>
             <div class="call-duration-tag" id="monitor-call-duration">00:00</div>
           </div>
 
-          <!-- Informations Contact Actuel -->
+          <!-- Current Target Details -->
           <div class="current-call-target-card">
             <div class="target-avatar" id="monitor-target-avatar">📞</div>
             <div class="target-details">
-              <h3 id="monitor-target-name">Sélection de l'appel...</h3>
-              <p id="monitor-target-desc">En attente de démarrage de la consultation</p>
-              <div class="target-phone" id="monitor-target-phone">+213 550 00 00 00</div>
+              <h3 id="monitor-target-name">Selecting target...</h3>
+              <p id="monitor-target-desc">Waiting to initiate procurement calls</p>
+              <div class="target-phone" id="monitor-target-phone">+1-555-019-2831</div>
             </div>
           </div>
 
-          <!-- Onde Vocale Dynamique Synthétique -->
+          <!-- Dynamic Audio Soundwave Visualizer -->
           <div class="call-voice-wave-container">
             <canvas id="call-wave-canvas" width="600" height="70"></canvas>
           </div>
 
-          <!-- Dialogue Audio / Transcription en Direct -->
+          <!-- Live Audio Dialogue Streaming Box -->
           <div class="call-transcript-box" id="monitor-transcript-messages">
             <div class="transcript-placeholder">
-              <div class="phone-ring-animation" id="phone-ring-anim" style="display: none;">🔔 Sonnerie...</div>
-              <span>Le dialogue téléphonique en direct s'affichera ici mot par mot...</span>
+              <div class="phone-ring-animation" id="phone-ring-anim" style="display: none;">🔔 Ringing...</div>
+              <span>Live telephone conversation will stream here turn by turn...</span>
             </div>
           </div>
 
-          <!-- Données extraites en direct -->
+          <!-- Real-Time Extracted Negotiation Data -->
           <div class="live-extracted-data-card" id="monitor-extracted-box" style="display: none;">
-            <div class="extraction-title">📊 Données Négociées & Confirmées par CALL-E :</div>
+            <div class="extraction-title">📊 Real-Time Negotiated Terms by CALL-E:</div>
             <div class="extracted-metrics-row">
               <div class="extracted-item">
-                <span class="lbl">Prix Unitaire</span>
-                <span class="val highlight" id="live-extract-price">-- DA</span>
+                <span class="lbl">Unit Price</span>
+                <span class="val highlight" id="live-extract-price">--</span>
               </div>
               <div class="extracted-item">
-                <span class="lbl">Remise Volume</span>
+                <span class="lbl">Volume Discount</span>
                 <span class="val" id="live-extract-discount">-- %</span>
               </div>
               <div class="extracted-item">
-                <span class="lbl">Stock / Dispo</span>
+                <span class="lbl">Stock / Availability</span>
                 <span class="val" id="live-extract-stock">--</span>
               </div>
               <div class="extracted-item">
-                <span class="lbl">Délai Garanti</span>
-                <span class="val" id="live-extract-delay">-- jours</span>
+                <span class="lbl">Lead Time</span>
+                <span class="val" id="live-extract-delay">-- days</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Panneau de Contrôle & Historique des Appels de la Session -->
+        <!-- Session Call History & Control Panel -->
         <div class="card call-session-panel">
           <div class="panel-header">
-            <h3>📞 Journal des Consultations</h3>
-            <span class="badge" id="badge-calls-count">0 appel</span>
+            <h3>📞 Procurement Call Log</h3>
+            <span class="badge" id="badge-calls-count">0 calls</span>
           </div>
 
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Appels déclenchés automatiquement auprès des artisans et fournisseurs de matériaux.
+            Autonomous calls placed to verified suppliers and licensed subcontractors.
           </p>
 
           <div class="batch-call-controls">
             <button class="btn btn-primary" id="btn-relaunch-batch-calls" style="width: 100%; margin-bottom: 0.8rem;">
-              ⚡ Relancer tous les appels en direct
+              ⚡ Relaunch All Live Calls
             </button>
           </div>
 
-          <!-- Métriques de la Session de Négociation -->
+          <!-- Negotiation Session Metrics -->
           <div class="call-stats-strip">
             <div class="call-stat-item">
               <span class="call-stat-num" id="stat-calls-count">0</span>
-              <span class="call-stat-lbl">Appels passés</span>
+              <span class="call-stat-lbl">Calls Placed</span>
             </div>
             <div class="call-stat-item">
               <span class="call-stat-num text-emerald" id="stat-response-rate">100%</span>
-              <span class="call-stat-lbl">Réponses</span>
+              <span class="call-stat-lbl">Pickup Rate</span>
             </div>
             <div class="call-stat-item">
               <span class="call-stat-num text-cyan" id="stat-savings-rate">~7.5%</span>
-              <span class="call-stat-lbl">Économies négociées</span>
+              <span class="call-stat-lbl">Avg. Savings</span>
             </div>
           </div>
 
           <div class="call-history-list" id="session-call-history-list">
-            <!-- Injecté par JS -->
+            <!-- Injected via JS -->
           </div>
         </div>
 
@@ -377,100 +377,100 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- ÉTAPE 4 : BILAN COMPARATIF & DEVIS CLIENT PRO                  -->
+    <!-- STEP 4 : VENDOR COMPARISON & OFFICIAL CLIENT PROPOSAL           -->
     <!-- ============================================================== -->
     <section class="step-pane" id="pane-step-4">
       <div class="step-nav-bar">
         <div>
-          <h2>🏆 Étape 4 : Bilan des Offres & Studio Devis Pro</h2>
-          <p>Classement multicritères des offres reçues, sélection des meilleurs tarifs et calcul du devis officiel.</p>
+          <h2>🏆 Step 4: Vendor Comparison & Proposal Studio</h2>
+          <p>Multi-criteria evaluation of received offers, contractor markup tuning, and export of the official client proposal.</p>
         </div>
         <div class="step-nav-buttons">
-          <button class="btn btn-secondary" onclick="window.renovaiApp.goToStep(3)">
-            ⬅ Revenir aux appels
+          <button class="btn btn-secondary" onclick="window.contractorPilotApp.goToStep(3)">
+            ⬅ Back to Calls
           </button>
           <button class="btn btn-primary" id="btn-print-quote">
-            🖨️ Imprimer / Exporter le Devis (PDF)
+            🖨️ Print / Export Proposal (PDF)
           </button>
         </div>
       </div>
 
-      <!-- Résumé Financier Synthétique -->
+      <!-- Financial Overview Cards -->
       <div class="financial-summary-grid">
         <div class="card fin-card">
-          <span class="fin-label">Coût Fournitures Matériaux</span>
-          <span class="fin-value" id="fin-materials-cost">0 DA</span>
-          <span class="fin-sub">Meilleures offres retenues</span>
+          <span class="fin-label">Materials & Supplies Cost</span>
+          <span class="fin-value" id="fin-materials-cost">$0</span>
+          <span class="fin-sub">Best supplier offers selected</span>
         </div>
         <div class="card fin-card">
-          <span class="fin-label">Coût Main-d'œuvre Artisans</span>
-          <span class="fin-value" id="fin-labor-cost">0 DA</span>
-          <span class="fin-sub">Artisans confirmés CALL-E</span>
+          <span class="fin-label">Subcontractor Labor Cost</span>
+          <span class="fin-value" id="fin-labor-cost">$0</span>
+          <span class="fin-sub">Confirmed CALL-E trade pros</span>
         </div>
         <div class="card fin-card fin-card-highlight">
-          <span class="fin-label">Marge Entrepreneur</span>
-          <span class="fin-value" id="fin-margin-val">0 DA</span>
-          <span class="fin-sub" id="fin-margin-percent-sub">Marge brute nette</span>
+          <span class="fin-label">Contractor Gross Markup</span>
+          <span class="fin-value" id="fin-margin-val">$0</span>
+          <span class="fin-sub" id="fin-margin-percent-sub">Net contractor margin</span>
         </div>
         <div class="card fin-card fin-card-total">
-          <span class="fin-label">Total Devis Client TTC</span>
-          <span class="fin-value" id="fin-grand-total">0 DA</span>
-          <span class="fin-sub">Clé en main</span>
+          <span class="fin-label">Total Client Proposal</span>
+          <span class="fin-value" id="fin-grand-total">$0</span>
+          <span class="fin-sub">Turnkey contract sum</span>
         </div>
       </div>
 
-      <!-- Barre de Réglage de la Marge Commerciale -->
+      <!-- Contractor Margin Controller -->
       <div class="card margin-control-card">
         <div class="margin-slider-header">
           <div>
-            <strong>💼 Curseur de Marge Commerciale Entrepreneur :</strong>
+            <strong>💼 Contractor Gross Markup Controller:</strong>
             <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 0.5rem;">
-              Ajustez la rentabilité appliquée sur les fournitures et prestations
+              Adjust profitability applied across materials and labor
             </span>
           </div>
           <span class="margin-badge" id="margin-val-display">20%</span>
         </div>
         <div class="slider-row">
-          <span>0% (Prix coûtant)</span>
+          <span>0% (At Cost)</span>
           <input type="range" min="0" max="45" value="20" step="1" id="margin-slider" class="styled-range">
-          <span>45% (Haut de gamme)</span>
+          <span>45% (High End)</span>
         </div>
 
-        <!-- Raccourcis rapides de marge -->
+        <!-- Quick Margin Presets -->
         <div class="margin-presets-row">
-          <span class="preset-label">Paliers rapides :</span>
+          <span class="preset-label">Quick Presets:</span>
           <button type="button" class="btn-margin-preset" data-margin="10">10%</button>
           <button type="button" class="btn-margin-preset" data-margin="15">15%</button>
-          <button type="button" class="btn-margin-preset active" data-margin="20">20% (Recommandé)</button>
+          <button type="button" class="btn-margin-preset active" data-margin="20">20% (Standard)</button>
           <button type="button" class="btn-margin-preset" data-margin="25">25%</button>
-          <button type="button" class="btn-margin-preset" data-margin="30">30% (Prestige)</button>
+          <button type="button" class="btn-margin-preset" data-margin="30">30% (Luxury)</button>
         </div>
       </div>
 
-      <!-- Section 1 : Bilan & Classement des Offres Reçues -->
+      <!-- Section 1 : Multi-Criteria Offer Rankings -->
       <div class="card quote-section-card">
         <div class="section-title-bar">
-          <h3>⚖️ Classement & Sélection des Offres (Artisans & Fournisseurs)</h3>
+          <h3>⚖️ Multi-Criteria Offer Comparison (Subcontractors & Suppliers)</h3>
           <span style="font-size: 0.85rem; color: var(--text-muted);">
-            Score multicritères : 40% Prix | 20% Stock | 15% Délai | 10% Livraison | 10% Fiabilité | 5% Remise
+            Scoring Formula: 40% Price | 20% Stock | 15% Lead Time | 10% Delivery | 10% Reliability | 5% Discount
           </span>
         </div>
         <div class="offers-ranking-grid" id="offers-ranking-container">
-          <!-- Injecté par JS -->
+          <!-- Injected via JS -->
         </div>
       </div>
 
-      <!-- Section 2 : Document Devis Contractuel Officiel Imprimable -->
+      <!-- Section 2 : Official Contract Proposal Sheet -->
       <div class="card printable-quote-sheet" id="printable-quote-document">
         
-        <!-- Barre d'outils du devis -->
+        <!-- Proposal Toolbar -->
         <div class="quote-sheet-toolbar">
           <div class="quote-toolbar-status">
-            <span class="pulse-circle"></span> Document certifié conforme CALL-E
+            <span class="pulse-circle"></span> Certified CALL-E Procurement Audit
           </div>
           <div class="quote-toolbar-actions">
-            <button class="btn btn-secondary btn-sm" id="btn-copy-quote-summary">📋 Copier la synthèse</button>
-            <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ Imprimer / Exporter PDF</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-quote-summary">📋 Copy Summary</button>
+            <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ Print / Export PDF</button>
           </div>
         </div>
 
@@ -478,77 +478,77 @@
           <div class="company-brand">
             <div class="company-logo">🏗️</div>
             <div>
-              <div class="company-name">CONTRACTORPILOT — BTP & RÉNOVATION</div>
-              <div class="company-details">Maîtrise d'œuvre, Rénovation & Travaux Tous Corps d'État</div>
-              <div class="company-details">14, Boulevard Sidi Yahia — Hydra, Alger</div>
-              <div class="company-details">Tél : +213 23 45 67 89 | contact@contractorpilot.com</div>
+              <div class="company-name">CONTRACTORPILOT — GENERAL CONTRACTING & REMODELING</div>
+              <div class="company-details">Turnkey Remodeling, Project Management & Trades</div>
+              <div class="company-details">1400 Grand Avenue, Suite 800 — Metro City</div>
+              <div class="company-details">Phone: +1 (555) 234-5678 | contact@contractorpilot.com</div>
             </div>
           </div>
           <div class="quote-meta-box">
-            <div class="quote-title">DEVIS CLIENT</div>
+            <div class="quote-title">OFFICIAL PROPOSAL</div>
             <div class="quote-number" id="quote-number-tag">CP-2026-001</div>
-            <div class="quote-meta-line"><span>Date :</span> <strong id="quote-date-tag">10/09/2026</strong></div>
-            <div class="quote-meta-line"><span>Validité :</span> <strong>30 jours</strong></div>
+            <div class="quote-meta-line"><span>Date:</span> <strong id="quote-date-tag">Sep 11, 2026</strong></div>
+            <div class="quote-meta-line"><span>Validity:</span> <strong>30 Days</strong></div>
           </div>
         </div>
 
         <div class="quote-client-row">
           <div class="client-box">
-            <div class="box-title">CLIENT :</div>
-            <div class="client-name" id="quote-client-name">Famille Benali</div>
-            <div class="client-address" id="quote-client-loc">Appartement F4 — 120 m², Alger</div>
-            <div class="client-address" id="quote-client-phone">+213 550 12 34 56</div>
+            <div class="box-title">PREPARED FOR:</div>
+            <div class="client-name" id="quote-client-name">The Miller Residence</div>
+            <div class="client-address" id="quote-client-loc">742 Evergreen Terrace, Metro District</div>
+            <div class="client-address" id="quote-client-phone">+1 (555) 321-7890</div>
           </div>
           <div class="project-summary-box">
-            <div class="box-title">OBJET DES TRAVAUX :</div>
-            <div><strong>Rénovation Complète d'Intérieur</strong></div>
+            <div class="box-title">SCOPE OF WORK:</div>
+            <div><strong>Luxury Condo Interior Remodel (1,300 sq ft)</strong></div>
             <div style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem;">
-              Revêtement sol grès cérame 60x60, peinture satinée lavable, éclairage spots LED dimmables, sanitaires et robinetterie complète.
+              Full porcelain tile layout, premium washable matte paint, dimmable recessed LED ceiling illumination, and complete bathroom fixture upgrades.
             </div>
           </div>
         </div>
 
-        <!-- Tableau des Postes du Devis -->
+        <!-- Proposal Line Items Table -->
         <table class="quote-table">
           <thead>
             <tr>
-              <th style="width: 40%;">Désignation des Prestations & Matériaux</th>
-              <th style="width: 12%;">Type</th>
-              <th style="width: 12%; text-align: right;">Quantité</th>
-              <th style="width: 18%; text-align: right;">P.U. Vente</th>
-              <th style="width: 18%; text-align: right;">Total HT</th>
+              <th style="width: 42%;">Scope Description & Materials</th>
+              <th style="width: 14%;">Type</th>
+              <th style="width: 12%; text-align: right;">Quantity</th>
+              <th style="width: 16%; text-align: right;">Unit Price</th>
+              <th style="width: 16%; text-align: right;">Total Amount</th>
             </tr>
           </thead>
           <tbody id="quote-table-body">
-            <!-- Lignes injectées dynamiquement -->
+            <!-- Injected via JS -->
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="4" class="tfoot-label">Sous-total Fournitures Matériaux :</td>
-              <td class="tfoot-val" id="quote-subtotal-materials">0 DA</td>
+              <td colspan="4" class="tfoot-label">Materials & Supplies Subtotal:</td>
+              <td class="tfoot-val" id="quote-subtotal-materials">$0</td>
             </tr>
             <tr>
-              <td colspan="4" class="tfoot-label">Sous-total Main-d'œuvre & Pose :</td>
-              <td class="tfoot-val" id="quote-subtotal-labor">0 DA</td>
+              <td colspan="4" class="tfoot-label">Subcontractor Labor Subtotal:</td>
+              <td class="tfoot-val" id="quote-subtotal-labor">$0</td>
             </tr>
             <tr class="tfoot-grand-total">
-              <td colspan="4" class="tfoot-label">TOTAL GÉNÉRAL NET À PAYER (DA) :</td>
-              <td class="tfoot-val" id="quote-grand-total-display">0 DA</td>
+              <td colspan="4" class="tfoot-label">TOTAL CONTRACT SUM:</td>
+              <td class="tfoot-val" id="quote-grand-total-display">$0</td>
             </tr>
           </tfoot>
         </table>
 
         <div class="quote-footer-terms">
           <div class="terms-col">
-            <strong>Modalités de règlement :</strong>
-            <p>• Acompte de 40% à la commande et validation des dates de chantier.</p>
-            <p>• 40% à l'avancement des travaux (finition pose carrelage et sous-couche peinture).</p>
-            <p>• Solde de 20% à la réception des travaux et remise des clés.</p>
+            <strong>Payment Terms & Conditions:</strong>
+            <p>• 40% initial deposit due upon contract execution and schedule lock.</p>
+            <p>• 40% milestone draw upon tile installation and drywall primer completion.</p>
+            <p>• 20% final payment due upon final walk-through inspection and sign-off.</p>
           </div>
           <div class="terms-col signature-col">
-            <div>Bon pour accord et exécution des travaux :</div>
-            <div class="signature-date">Le : ........................</div>
-            <div class="signature-line">Signature du client & Mention « Bon pour accord »</div>
+            <div>Authorized Acceptance & Notice to Proceed:</div>
+            <div class="signature-date">Date: ........................</div>
+            <div class="signature-line">Client Signature & Acceptance</div>
           </div>
         </div>
       </div>
@@ -556,102 +556,102 @@
 
   </main>
 
-  <!-- ==================== Modale d'Ajout Manuel (Étape 2) ==================== -->
+  <!-- ==================== Manual Item Modal (Step 2) ==================== -->
   <div class="modal-backdrop" id="modal-add-requirement">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modal-req-title">Ajouter un élément au chantier</h3>
+        <h3 id="modal-req-title">Add Item to Remodel Scope</h3>
         <button class="modal-close" id="btn-close-req-modal">&times;</button>
       </div>
       <div class="modal-body">
         <form id="form-add-requirement">
           <div class="form-group">
-            <label>Type d'élément :</label>
+            <label>Item Type:</label>
             <select id="req-modal-type" class="styled-input">
-              <option value="labor">🔨 Travail / Tâche selon Métier (Main-d'œuvre)</option>
-              <option value="material">🧱 Matériau / Fourniture de chantier</option>
+              <option value="labor">🔨 Trade Subcontractor Task (Labor)</option>
+              <option value="material">🧱 Material / Supply Item</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Corps d'état / Catégorie :</label>
+            <label>Trade / Category:</label>
             <select id="req-modal-category" class="styled-input">
-              <option value="Carreleur">Carreleur</option>
-              <option value="Peintre">Peintre</option>
-              <option value="Électricien">Électricien</option>
-              <option value="Plombier">Plombier</option>
-              <option value="Menuisier">Menuisier / Plaquiste</option>
-              <option value="Sol / Carrelage">Sol / Carrelage</option>
-              <option value="Peinture">Peinture</option>
-              <option value="Électricité">Électricité</option>
-              <option value="Plomberie / Sanitaire">Plomberie / Sanitaire</option>
+              <option value="Tiler">Master Tiler</option>
+              <option value="Painter">Finish Painter</option>
+              <option value="Electrician">Master Electrician</option>
+              <option value="Plumber">Licensed Plumber</option>
+              <option value="Carpenter">Finish Carpenter</option>
+              <option value="Flooring">Flooring & Tile</option>
+              <option value="Paint">Paint & Coatings</option>
+              <option value="Electrical">Electrical & Lighting</option>
+              <option value="Plumbing">Plumbing & Fixtures</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Désignation :</label>
-            <input type="text" id="req-modal-name" class="styled-input" placeholder="Ex: Pose faux-plafond BA13 ou Carrelage 60x60" required>
+            <label>Description:</label>
+            <input type="text" id="req-modal-name" class="styled-input" placeholder="e.g. Recessed LED fixtures or 24x24 Porcelain Tile" required>
           </div>
           <div class="form-row">
             <div class="form-group" style="flex: 1;">
-              <label>Quantité :</label>
+              <label>Quantity:</label>
               <input type="number" id="req-modal-qty" class="styled-input" min="0.1" step="0.5" value="1.0" required>
             </div>
             <div class="form-group" style="flex: 1;">
-              <label>Unité :</label>
+              <label>Unit:</label>
               <select id="req-modal-unit" class="styled-input">
-                <option value="jours">jours</option>
-                <option value="m²">m²</option>
-                <option value="L">L (Litres)</option>
-                <option value="unités">unités</option>
-                <option value="forfait">forfait</option>
+                <option value="days">days</option>
+                <option value="sq ft">sq ft</option>
+                <option value="gal">gal</option>
+                <option value="units">units</option>
+                <option value="lump sum">lump sum</option>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label>Tarif estimé unitaire (DA) :</label>
-            <input type="number" id="req-modal-price" class="styled-input" value="10000" step="500">
+            <label>Estimated Unit Cost ($):</label>
+            <input type="number" id="req-modal-price" class="styled-input" value="450" step="10">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="btn-cancel-req-modal">Annuler</button>
-            <button type="submit" class="btn btn-primary">Valider & Ajouter</button>
+            <button type="button" class="btn btn-secondary" id="btn-cancel-req-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save & Add Item</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- ==================== Modale Paramètres CALL-E ==================== -->
+  <!-- ==================== CALL-E Settings Modal ==================== -->
   <div class="modal-backdrop" id="modal-settings">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>⚙️ Paramètres de l'Agent Vocal CALL-E</h3>
+        <h3>⚙️ CALL-E Voice Agent Settings</h3>
         <button class="modal-close" id="btn-close-settings">&times;</button>
       </div>
       <div class="modal-body">
         <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.2rem;">
-          Pour effectuer de vrais appels téléphoniques vers des fournisseurs ou artisans réels, saisissez votre clé API CALL-E officielle. Sans clé, l'application utilise le simulateur interactif complet.
+          To place real telephone calls to actual suppliers and trade subcontractors, enter your official CALL-E API key. Without a key, the application automatically uses the interactive real-time sandbox simulator.
         </p>
         <div class="form-group">
-          <label>Clé API CALL-E :</label>
-          <input type="password" id="input-calle-key" class="styled-input" placeholder="cle_calle_live_...">
+          <label>CALL-E API Key:</label>
+          <input type="password" id="input-calle-key" class="styled-input" placeholder="calle_live_...">
         </div>
         <div class="form-group">
-          <label>Mode actuel :</label>
+          <label>Current Status:</label>
           <div class="badge" id="modal-calle-mode-badge" style="background: rgba(16,185,129,0.15); color: var(--accent-emerald); padding: 0.5rem 1rem;">
-            Mode Démo Interactif / Sandbox Actif
+            Interactive Sandbox Simulator Active
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" id="btn-close-settings-2">Fermer</button>
-        <button class="btn btn-primary" id="btn-save-calle-key">Enregistrer</button>
+        <button class="btn btn-secondary" id="btn-close-settings-2">Close</button>
+        <button class="btn btn-primary" id="btn-save-calle-key">Save Settings</button>
       </div>
     </div>
   </div>
 
-  <!-- Notifications Toast Flottantes -->
+  <!-- Floating Toast Notifications -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Scripts -->
+  <!-- Application Scripts -->
   <script src="/static/js/calle_demo.js"></script>
   <script src="/static/js/app.js"></script>
 </body>

@@ -1,9 +1,9 @@
 /**
  * ContractorPilot — Application Core Controller (4-Step Guided Workflow)
- * Étape 1 : Visite de Chantier & Dictée Vocale
- * Étape 2 : Vérification des Travaux par Métier & Matériaux
- * Étape 3 : Consultation & Appels Vocaux Autonomes CALL-E
- * Étape 4 : Bilan Comparatif & Devis Client Pro
+ * Step 1 : Jobsite Walkthrough & Voice Note Capture
+ * Step 2 : AI Remodel Scope & Material Breakdown
+ * Step 3 : CALL-E Autonomous Voice Procurement & Calling
+ * Step 4 : Vendor Comparison & Official Client Proposal
  */
 
 class ContractorPilotApp {
@@ -14,7 +14,7 @@ class ContractorPilotApp {
     this.suppliers = [];
     this.tradespeople = [];
     this.marginPercent = 20.0;
-    this.currency = "DA";
+    this.currency = "$";
     this.currentNeedsFilter = "all";
 
     // Speech Recognition
@@ -40,13 +40,20 @@ class ContractorPilotApp {
     }, 3200);
   }
 
+  formatMoney(amount) {
+    const num = Math.round(Number(amount) || 0);
+    return `$${num.toLocaleString("en-US")}`;
+  }
+
   async init() {
     this.setupStepper();
     this.setupSpeechRecognition();
     this.setupEventListeners();
     await this.checkSettings();
     await this.loadProjectDetails(this.currentProjectId);
-    window.calleCenter.init(this.currentProjectId);
+    if (window.calleCenter) {
+      window.calleCenter.init(this.currentProjectId);
+    }
   }
 
   // ------------------ Stepper Navigation ------------------
@@ -99,7 +106,7 @@ class ContractorPilotApp {
     const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRec) {
       this.recognition = new SpeechRec();
-      this.recognition.lang = "fr-FR";
+      this.recognition.lang = "en-US";
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
 
@@ -141,7 +148,7 @@ class ContractorPilotApp {
     const btnMic = document.getElementById("btn-toggle-mic");
     const statusText = document.getElementById("mic-status-text");
     if (btnMic) btnMic.classList.add("recording");
-    if (statusText) statusText.innerText = "🔴 Enregistrement en cours... Parlez de votre chantier";
+    if (statusText) statusText.innerText = "🔴 Recording in progress... Describe your jobsite & tasks";
 
     this.recordSeconds = 0;
     this.updateRecordTimer();
@@ -164,7 +171,7 @@ class ContractorPilotApp {
     const btnMic = document.getElementById("btn-toggle-mic");
     const statusText = document.getElementById("mic-status-text");
     if (btnMic) btnMic.classList.remove("recording");
-    if (statusText) statusText.innerText = "Dictée terminée. Vous pouvez vérifier le texte ci-dessous.";
+    if (statusText) statusText.innerText = "Dictation finished. You can review or edit below.";
 
     if (this.recordTimerInterval) {
       clearInterval(this.recordTimerInterval);
@@ -194,7 +201,7 @@ class ContractorPilotApp {
     const counter = document.getElementById("transcription-word-count");
     if (textarea && counter) {
       const words = textarea.value.trim().split(/\s+/).filter(Boolean);
-      counter.innerText = `${words.length} mot${words.length > 1 ? "s" : ""}`;
+      counter.innerText = `${words.length} word${words.length > 1 ? "s" : ""}`;
     }
   }
 
@@ -229,8 +236,9 @@ class ContractorPilotApp {
     if (btnDemoComplete) {
       btnDemoComplete.addEventListener("click", () => {
         if (textarea) {
-          textarea.value = "Visite de chantier Appartement F4 120m2 chez Famille Benali. Grand Salon de 38m² : déposer l'ancien carrelage, poser du carrelage grès cérame 60x60 effet marbre avec plinthes assorties, refaire la peinture de tous les murs en blanc satiné lavable, et prévoir l'installation de 12 spots LED au plafond avec variateur. Cuisine ouverte de 16m² : faïence murale crédence métro, remplacement robinetterie par mitigeur avec douchette, et peinture anti-humidité au plafond. Salle de bain principale de 8m² : étanchéité douche à l'italienne, meuble vasque et mitigeur noir mat, carrelage antidérapant. Côté artisans, prévoir carreleur 4 jours, peintre 3 jours, électricien 2 jours et plombier 2 jours.";
+          textarea.value = "Walkthrough notes for The Miller Residence, 1,300 sq ft luxury condo remodel. Living and dining room (400 sq ft): prep walls, apply 2 coats of washable velvet matte paint in warm alabaster, install 24 recessed dimmable LED downlights on smart dimmers. Kitchen (180 sq ft) and Master Bath (96 sq ft): install 520 sq ft of 24x24 Calacatta marble porcelain floor tiles with precision mitered cuts. In the master bath: full waterproof membrane for curbless shower, double vanity, and designer brushed brass thermostatic fixtures. For subcontractor labor, schedule master tiler for 4 days, finish painter for 3 days, licensed plumber for 2 days, and master electrician for 2 days.";
           this.updateWordCount();
+          this.showToast("Full Remodel Demo Walkthrough loaded!", "info");
         }
       });
     }
@@ -239,9 +247,9 @@ class ContractorPilotApp {
     if (btnDemoLight) {
       btnDemoLight.addEventListener("click", () => {
         if (textarea) {
-          textarea.value = "Visite rénovation électrique et peinture. Salon et chambres : reprise de tous les murs avec enduit et peinture blanche satinée 35 Litres, fourniture et pose de 18 spots encastrés LED dimmables. Prévoir électricien 2 jours et peintre 3 jours.";
+          textarea.value = "Walkthrough scope: lighting and paint package. Living room and bedrooms: patch drywall, 10 gallons of premium washable matte paint, supply and install 24 recessed LED downlights on dimmers. Schedule master electrician for 2 days and finish painter for 3 days.";
           this.updateWordCount();
-          this.showToast("Preset Électricité & Peinture chargé !", "info");
+          this.showToast("Lighting & Paint preset loaded!", "info");
         }
       });
     }
@@ -250,9 +258,9 @@ class ContractorPilotApp {
     if (btnDemoBath) {
       btnDemoBath.addEventListener("click", () => {
         if (textarea) {
-          textarea.value = "Visite rénovation salle de bain 8m² et sanitaires. Dépose ancien carrelage mural, étanchéité complète sous carrelage douche italienne, pose faïence murale 10m², fourniture et pose mitigeur thermostatique noir mat et meuble vasque céramique 80cm. Prévoir plombier 2 jours et carreleur 2 jours.";
+          textarea.value = "Master bathroom suite remodel (96 sq ft). Demo old tile, apply complete waterproofing membrane for curbless walk-in shower, install 120 sq ft wall tile, brushed brass thermostatic mixer valve, and dual undermount vanity connections. Schedule licensed plumber for 2 days and master tiler for 2 days.";
           this.updateWordCount();
-          this.showToast("Preset Salle de Bain & Sanitaires chargé !", "info");
+          this.showToast("Bathroom Suite preset loaded!", "info");
         }
       });
     }
@@ -314,7 +322,7 @@ class ContractorPilotApp {
         if (marginVal) marginVal.innerText = `${val}%`;
         this.updateMarginPresetButtons(val);
         this.refreshQuote();
-        this.showToast(`Marge fixée à ${val}%`, "info");
+        this.showToast(`Contractor markup set to ${val}%`, "info");
       });
     });
 
@@ -345,7 +353,6 @@ class ContractorPilotApp {
       if (!res.ok) return;
       this.projectData = await res.json();
 
-      // Start with empty clean slate for new site visit notes
       this.renderNeedsLists();
       this.renderSessionCalls();
       this.renderOffersRanking();
@@ -358,7 +365,7 @@ class ContractorPilotApp {
     const textarea = document.getElementById("voice-transcription-input");
     const text = textarea ? textarea.value.trim() : "";
     if (!text) {
-      alert("Veuillez d'abord dicter ou saisir vos remarques de visite de chantier.");
+      alert("Please dictate or enter your jobsite walkthrough notes first.");
       return;
     }
 
@@ -366,7 +373,7 @@ class ContractorPilotApp {
     const originalText = btnExtract ? btnExtract.innerHTML : "";
     if (btnExtract) {
       btnExtract.disabled = true;
-      btnExtract.innerHTML = "⏳ Analyse IA en cours...";
+      btnExtract.innerHTML = "⏳ AI Analyzing Walkthrough...";
     }
 
     try {
@@ -377,12 +384,12 @@ class ContractorPilotApp {
       });
 
       if (!res.ok) {
-        throw new Error("Erreur lors de l'extraction des besoins.");
+        throw new Error("Error extracting remodel requirements.");
       }
 
-      const result = await res.json();
       await this.loadProjectDetails(this.currentProjectId);
       this.goToStep(2);
+      this.showToast("Walkthrough converted into materials & trade scopes!", "success");
     } catch (err) {
       alert(err.message);
     } finally {
@@ -403,34 +410,34 @@ class ContractorPilotApp {
       (this.projectData.rooms || []).forEach((room) => {
         const chip = document.createElement("div");
         chip.className = "room-chip";
-        chip.innerHTML = `📍 <span>${room.name}</span> : <strong>${room.surface} m²</strong>`;
+        chip.innerHTML = `📍 <span>${room.name}</span>: <strong>${room.surface} sq ft</strong>`;
         roomsContainer.appendChild(chip);
       });
       if (!this.projectData.rooms || this.projectData.rooms.length === 0) {
-        roomsContainer.innerHTML = `<span style="color: var(--text-dim); font-size: 0.85rem;">Aucune pièce enregistrée</span>`;
+        roomsContainer.innerHTML = `<span style="color: var(--text-dim); font-size: 0.85rem;">No rooms measured yet</span>`;
       }
     }
 
     // Split requirements: Labor (Trades) vs Materials
     const requirements = this.projectData.requirements || [];
     const trades = requirements.filter(
-      (r) => r.item_type === "labor" || r.category === "Main-d'œuvre" || ["Carreleur", "Peintre", "Électricien", "Plombier", "Menuisier"].includes(r.category)
+      (r) => r.item_type === "labor" || r.category === "Labor" || ["Tiler", "Painter", "Electrician", "Plumber", "Carpenter", "Carreleur", "Peintre", "Électricien", "Plombier"].includes(r.category)
     );
     const materials = requirements.filter(
-      (r) => r.item_type === "material" && !["Main-d'œuvre", "Carreleur", "Peintre", "Électricien", "Plombier", "Menuisier"].includes(r.category)
+      (r) => r.item_type === "material" && !["Labor", "Tiler", "Painter", "Electrician", "Plumber", "Carpenter", "Carreleur", "Peintre", "Électricien", "Plombier"].includes(r.category)
     );
 
-    // Calcul du Total Estimatif Indicatif Pré-Négociation
+    // Indicative Pre-Negotiation Total
     let totalEstimate = 0;
     requirements.forEach((r) => {
       totalEstimate += (parseFloat(r.quantity) || 1) * (parseFloat(r.estimated_unit_price) || 0);
     });
     const preEstimateEl = document.getElementById("pre-estimate-val");
     if (preEstimateEl) {
-      preEstimateEl.innerText = `${Math.round(totalEstimate).toLocaleString()} DA`;
+      preEstimateEl.innerText = this.formatMoney(totalEstimate);
     }
 
-    // Compteurs des Onglets de Filtres
+    // Filter tab counts
     const countAll = document.getElementById("filter-count-all");
     const countLabor = document.getElementById("filter-count-labor");
     const countMat = document.getElementById("filter-count-material");
@@ -441,8 +448,8 @@ class ContractorPilotApp {
     // Update Counts Labels
     const tradesCountLabel = document.getElementById("trades-count-label");
     const matCountLabel = document.getElementById("materials-count-label");
-    if (tradesCountLabel) tradesCountLabel.innerText = `${trades.length} corps d'état qualifiés requis`;
-    if (matCountLabel) matCountLabel.innerText = `${materials.length} références à approvisionner`;
+    if (tradesCountLabel) tradesCountLabel.innerText = `${trades.length} trade subcontract scopes required`;
+    if (matCountLabel) matCountLabel.innerText = `${materials.length} material lines to source`;
 
     // 2. Render Trades List
     const tradesList = document.getElementById("trades-tasks-list");
@@ -453,21 +460,21 @@ class ContractorPilotApp {
         row.className = "need-item-card";
 
         let badgeClass = "badge-carreleur";
-        if (item.category.includes("Peintre")) badgeClass = "badge-peintre";
-        else if (item.category.includes("Électricien")) badgeClass = "badge-electricien";
-        else if (item.category.includes("Plombier")) badgeClass = "badge-plombier";
+        if (item.category.includes("Paint") || item.category.includes("Peintre")) badgeClass = "badge-peintre";
+        else if (item.category.includes("Elec")) badgeClass = "badge-electricien";
+        else if (item.category.includes("Plumb") || item.category.includes("Plomb")) badgeClass = "badge-plombier";
 
         row.innerHTML = `
           <div class="need-item-main">
             <span class="need-badge-trade ${badgeClass}">🔨 ${item.category}</span>
             <div class="need-item-title">${item.item_name}</div>
             <div class="need-item-meta">
-              <span>Durée : <strong>${item.quantity} ${item.unit}</strong></span> | 
-              <span>Taux indicatif : <strong>${Number(item.estimated_unit_price).toLocaleString()} DA/${item.unit}</strong></span>
+              <span>Duration: <strong>${item.quantity} ${item.unit}</strong></span> | 
+              <span>Target Rate: <strong>${this.formatMoney(item.estimated_unit_price)}/${item.unit}</strong></span>
             </div>
           </div>
           <div class="need-item-actions">
-            <button class="btn-delete-need" onclick="window.renovaiApp.deleteRequirement('${item.id}')" title="Supprimer">
+            <button class="btn-delete-need" onclick="window.contractorPilotApp.deleteRequirement('${item.id}')" title="Delete">
               🗑️
             </button>
           </div>
@@ -476,7 +483,7 @@ class ContractorPilotApp {
       });
 
       if (trades.length === 0) {
-        tradesList.innerHTML = `<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem;">Aucun corps de métier détecté. Vous pouvez en ajouter un manuellement.</div>`;
+        tradesList.innerHTML = `<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem;">No trade scopes detected. You can add one manually.</div>`;
       }
     }
 
@@ -492,12 +499,12 @@ class ContractorPilotApp {
             <span class="need-badge-trade badge-material">🧱 ${item.category}</span>
             <div class="need-item-title">${item.item_name}</div>
             <div class="need-item-meta">
-              <span>Quantité : <strong>${item.quantity} ${item.unit}</strong></span> | 
-              <span>P.U. estimé : <strong>${Number(item.estimated_unit_price).toLocaleString()} DA</strong></span>
+              <span>Quantity: <strong>${item.quantity} ${item.unit}</strong></span> | 
+              <span>Est. Unit Cost: <strong>${this.formatMoney(item.estimated_unit_price)}</strong></span>
             </div>
           </div>
           <div class="need-item-actions">
-            <button class="btn-delete-need" onclick="window.renovaiApp.deleteRequirement('${item.id}')" title="Supprimer">
+            <button class="btn-delete-need" onclick="window.contractorPilotApp.deleteRequirement('${item.id}')" title="Delete">
               🗑️
             </button>
           </div>
@@ -506,11 +513,10 @@ class ContractorPilotApp {
       });
 
       if (materials.length === 0) {
-        materialsList.innerHTML = `<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem;">Aucun matériau listé. Vous pouvez en ajouter un manuellement.</div>`;
+        materialsList.innerHTML = `<div style="color: var(--text-muted); font-size: 0.85rem; padding: 1rem;">No materials listed yet. You can add one manually.</div>`;
       }
     }
 
-    // Appliquer le filtre courant
     this.applyNeedsFilter();
   }
 
@@ -545,48 +551,47 @@ class ContractorPilotApp {
 
   copyQuoteSummary() {
     if (!this.projectData) return;
-    const client = "Famille Benali (Appartement F4 — 120 m²)";
-    const total = document.getElementById("fin-grand-total") ? document.getElementById("fin-grand-total").innerText : "0 DA";
-    const mat = document.getElementById("fin-materials-cost") ? document.getElementById("fin-materials-cost").innerText : "0 DA";
-    const lab = document.getElementById("fin-labor-cost") ? document.getElementById("fin-labor-cost").innerText : "0 DA";
-    const margin = document.getElementById("fin-margin-val") ? document.getElementById("fin-margin-val").innerText : "0 DA";
+    const client = "The Miller Residence (1,300 sq ft Luxury Remodel)";
+    const total = document.getElementById("fin-grand-total") ? document.getElementById("fin-grand-total").innerText : "$0";
+    const mat = document.getElementById("fin-materials-cost") ? document.getElementById("fin-materials-cost").innerText : "$0";
+    const lab = document.getElementById("fin-labor-cost") ? document.getElementById("fin-labor-cost").innerText : "$0";
+    const margin = document.getElementById("fin-margin-val") ? document.getElementById("fin-margin-val").innerText : "$0";
 
-    const summaryText = `🏗️ DEVIS CONTRACTORPILOT PRO — RÉNOVATION D'INTÉRIEUR\nClient: ${client}\nN° Devis: CP-2026-001\nFournitures Matériaux: ${mat}\nMain-d'œuvre & Pose: ${lab}\nMarge Commerciale (${this.marginPercent}%): ${margin}\n-----------------------------------\nTOTAL GÉNÉRAL NET: ${total}\nDevis certifié, négocié et validé via l'Agent Vocal CALL-E.`;
+    const summaryText = `🏗️ OFFICIAL CONTRACTOR PROPOSAL — CONTRACTORPILOT\nClient: ${client}\nProposal #: CP-2026-001\nMaterials & Supplies: ${mat}\nSubcontractor Labor: ${lab}\nContractor Markup (${this.marginPercent}%): ${margin}\n-----------------------------------\nTOTAL CONTRACT SUM: ${total}\nPrices and lead times verified via autonomous CALL-E voice agents.`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(summaryText).then(() => {
-        this.showToast("Synthèse du devis copiée dans le presse-papier !", "success");
+        this.showToast("Proposal summary copied to clipboard!", "success");
       });
     } else {
-      this.showToast("Synthèse du devis prête !", "info");
+      this.showToast("Proposal summary ready!", "info");
     }
   }
 
   async deleteRequirement(reqId) {
-    if (!confirm("Voulez-vous supprimer ce besoin ?")) return;
+    if (!confirm("Are you sure you want to remove this item?")) return;
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/projects/${this.currentProjectId}/requirements/${reqId}`, {
         method: "DELETE",
       });
       if (res.ok) {
         await this.loadProjectDetails(this.currentProjectId);
+        this.showToast("Item deleted", "info");
       }
     } catch (e) {
       console.error(e);
     }
   }
 
-  // ------------------ Étape 3 : Consultation & Appels ------------------
+  // ------------------ Step 3 : Procurement & Calls ------------------
 
   async launchBatchConsultation() {
     this.goToStep(3);
 
-    const badgeStatus = document.getElementById("monitor-badge-status");
     const stateText = document.getElementById("monitor-call-state-text");
-    if (stateText) stateText.innerText = "CONSULTATION EN COURS...";
+    if (stateText) stateText.innerText = "PROCUREMENT AGENTS ACTIVE...";
 
     try {
-      // 1. Call backend batch-procurement
       const res = await fetch(`http://127.0.0.1:8000/api/calls/batch-procurement`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -595,13 +600,13 @@ class ContractorPilotApp {
 
       if (!res.ok) {
         const err = await res.json();
-        alert(err.detail || "Erreur lors du lancement des appels");
+        alert(err.detail || "Error initiating calls");
         return;
       }
 
       await this.loadProjectDetails(this.currentProjectId);
 
-      // 2. Animer un appel phare en direct pour la démo
+      // Animate showcase live call in monitor
       if (window.calleCenter) {
         window.calleCenter.simulateLiveDemoCall();
       }
@@ -616,7 +621,7 @@ class ContractorPilotApp {
     const container = document.getElementById("session-call-history-list");
     const badge = document.getElementById("badge-calls-count");
 
-    if (badge) badge.innerText = `${calls.length} appel${calls.length > 1 ? "s" : ""}`;
+    if (badge) badge.innerText = `${calls.length} call${calls.length > 1 ? "s" : ""}`;
     const statCalls = document.getElementById("stat-calls-count");
     if (statCalls) statCalls.innerText = calls.length;
 
@@ -630,18 +635,18 @@ class ContractorPilotApp {
             <strong>${call.target_name}</strong> (${call.requirement_name})
             <div style="font-size: 0.75rem; color: var(--text-muted);">${call.target_phone} • ${call.duration_seconds}s</div>
           </div>
-          <span style="color: var(--accent-emerald); font-weight: 600; font-size: 0.82rem;">✓ Négocié</span>
+          <span style="color: var(--accent-emerald); font-weight: 600; font-size: 0.82rem;">✓ Negotiated</span>
         `;
         container.appendChild(item);
       });
 
       if (calls.length === 0) {
-        container.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 0.75rem;">Les appels passés apparaîtront ici.</div>`;
+        container.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 0.75rem;">Completed voice calls will appear here.</div>`;
       }
     }
   }
 
-  // ------------------ Étape 4 : Devis & Bilan ------------------
+  // ------------------ Step 4 : Proposal & Comparison ------------------
 
   async refreshQuote() {
     try {
@@ -673,20 +678,20 @@ class ContractorPilotApp {
     const grandTotal = document.getElementById("fin-grand-total");
     const marginSub = document.getElementById("fin-margin-percent-sub");
 
-    if (matCost) matCost.innerText = `${Math.round(quote.materials_subtotal).toLocaleString()} DA`;
-    if (labCost) labCost.innerText = `${Math.round(quote.labor_subtotal).toLocaleString()} DA`;
-    if (marginVal) marginVal.innerText = `${Math.round(quote.margin_amount).toLocaleString()} DA`;
-    if (grandTotal) grandTotal.innerText = `${Math.round(quote.grand_total).toLocaleString()} DA`;
-    if (marginSub) marginSub.innerText = `Marge brute appliquée (${quote.margin_percent}%)`;
+    if (matCost) matCost.innerText = this.formatMoney(quote.materials_subtotal);
+    if (labCost) labCost.innerText = this.formatMoney(quote.labor_subtotal);
+    if (marginVal) marginVal.innerText = this.formatMoney(quote.margin_amount);
+    if (grandTotal) grandTotal.innerText = this.formatMoney(quote.grand_total);
+    if (marginSub) marginSub.innerText = `Gross markup applied (${quote.margin_percent}%)`;
 
     // Printable Quote Sheet
     const subMat = document.getElementById("quote-subtotal-materials");
     const subLab = document.getElementById("quote-subtotal-labor");
     const totalDisplay = document.getElementById("quote-grand-total-display");
 
-    if (subMat) subMat.innerText = `${Math.round(quote.materials_subtotal).toLocaleString()} DA`;
-    if (subLab) subLab.innerText = `${Math.round(quote.labor_subtotal).toLocaleString()} DA`;
-    if (totalDisplay) totalDisplay.innerText = `${Math.round(quote.grand_total).toLocaleString()} DA`;
+    if (subMat) subMat.innerText = this.formatMoney(quote.materials_subtotal);
+    if (subLab) subLab.innerText = this.formatMoney(quote.labor_subtotal);
+    if (totalDisplay) totalDisplay.innerText = this.formatMoney(quote.grand_total);
 
     // Table body
     const tbody = document.getElementById("quote-table-body");
@@ -694,16 +699,16 @@ class ContractorPilotApp {
       tbody.innerHTML = "";
       (quote.items || []).forEach((item) => {
         const tr = document.createElement("tr");
-        const typeLabel = item.item_type === "labor" ? "Main-d'œuvre" : "Fourniture";
+        const typeLabel = item.item_type === "labor" ? "Subcontractor" : "Material";
         tr.innerHTML = `
           <td>
             <strong>${item.description}</strong>
-            <div style="font-size: 0.75rem; color: #64748B;">Source : ${item.supplier_or_trade}</div>
+            <div style="font-size: 0.75rem; color: #64748B;">Source: ${item.supplier_or_trade}</div>
           </td>
           <td><span class="badge" style="background: rgba(100,116,139,0.15); color: #475569;">${typeLabel}</span></td>
           <td style="text-align: right;">${item.quantity} ${item.unit}</td>
-          <td style="text-align: right;">${Number(item.unit_price).toLocaleString()} DA</td>
-          <td style="text-align: right; font-weight: 700;">${Number(item.total_price).toLocaleString()} DA</td>
+          <td style="text-align: right;">${this.formatMoney(item.unit_price)}</td>
+          <td style="text-align: right; font-weight: 700;">${this.formatMoney(item.total_price)}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -718,7 +723,7 @@ class ContractorPilotApp {
 
     container.innerHTML = "";
 
-    // Group offers by requirement_id
+    // Group offers by requirement_name
     const grouped = {};
     offers.forEach((o) => {
       if (!grouped[o.requirement_name]) grouped[o.requirement_name] = [];
@@ -733,8 +738,8 @@ class ContractorPilotApp {
       card.className = `offer-rank-card ${bestOffer.is_recommended ? "recommended" : ""}`;
       
       const badgeHtml = bestOffer.is_recommended
-        ? `<span class="offer-rank-badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.35);">🥇 1er Choix Retenu</span>`
-        : `<span class="offer-rank-badge" style="background: rgba(99, 102, 241, 0.15); color: #818CF8; border: 1px solid rgba(99, 102, 241, 0.35);">Offre Alternative</span>`;
+        ? `<span class="offer-rank-badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.35);">🥇 Top Recommended</span>`
+        : `<span class="offer-rank-badge" style="background: rgba(99, 102, 241, 0.15); color: #818CF8; border: 1px solid rgba(99, 102, 241, 0.35);">Alternative Offer</span>`;
 
       card.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -743,23 +748,23 @@ class ContractorPilotApp {
             <h4 style="font-family: var(--font-display); font-size: 1.05rem; margin-top: 0.35rem; color: var(--text-main); font-weight: 700;">${reqName}</h4>
           </div>
           <div style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-emerald); font-size: 1.15rem;">
-            ${Number(bestOffer.unit_price).toLocaleString()} DA
+            ${this.formatMoney(bestOffer.unit_price)}
           </div>
         </div>
         <div style="font-size: 0.85rem; color: var(--text-muted);">
-          Interlocuteur : <strong style="color: var(--text-main);">${bestOffer.target_name}</strong>
+          Vendor / Trade: <strong style="color: var(--text-main);">${bestOffer.target_name}</strong>
         </div>
         <div style="display: flex; gap: 0.8rem; font-size: 0.8rem; color: var(--text-muted); background: rgba(0,0,0,0.25); padding: 0.45rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);">
-          <span>Score IA : <strong style="color: var(--accent-cyan);">${bestOffer.calculated_score}/100</strong></span>
-          <span>Délai : <strong>${bestOffer.delivery_days} j</strong></span>
-          ${bestOffer.discount_percent > 0 ? `<span>Remise : <strong style="color: var(--accent-emerald);">-${bestOffer.discount_percent}%</strong></span>` : ""}
+          <span>AI Score: <strong style="color: var(--accent-cyan);">${bestOffer.calculated_score}/100</strong></span>
+          <span>Lead Time: <strong>${bestOffer.delivery_days} days</strong></span>
+          ${bestOffer.discount_percent > 0 ? `<span>Discount: <strong style="color: var(--accent-emerald);">-${bestOffer.discount_percent}%</strong></span>` : ""}
         </div>
       `;
       container.appendChild(card);
     });
 
     if (offers.length === 0) {
-      container.innerHTML = `<div style="color: var(--text-dim); font-size: 0.9rem; padding: 1.5rem; text-align: center; grid-column: 1/-1;">Lancez la consultation CALL-E à l'étape 3 pour générer le bilan comparatif des offres.</div>`;
+      container.innerHTML = `<div style="color: var(--text-dim); font-size: 0.9rem; padding: 1.5rem; text-align: center; grid-column: 1/-1;">Trigger CALL-E procurement in Step 3 to build the verified comparison matrix.</div>`;
     }
   }
 
@@ -779,11 +784,11 @@ class ContractorPilotApp {
     const openModal = (defaultType) => {
       if (typeSelect) typeSelect.value = defaultType;
       if (defaultType === "labor") {
-        if (catSelect) catSelect.value = "Carreleur";
-        if (unitSelect) unitSelect.value = "jours";
+        if (catSelect) catSelect.value = "Tiler";
+        if (unitSelect) unitSelect.value = "days";
       } else {
-        if (catSelect) catSelect.value = "Sol / Carrelage";
-        if (unitSelect) unitSelect.value = "m²";
+        if (catSelect) catSelect.value = "Flooring";
+        if (unitSelect) unitSelect.value = "sq ft";
       }
       if (modal) modal.classList.add("active");
     };
@@ -797,14 +802,14 @@ class ContractorPilotApp {
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
-          room_name: "Chantier Général",
+          room_name: "Jobsite Wide",
           category: document.getElementById("req-modal-category").value,
           item_name: document.getElementById("req-modal-name").value,
           quantity: parseFloat(document.getElementById("req-modal-qty").value) || 1.0,
           unit: document.getElementById("req-modal-unit").value,
           item_type: document.getElementById("req-modal-type").value,
           estimated_unit_price: parseFloat(document.getElementById("req-modal-price").value) || 0.0,
-          notes: "Ajouté manuellement par l'entrepreneur",
+          notes: "Added manually by general contractor",
         };
 
         try {
@@ -817,6 +822,7 @@ class ContractorPilotApp {
             modal.classList.remove("active");
             form.reset();
             await this.loadProjectDetails(this.currentProjectId);
+            this.showToast("New item added to scope!", "success");
           }
         } catch (err) {
           console.error(err);
@@ -850,7 +856,7 @@ class ContractorPilotApp {
             body: JSON.stringify({ calle_api_key: key }),
           });
           if (res.ok) {
-            alert("Clé API CALL-E mise à jour !");
+            this.showToast("CALL-E API key saved successfully!", "success");
             close();
             this.checkSettings();
           }
@@ -870,10 +876,10 @@ class ContractorPilotApp {
       const badge = document.getElementById("header-calle-status");
 
       if (data.calle_ready) {
-        if (statusText) statusText.innerText = "CALL-E : Connecté (Live SDK)";
+        if (statusText) statusText.innerText = "CALL-E: Live SDK Active";
         if (badge) badge.style.borderColor = "rgba(16, 185, 129, 0.4)";
       } else {
-        if (statusText) statusText.innerText = "CALL-E : Mode Démo Interactif";
+        if (statusText) statusText.innerText = "CALL-E: Interactive Sandbox Mode";
       }
     } catch (e) {
       console.warn(e);

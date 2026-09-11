@@ -46,48 +46,48 @@ class CalleService:
         requirement_name: str,
         quantity: float,
         unit: str,
-        project_location: str = "Alger"
+        project_location: str = "Metro Area"
     ) -> str:
-        """Génère la consigne vocale pour l'agent CALL-E."""
+        """Generates voice instructions for the CALL-E autonomous agent."""
         if target_type == "supplier":
             return (
-                f"You are ContractorPilot's procurement agent calling supplier '{target_name}' at {target_phone}. "
-                f"Your goal is to source '{requirement_name}' for a renovation project in {project_location}. "
+                f"You are ContractorPilot's autonomous procurement agent calling supplier '{target_name}' at {target_phone}. "
+                f"Your goal is to source '{requirement_name}' for an active residential remodel in {project_location}. "
                 f"Specifically ask: "
-                f"1) Do they have at least {quantity} {unit} in stock? "
-                f"2) What is their unit price per {unit}? "
-                f"3) Can they deliver to {project_location}, and what are the delivery time and cost? "
-                f"4) Is there any volume discount for an order of {quantity} {unit}? "
+                f"1) Do they have at least {quantity} {unit} in stock right now? "
+                f"2) What is their wholesale contractor unit price per {unit}? "
+                f"3) Can they deliver directly to {project_location}, and what are the delivery lead time and freight cost? "
+                f"4) Can they apply any contractor or volume discount for an order of {quantity} {unit}? "
                 f"Be polite, professional, concise, and confirm all numbers clearly."
             )
         else:
             return (
-                f"You are ContractorPilot's project manager calling tradesperson '{target_name}' at {target_phone}. "
+                f"You are ContractorPilot's project manager calling subcontractor '{target_name}' at {target_phone}. "
                 f"Your goal is to inquire about availability and pricing for: '{requirement_name}' ({quantity} {unit}) "
-                f"on a renovation site located in {project_location}. "
+                f"on a residential remodel located in {project_location}. "
                 f"Specifically ask: "
-                f"1) Their availability and earliest start date? "
-                f"2) Their rate per {unit} or daily rate? "
-                f"3) Estimated duration to complete the work? "
-                f"4) If they bring their own equipment or require specific site preparations. "
-                f"Be professional, clear, and note down all specific terms."
+                f"1) Their earliest availability and start date? "
+                f"2) Their day rate or unit rate for this scope? "
+                f"3) Estimated working days to complete the scope? "
+                f"4) If they supply their own tools/equipment and dust mitigation tarps. "
+                f"Be professional, clear, and confirm all agreed terms."
             )
 
     def get_result_schema(self, target_type: str) -> Dict[str, Any]:
-        """Définit le schéma JSON de résultat pour CALL-E."""
+        """Defines the structured JSON extraction schema for CALL-E."""
         if target_type == "supplier":
             return {
                 "type": "object",
                 "properties": {
                     "supplier_name": {"type": "string"},
                     "product_name": {"type": "string"},
-                    "unit_price": {"type": "number", "description": "Prix unitaire HT/TTC en monnaie locale"},
-                    "quantity_available": {"type": "number", "description": "Quantité actuellement disponible en stock"},
-                    "discount_percent": {"type": "number", "description": "Pourcentage de remise accordé (ex: 5 pour 5%)"},
-                    "delivery_available": {"type": "boolean", "description": "Si la livraison sur chantier est possible"},
-                    "delivery_days": {"type": "integer", "description": "Délai de livraison estimé en jours ouvrés"},
-                    "delivery_cost": {"type": "number", "description": "Coût de la livraison en monnaie locale"},
-                    "terms_notes": {"type": "string", "description": "Observations ou conditions particulières"}
+                    "unit_price": {"type": "number", "description": "Unit price in USD ($)"},
+                    "quantity_available": {"type": "number", "description": "Quantity currently available in warehouse stock"},
+                    "discount_percent": {"type": "number", "description": "Percentage discount offered (e.g. 5 for 5%)"},
+                    "delivery_available": {"type": "boolean", "description": "Whether jobsite delivery is available"},
+                    "delivery_days": {"type": "integer", "description": "Estimated delivery lead time in business days"},
+                    "delivery_cost": {"type": "number", "description": "Delivery freight fee in USD ($)"},
+                    "terms_notes": {"type": "string", "description": "Warranty or special commercial terms"}
                 },
                 "required": ["unit_price", "quantity_available", "delivery_days"]
             }
@@ -97,11 +97,11 @@ class CalleService:
                 "properties": {
                     "tradesperson_name": {"type": "string"},
                     "trade": {"type": "string"},
-                    "unit_price": {"type": "number", "description": "Tarif journalier ou prix unitaire de la prestation"},
-                    "is_available": {"type": "boolean", "description": "Disponibilité pour le chantier"},
-                    "available_date": {"type": "string", "description": "Date de début possible"},
-                    "estimated_duration_days": {"type": "integer", "description": "Durée estimée des travaux"},
-                    "terms_notes": {"type": "string", "description": "Conditions ou matériel inclus"}
+                    "unit_price": {"type": "number", "description": "Daily labor rate in USD ($)"},
+                    "is_available": {"type": "boolean", "description": "Availability for the remodel dates"},
+                    "available_date": {"type": "string", "description": "Earliest confirmed start date"},
+                    "estimated_duration_days": {"type": "integer", "description": "Estimated working days to complete scope"},
+                    "terms_notes": {"type": "string", "description": "Licensing, tools, or site preparation requirements"}
                 },
                 "required": ["unit_price", "is_available", "estimated_duration_days"]
             }
@@ -114,9 +114,9 @@ class CalleService:
         requirement_name: str,
         quantity: float,
         unit: str,
-        project_location: str = "Alger"
+        project_location: str = "Metro Area"
     ) -> Dict[str, Any]:
-        """Exécute un appel réel via l'API CALL-E."""
+        """Executes a real phone call using the official CALL-E SDK."""
         if not self.is_live_ready():
             raise ValueError("CALL-E SDK is not configured with a valid CALLE_API_KEY.")
 
@@ -132,7 +132,6 @@ class CalleService:
         schema = self.get_result_schema(target_type)
 
         loop = asyncio.get_event_loop()
-        # Call in executor to avoid blocking the event loop
         response = await loop.run_in_executor(
             None,
             lambda: self.client.calls.create_and_wait(
@@ -156,81 +155,81 @@ class CalleService:
         requirement_name: str,
         quantity: float,
         unit: str,
-        project_location: str = "Alger"
+        project_location: str = "Metro Area"
     ) -> AsyncGenerator[Dict[str, Any], None]:
         """
-        Simule un appel CALL-E interactif pas-à-pas en temps réel
-        pour le streaming WebSocket sur le dashboard.
+        Simulates an interactive step-by-step CALL-E phone call in real-time
+        for live streaming over WebSocket to the dashboard.
         """
         call_id = f"sim_{uuid.uuid4().hex[:8]}"
         
-        # 1. Numérotation
+        # 1. Dialing
         yield {
             "type": "status_update",
             "call_id": call_id,
             "status": "DIALING",
-            "message": f"Numérotation de {target_name} ({target_phone})...",
+            "message": f"Dialing {target_name} ({target_phone})...",
             "timestamp": time.time()
         }
         await asyncio.sleep(1.2)
 
-        # 2. Sonnerie
+        # 2. Ringing
         yield {
             "type": "status_update",
             "call_id": call_id,
             "status": "RINGING",
-            "message": "En attente de décrochage...",
+            "message": "Line ringing, awaiting pickup...",
             "timestamp": time.time()
         }
         await asyncio.sleep(1.5)
 
-        # 3. Connecté
+        # 3. Connected
         yield {
             "type": "status_update",
             "call_id": call_id,
             "status": "CONNECTED",
-            "message": "Appel décroché — Agent CALL-E en conversation vocale.",
+            "message": "Call connected — CALL-E Voice Agent actively negotiating.",
             "timestamp": time.time()
         }
         await asyncio.sleep(0.8)
 
-        # Scénario selon le type
+        # Scenario according to target type
         if target_type == "supplier":
-            base_price = 2650.0 if "carrelage" in requirement_name.lower() else (
-                1200.0 if "peinture" in requirement_name.lower() else (
-                    1200.0 if "spot" in requirement_name.lower() or "led" in requirement_name.lower() else 10500.0
+            base_price = 4.25 if "tile" in requirement_name.lower() or "floor" in requirement_name.lower() else (
+                60.0 if "paint" in requirement_name.lower() else (
+                    19.50 if "light" in requirement_name.lower() or "led" in requirement_name.lower() else 175.0
                 )
             )
-            # Variations légères selon le fournisseur
-            if "Fournisseur A" in target_name:
-                unit_price = round(base_price * 1.08, 0)
-                stock = max(quantity + 20, 80.0)
+            
+            if "Supplier A" in target_name:
+                unit_price = round(base_price * 1.12, 2)
+                stock = max(quantity + 50, 550.0)
                 discount = 0.0
                 lead_days = 1
                 deliv_ok = True
-                deliv_cost = 2500.0
-            elif "Fournisseur C" in target_name:
-                unit_price = round(base_price * 0.94, 0)
+                deliv_cost = 45.0
+            elif "Supplier C" in target_name:
+                unit_price = round(base_price * 0.92, 2)
                 stock = quantity
                 discount = 0.0
                 lead_days = 10
                 deliv_ok = False
                 deliv_cost = 0.0
-            else: # Fournisseur B ou autre
+            else: # Supplier B or default
                 unit_price = base_price
-                stock = max(quantity + 12, 60.0)
+                stock = max(quantity + 130, 650.0)
                 discount = 5.0
                 lead_days = 3
                 deliv_ok = True
                 deliv_cost = 0.0
 
             dialogue = [
-                ("AI", f"Bonjour, je vous appelle au nom de l'entreprise de rénovation ContractorPilot. Nous avons un chantier à {project_location}. Avez-vous en stock {quantity} {unit} de {requirement_name} ?"),
-                ("Contact", f"Bonjour ! Oui tout à fait, nous avons actuellement {int(stock)} {unit} disponibles immédiatement en dépôt."),
-                ("AI", f"Très bien. Quel est votre tarif unitaire et assurez-vous la livraison sur le chantier ?"),
-                ("Contact", f"Le prix unitaire est de {int(unit_price):,} DA.{' Pour ce volume de ' + str(quantity) + ' ' + unit + ', nous vous offrons 5% de remise commerciale.' if discount > 0 else ''} Livraison sous {lead_days} jours {'avec notre camion' if deliv_ok else 'ou à enlever directement en dépôt'}."),
-                ("AI", f"Noté : {int(unit_price):,} DA par {unit}, remise {int(discount)}%, délai {lead_days} jours. Merci pour ces précisions rapides !"),
-                ("Contact", "Avec plaisir, n'hésitez pas si vous avez besoin d'autres références.")
+                ("AI", f"Hello, I'm calling from ContractorPilot on behalf of our residential remodel in {project_location}. Do you have {quantity} {unit} of {requirement_name} in stock?"),
+                ("Contact", f"Hi there! Yes, we currently have {int(stock)} {unit} in stock ready for dispatch."),
+                ("AI", f"Great. What is your contractor price per {unit}, and can you handle jobsite delivery?"),
+                ("Contact", f"List is ${unit_price:.2f} per {unit}.{' For an order of ' + str(quantity) + ' ' + unit + ', we can apply a 5% trade discount.' if discount > 0 else ''} We can deliver in {lead_days} business days {'via our freight truck' if deliv_ok else 'for depot pickup'}."),
+                ("AI", f"Understood: ${unit_price:.2f} per {unit}, {int(discount)}% volume discount, {lead_days}-day delivery. Thank you for the quick quote!"),
+                ("Contact", "You're very welcome! Feel free to reach back when you're ready to order.")
             ]
 
             extracted = {
@@ -242,24 +241,24 @@ class CalleService:
                 "delivery_available": deliv_ok,
                 "delivery_days": lead_days,
                 "delivery_cost": deliv_cost,
-                "terms_notes": "Offre collectée et normalisée par l'agent CALL-E."
+                "terms_notes": "Live commercial offer confirmed and verified by autonomous CALL-E agent."
             }
 
         else: # tradesperson
-            daily_rate = 14500.0 if "carrel" in requirement_name.lower() else (
-                15000.0 if "peint" in requirement_name.lower() else (
-                    16000.0 if "plomb" in requirement_name.lower() else 17500.0
+            daily_rate = 425.0 if "til" in requirement_name.lower() else (
+                360.0 if "paint" in requirement_name.lower() else (
+                    490.0 if "plumb" in requirement_name.lower() else 480.0
                 )
             )
             est_days = int(quantity)
 
             dialogue = [
-                ("AI", f"Bonjour maître artisan {target_name}, je vous contacte de la part de ContractorPilot pour un chantier à {project_location}. Seriez-vous disponible pour des travaux de {requirement_name} ({quantity} {unit}) ?"),
-                ("Contact", f"Bonjour. Oui, j'ai une disponibilité possible dans la première semaine du mois. De quelle ampleur de travail s'agit-il ?"),
-                ("AI", f"Il s'agit d'une intervention estimée à {quantity} {unit} sur un appartement. Quel serait votre tarif et votre délai d'intervention ?"),
-                ("Contact", f"Pour cette prestation, mon tarif est de {int(daily_rate):,} DA par {unit}. Je peux démarrer sous 2 à 3 jours et finaliser le travail en {est_days} jours ouvrés avec mon matériel professionnel."),
-                ("AI", f"C'est parfaitement clair : {int(daily_rate):,} DA par {unit}, démarrage rapide et fin en {est_days} jours. Merci beaucoup."),
-                ("Contact", "Parfait, tenez-moi au courant dès que le chantier est prêt.")
+                ("AI", f"Hello {target_name}, I'm calling from ContractorPilot regarding an upcoming remodel in {project_location}. Would you be available for {requirement_name} ({quantity} {unit})?"),
+                ("Contact", f"Hi! Yes, I have open availability starting early next week. What's the scope of work?"),
+                ("AI", f"We need an estimated {quantity} {unit} on a luxury residence. What is your day rate and expected turnaround?"),
+                ("Contact", f"My contractor rate for that scope is ${int(daily_rate):,} per {unit}. I can mobilize within 2 business days and finish in {est_days} working days with my professional crew and dust protection."),
+                ("AI", f"Perfect: ${int(daily_rate):,} per {unit}, mobilization in 2 days, and completion in {est_days} days. Thank you so much."),
+                ("Contact", "Sounds great, send over the site details whenever ready.")
             ]
 
             extracted = {
@@ -267,9 +266,9 @@ class CalleService:
                 "trade": requirement_name,
                 "unit_price": daily_rate,
                 "is_available": True,
-                "available_date": "Dès le 3 du mois",
+                "available_date": "Within 2 business days",
                 "estimated_duration_days": est_days,
-                "terms_notes": "Artisan certifié, outillage complet et protections incluses."
+                "terms_notes": "Licensed subcontractor, full dust extraction equipment and surface protection provided."
             }
 
         # Stream dialogue turns
@@ -284,7 +283,7 @@ class CalleService:
             # Realistic pause for speech flow
             await asyncio.sleep(1.2)
 
-        # 4. Extraction structurée
+        # 4. Structured extraction ready
         yield {
             "type": "extraction_ready",
             "call_id": call_id,
@@ -293,7 +292,7 @@ class CalleService:
         }
         await asyncio.sleep(0.5)
 
-        # 5. Appel terminé
+        # 5. Call completed
         yield {
             "type": "call_completed",
             "call_id": call_id,

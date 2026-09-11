@@ -1,7 +1,7 @@
 /**
- * RenovAI — AI Call Center CALL-E Live Stream & Waveform Controller
+ * ContractorPilot — AI Call Center CALL-E Live Stream & Waveform Controller
  * Drives the live autonomous call monitor, WebSocket events, canvas audio visualizer,
- * and realistic live simulation dialogue.
+ * and realistic live simulation dialogue in English.
  */
 
 class CalleCallCenter {
@@ -162,10 +162,10 @@ class CalleCallCenter {
 
     // Contact info
     if (targetAvatar) targetAvatar.innerText = "🧱";
-    if (targetName) targetName.innerText = "Comptoir Céramique Moderne";
-    if (targetDesc) targetDesc.innerText = "Négociation Carrelage 60x60 (48 m²) & Faïence";
-    if (targetPhone) targetPhone.innerText = "+213 550 12 34 56 (Grossiste Alger)";
-    if (stateText) stateText.innerText = "NUMÉROTATION & SONNERIE...";
+    if (targetName) targetName.innerText = "Apex Tile & Stone Direct";
+    if (targetDesc) targetDesc.innerText = "Negotiating Porcelain Floor Tiles 24x24 (520 sq ft)";
+    if (targetPhone) targetPhone.innerText = "+1-555-019-2831 (Metro Warehouse Direct)";
+    if (stateText) stateText.innerText = "DIALING & RINGING...";
     if (transcriptBox) transcriptBox.innerHTML = "";
     if (extBox) extBox.style.display = "none";
 
@@ -184,49 +184,49 @@ class CalleCallCenter {
     const dialogTurns = [
       {
         speaker: "contact",
-        name: "Fournisseur",
-        text: "Allô bonjour, Comptoir Céramique Moderne, à votre service.",
+        name: "Supplier (Brian)",
+        text: "Apex Tile & Stone Direct, this is Brian, how can I help you today?",
         delay: 2000,
       },
       {
         speaker: "ai",
-        name: "CALL-E (Agent IA)",
-        text: "Bonjour, je suis l'assistant vocal ContractorPilot pour un chantier à Sidi Yahia. Avez-vous en stock 48 m² de carrelage grès cérame 60x60 effet marbre ?",
+        name: "CALL-E (AI Agent)",
+        text: "Hi Brian, I'm calling from ContractorPilot on behalf of a residential remodel jobsite. Do you have 520 sq ft of 24x24 Calacatta marble porcelain tiles in stock?",
         delay: 4500,
       },
       {
         speaker: "contact",
-        name: "Fournisseur",
-        text: "Oui tout à fait, premier choix rectifié en stock immédiat à notre dépôt d'Alger. Le prix est de 2 650 DA le m².",
+        name: "Supplier (Brian)",
+        text: "Yes we do! We've got 650 sq ft available right now at our regional warehouse. List contractor pricing is $4.50 per sq ft.",
         delay: 7500,
       },
       {
         speaker: "ai",
-        name: "CALL-E (Agent IA)",
-        text: "Quel est le délai de livraison sur chantier, et pouvez-vous accorder une remise pour une commande globale avec faïence ?",
+        name: "CALL-E (AI Agent)",
+        text: "What is your turnaround for direct freight delivery, and can you apply any volume discount for our project?",
         delay: 11000,
       },
       {
         speaker: "contact",
-        name: "Fournisseur",
-        text: "Livraison possible dès demain en camion plateau (1 jour). Pour ce volume, nous appliquons 5% de remise commerciale ferme.",
+        name: "Supplier (Brian)",
+        text: "We can deliver direct via flatbed within 3 business days. For 520 sq ft, I can lock in a 5% trade discount, bringing it to $4.25 per sq ft.",
         delay: 14500,
       },
       {
         speaker: "ai",
-        name: "CALL-E (Agent IA)",
-        text: "Excellent, offre validée à 2 650 DA avec 5% de remise et livraison sous 24h. Merci !",
+        name: "CALL-E (AI Agent)",
+        text: "Confirmed: $4.25 per sq ft with a 5% volume discount, 650 sq ft in stock, delivery in 3 days. Thank you Brian!",
         delay: 18000,
       },
     ];
 
     dialogTurns.forEach((turn) => {
       setTimeout(() => {
-        if (stateText) stateText.innerText = "EN COMMUNICATION (AUDIO LIVE)";
+        if (stateText) stateText.innerText = "IN CALL (LIVE VOICE STREAM)";
         if (transcriptBox) {
           const msg = document.createElement("div");
           msg.className = `transcript-msg ${turn.speaker}`;
-          msg.innerHTML = `<strong>${turn.name} :</strong> ${turn.text}`;
+          msg.innerHTML = `<strong>${turn.name}:</strong> ${turn.text}`;
           transcriptBox.appendChild(msg);
           transcriptBox.scrollTop = transcriptBox.scrollHeight;
         }
@@ -234,7 +234,7 @@ class CalleCallCenter {
       }, turn.delay);
     });
 
-    // Extraction en direct à la 15ème seconde
+    // Real-time structured extraction at 16s
     setTimeout(() => {
       if (extBox) extBox.style.display = "block";
       const p = document.getElementById("live-extract-price");
@@ -242,28 +242,30 @@ class CalleCallCenter {
       const s = document.getElementById("live-extract-stock");
       const del = document.getElementById("live-extract-delay");
 
-      if (p) p.innerText = "2 650 DA / m²";
+      if (p) p.innerText = "$4.25 / sq ft";
       if (d) d.innerText = "5 %";
-      if (s) s.innerText = "Disponible (120 m²)";
-      if (del) del.innerText = "1 jour ouvré";
+      if (s) s.innerText = "In Stock (650 sq ft)";
+      if (del) del.innerText = "3 business days";
 
       this.playSyntheticTone(880, "sine", 0.25);
-      if (window.renovaiApp && window.renovaiApp.showToast) {
-        window.renovaiApp.showToast("Remise commerciale ferme négociée : -5% !", "success");
+      const app = window.contractorPilotApp || window.renovaiApp;
+      if (app && app.showToast) {
+        app.showToast("Volume trade discount negotiated: -5%!", "success");
       }
     }, 16000);
 
-    // Fin de l'appel
+    // Call completed at 20.5s
     setTimeout(() => {
       clearInterval(this.timerInterval);
       this.stopWaveAnimation();
-      if (stateText) stateText.innerText = "APPEL TERMINÉ (OFFRE ENREGISTRÉE)";
+      if (stateText) stateText.innerText = "CALL COMPLETED (OFFER CAPTURED & SAVED)";
       this.playSyntheticTone(660, "triangle", 0.2);
 
-      if (window.renovaiApp) {
-        window.renovaiApp.loadProjectDetails(this.currentProjectId);
-        if (window.renovaiApp.showToast) {
-          window.renovaiApp.showToast("Offre confirmée et intégrée au comparateur !", "success");
+      const app = window.contractorPilotApp || window.renovaiApp;
+      if (app) {
+        app.loadProjectDetails(this.currentProjectId);
+        if (app.showToast) {
+          app.showToast("Verified offer added to comparison matrix!", "success");
         }
       }
     }, 20500);
@@ -271,8 +273,9 @@ class CalleCallCenter {
 
   handleStreamEvent(event) {
     if (event.type === "project_updated") {
-      if (window.renovaiApp) {
-        window.renovaiApp.loadProjectDetails(this.currentProjectId);
+      const app = window.contractorPilotApp || window.renovaiApp;
+      if (app) {
+        app.loadProjectDetails(this.currentProjectId);
       }
     }
   }

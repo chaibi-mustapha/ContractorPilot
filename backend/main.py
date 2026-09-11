@@ -46,16 +46,16 @@ class CreateProjectRequest(BaseModel):
     client_name: str
     client_phone: str = ""
     client_email: str = ""
-    location: str = "Alger"
-    surface_sqm: float = 100.0
-    project_type: str = "Rénovation d'intérieur"
+    location: str = "Metro Area"
+    surface_sqm: float = 120.0
+    project_type: str = "Residential Interior Remodel"
 
 
 class AddRoomRequest(BaseModel):
     name: str
     length: float
     width: float
-    height: float = 2.70
+    height: float = 9.0
     renovation_types: List[str] = []
     notes: str = ""
 
@@ -91,7 +91,7 @@ class GenerateQuoteRequest(BaseModel):
     margin_percent: float = 20.0
     expenses_amount: float = 0.0
     tax_percent: float = 0.0
-    currency: str = "DA"
+    currency: str = "$"
 
 
 class VoiceExtractRequest(BaseModel):
@@ -1148,7 +1148,7 @@ async def generate_quote(req: GenerateQuoteRequest) -> Dict[str, Any]:
 
     quote = Quote(
         project_id=proj.id,
-        quote_number=f"REN-2026-{str(uuid.uuid4().int)[:3]}",
+        quote_number=f"CP-2026-{str(uuid.uuid4().int)[:3]}",
         materials_subtotal=round(materials_subtotal, 2),
         labor_subtotal=round(labor_subtotal, 2),
         base_cost_total=round(base_cost, 2),

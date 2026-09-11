@@ -1,54 +1,124 @@
-# ContractorPilot — From Site Visit to Professional Quote with CALL-E 📞🏠
+# ContractorPilot — Autonomous Voice Copilot: Jobsite Walkthrough to Signed Proposal with CALL-E 📞🏠
 
-> **Hackathon CALL-E (Devpost)**: *Your Code Is Calling*  
-> **Pitch:** ContractorPilot aide les entrepreneurs en aménagement et rénovation à transformer une visite de chantier en devis professionnel optimisé. L'agent vocal autonome **CALL-E** contacte directement fournisseurs et artisans par téléphone, collecte les prix réels, compare les offres avec un score multicritères, et génère un devis final prêt pour le client.
-
----
-
-## 🌟 Fonctionnalités Clés
-
-1. **Visite Intelligente (Site Visit Capture)** : Métrés précis des pièces (Longueur, Largeur, Hauteur, surfaces utiles) et qualification des travaux par pièce (Salon, Cuisine, Salle de bain).
-2. **Décomposition IA des Besoins** : Structuration instantanée en matériaux (m² de carrelage avec coefficient de coupe, litres de peinture 2 couches, spots LED, robinetterie) et jours de main-d'œuvre requis.
-3. **AI Call Center CALL-E** :
-   - **Mode Réel** : Intégration directe du SDK officiel `calle-ai` (`CalleClient`) pour passer de véritables appels vocaux via l'API CALL-E avec `result_schema` structuré.
-   - **Mode Démo Interactif / Sandbox** : Simulateur visuel et audio interactif en temps réel (ondes audio réactives, affichage progressif du transcript dialogue agent/interlocuteur, extraction dynamique des tarifs, stocks et remises) idéal pour les jurys et vidéos de démonstration.
-4. **Matrice de Comparaison & Scoring Intelligent** : Score pondéré sur 100 points (40% Prix, 20% Disponibilité, 15% Délai, 10% Livraison, 10% Fiabilité, 5% Remise) avec recommandation automatique de la meilleure combinaison globale.
-5. **Studio Devis & Calcul de Marge** : Curseur de marge commerciale entrepreneur (ex: 20%), prise en compte des frais de gestion et taxes, édition d'un devis propre au format N° CP-2026-001 avec bouton d'impression / export PDF direct.
+> **Devpost CALL-E Hackathon Submission** — *Your Code Is Calling*  
+> **Pitch:** ContractorPilot empowers renovation general contractors to go from a jobsite walkthrough to a signed client proposal. The autonomous **CALL-E** voice agent directly telephones suppliers and trade subcontractors, negotiates contractor pricing, verifies live warehouse stock and lead times, compares bids with a weighted multi-criteria score, and generates a client-ready contract proposal.
 
 ---
 
-## 🛠️ Architecture Technique
+## 💡 The Problem: The Contractor Phone Bottleneck
 
-- **Backend** : FastAPI (Python 3.13), Uvicorn, WebSockets pour le streaming d'appels, SDK `calle-ai`.
-- **Frontend** : Single Page Application responsive Vanilla HTML5/CSS3/JS, thème sombre avec glassmorphism, typographie Outfit/Inter, animations audio waveforms Web Audio API.
-- **Stockage** : Persistance JSON / SQLite (`backend/data/renovai_store.json`) pré-chargée avec le cas d'usage complet d'un Appartement F4 de 120 m².
+Every residential remodel starts with a walkthrough. But after measuring rooms and taking notes, contractors face hours of frustrating phone calls:
+- Dialing 4 to 6 suppliers to compare prices, verify stock availability, and check delivery freight fees.
+- Calling multiple subcontractors (tilers, painters, plumbers, electricians) to check schedule availability and day rates.
+- Losing contracts because it takes 3 to 7 days to manually compile all numbers into a quote.
+
+**ContractorPilot turns this multi-day nightmare into an autonomous, 3-minute workflow.**
 
 ---
 
-## 🚀 Démarrage Rapide
+## 🌟 Key Features
 
-### 1. Prérequis
-- Python 3.10+ (Python 3.13 installé et configuré)
+1. **🎙️ Voice Walkthrough Dictation (Step 1)**:
+   - Dictate jobsite observations freely using the Web Speech API or preset recordings.
+   - Captures room dimensions (e.g. Living Room 400 sq ft, Kitchen 180 sq ft, Master Bath 96 sq ft) and renovation scopes.
 
-### 2. Lancement du serveur
+2. **📋 AI Scope Breakdown by Trade & Materials (Step 2)**:
+   - Instantly categorizes walkthrough notes into trade labor tasks (Master Tiler, Finish Painter, Licensed Plumber, Master Electrician) and material bills of quantities (sq ft of porcelain tile, gallons of paint, recessed LED downlights, brass fixtures).
+
+3. **📞 CALL-E Autonomous Voice Procurement (Step 3)**:
+   - **Real Calling Mode**: Integrates the official `calle-ai` SDK (`CalleClient`) with custom task prompt engineering and structured JSON extraction schemas (`client.calls.create_and_wait`).
+   - **Interactive Live Sandbox**: An interactive browser-based phone simulator with dynamic canvas audio waveforms, Web Audio synthetic telephony tones, progressive turn-by-turn dialogue transcripts, and live data extraction.
+
+4. **⚖️ Multi-Criteria Offer Matrix & Scoring (Step 4)**:
+   - Evaluates vendor and trade bids on a 100-point weighted score:
+     - **40%** Net Price
+     - **20%** Warehouse Stock Availability
+     - **15%** Delivery Lead Time
+     - **10%** Direct Jobsite Delivery
+     - **10%** Vendor Reliability & Track Record
+     - **5%** Volume Trade Discount
+   - Automatically recommends the highest-value option.
+
+5. **📑 Proposal Studio & Markup Slider (Step 4)**:
+   - Interactive contractor gross markup slider (0% to 45%, standard 20%).
+   - Generates official proposal **N° CP-2026-001** ready to print or export as PDF.
+   - Single-click clipboard summary export.
+
+---
+
+## 🛠️ Technical Architecture
+
+- **Backend**: FastAPI (Python 3.13), Uvicorn, WebSockets for live call streaming.
+- **Voice Agent**: Official `calle-ai` Python SDK (`v0.7.0`).
+- **Frontend**: Responsive Single-Page App with Vanilla HTML5/CSS3/JavaScript (Deep luxury dark theme, glassmorphism, Outfit/Inter typography, Web Audio API sound generator).
+- **Data Persistence**: JSON/SQLite local datastore pre-seeded with *The Miller Residence* 1,300 sq ft luxury condo remodel.
+
+---
+
+## 🎬 3-Minute Video Demo Script (For Judges)
+
+### Scene 1: The Problem & Introduction (0:00 - 0:35)
+- Open on the **ContractorPilot** dashboard.
+- Explain: *"Contractors spend 10+ hours every week calling suppliers and trade subs just to price a single jobsite quote. ContractorPilot automates this entire phone loop using CALL-E autonomous voice agents."*
+
+### Scene 2: Step 1 — Jobsite Walkthrough (0:35 - 1:05)
+- Click the microphone or load the **Full Remodel 1,300 sq ft** preset.
+- Show the live transcription describing living room paint, LED downlights, kitchen and master bath Calacatta porcelain tiles, and plumbing trims.
+- Click **"Analyze Walkthrough & Generate Remodel Scopes ➔"**.
+
+### Scene 3: Step 2 — Scope Breakdown (1:05 - 1:35)
+- Show the clean separation: Trade Subcontractor tasks (tiler, painter, electrician, plumber) on the left, Material items to procure on the right.
+- Highlight the pre-negotiation estimate.
+- Click **"Launch CALL-E Autonomous Sourcing Calls ➔"**.
+
+### Scene 4: Step 3 — Autonomous Calling in Action (1:35 - 2:20)
+- Watch the live CALL-E phone monitor:
+  - Status transitions: Dialing ➔ Ringing ➔ Connected.
+  - Interactive audio soundwave reacts to the conversation.
+  - Dialogue streams turn-by-turn: CALL-E introduces itself, inquires about 520 sq ft of 24x24 Calacatta tiles, checks stock, and negotiates a 5% trade discount.
+  - Live extraction cards populate in real time (Unit price $4.25, 5% discount, 650 sq ft in stock, 3-day freight delivery).
+
+### Scene 5: Step 4 — Multi-Criteria Comparison & Proposal (2:20 - 2:50)
+- Navigate to Step 4.
+- Display the multi-criteria ranking cards highlighting the top recommended offers.
+- Demonstrate the contractor gross markup slider adjusting in real time (e.g., from 15% to 20%).
+- Show the final contract total updating dynamically.
+
+### Scene 6: Printable Proposal & Conclusion (2:50 - 3:00)
+- Show the official **CP-2026-001** client proposal document with line items, milestone draw terms, and client signature block.
+- Conclude: *"From walkthrough note to signed contract in minutes, powered by CALL-E."*
+
+---
+
+## 🚀 Quickstart Guide
+
+### Prerequisites
+- Python 3.10+ (tested on Python 3.13)
+- Modern web browser (Chrome, Edge, Firefox, Safari)
+
+### 1. Clone & Install Dependencies
+```bash
+git clone https://github.com/chaibi-mustapha/ContractorPilot.git
+cd ContractorPilot
+pip install -r requirements.txt
+```
+
+### 2. Configure Environment (Optional)
+If you want to place real phone calls to your own phone number:
+```bash
+cp .env.example .env
+# Edit .env and set your CALLE_API_KEY
+```
+*(Without an API key, ContractorPilot automatically runs in interactive sandbox demo mode).*
+
+### 3. Launch Server
 ```bash
 python run_server.py
 ```
-Puis ouvrez votre navigateur sur : **[http://localhost:8000](http://localhost:8000)**
-
-### 3. Configuration de la Clé CALL-E (Optionnel pour les appels réels)
-- Créez un fichier `.env` ou cliquez sur le bouton **⚙️ Config** dans l'en-tête de l'application :
-```env
-CALLE_API_KEY=votre_cle_api_calle_ici
-```
+Open your browser at:  
+👉 **`http://localhost:8000`**
 
 ---
 
-## 🎬 Scénario Idéal de Démonstration Vidéo (Hackathon)
-
-1. **Introduction (15s)** : Présentation de la problématique des devis dans le bâtiment (heures perdues au téléphone).
-2. **Visite de chantier (30s)** : Visualisation de l'Appartement F4 (120 m²), ajout d'une pièce ou consultation des pièces existantes.
-3. **Extraction des besoins (20s)** : Découverte des postes calculés par l'IA (48 m² de carrelage, peinture, électricien, carreleur).
-4. **AI Call Center CALL-E (45s)** : Lancement d'un appel en direct vers le *Comptoir Céramique Moderne (Fournisseur B)*, observation des ondes vocales, de la conversation audio et de l'extraction instantanée des données chiffrées (2 650 DA/m², 60 m² dispo, 5% de remise).
-5. **Comparateur d'offres (20s)** : Affichage du tableau de scoring avec la sélection recommandée par l'IA.
-6. **Devis final (30s)** : Réglage de la marge entrepreneur (20%) et génération du devis final prêt pour le client.
+## 👥 Authors
+Built for the **Devpost CALL-E Hackathon** (September 2026).
