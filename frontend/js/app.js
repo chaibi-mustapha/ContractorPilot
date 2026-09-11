@@ -389,9 +389,11 @@ class ContractorPilotApp {
         throw new Error("Error extracting remodel requirements.");
       }
 
+      const data = await res.json();
       await this.loadProjectDetails(this.currentProjectId);
       this.goToStep(2);
-      this.showToast("Walkthrough converted into materials & trade scopes!", "success");
+      const engine = data.ai_engine || "AI";
+      this.showToast(`Walkthrough analyzed by ${engine}!`, "success");
     } catch (err) {
       alert(err.message);
     } finally {
@@ -841,7 +843,19 @@ class ContractorPilotApp {
     const btnClose1 = document.getElementById("btn-close-settings");
     const btnClose2 = document.getElementById("btn-close-settings-2");
     const btnSave = document.getElementById("btn-save-calle-key");
-    const inputKey = document.getElementById("input-calle-key");
+    const inputCalleKey = document.getElementById("input-calle-key");
+    const inputGeminiKey = document.getElementById("input-gemini-key");
+    const selectGeminiModel = document.getElementById("select-gemini-model");
+
+    // Preload from localStorage if available
+    const savedGeminiKey = localStorage.getItem("contractorpilot_gemini_key");
+    if (savedGeminiKey && inputGeminiKey) {
+      inputGeminiKey.value = savedGeminiKey;
+    }
+    const savedGeminiModel = localStorage.getItem("contractorpilot_gemini_model");
+    if (savedGeminiModel && selectGeminiModel) {
+      selectGeminiModel.value = savedGeminiModel;
+    }
 
     if (btnOpen && modal) {
       btnOpen.addEventListener("click", () => modal.classList.add("active"));
@@ -850,22 +864,36 @@ class ContractorPilotApp {
     if (btnClose1) btnClose1.addEventListener("click", close);
     if (btnClose2) btnClose2.addEventListener("click", close);
 
-    if (btnSave && inputKey) {
+    if (btnSave) {
       btnSave.addEventListener("click", async () => {
-        const key = inputKey.value.trim();
+        const calleKey = inputCalleKey ? inputCalleKey.value.trim() : "";
+        const geminiKey = inputGeminiKey ? inputGeminiKey.value.trim() : "";
+        const geminiModel = selectGeminiModel ? selectGeminiModel.value : "gemini-3.8-flash";
+
+        if (geminiKey) {
+          localStorage.setItem("contractorpilot_gemini_key", geminiKey);
+        }
+        localStorage.setItem("contractorpilot_gemini_model", geminiModel);
+
         try {
+          const payload = {
+            calle_api_key: calleKey,
+            gemini_api_key: geminiKey,
+            gemini_model: geminiModel,
+          };
           const res = await fetch(`${this.apiBase}/api/settings`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ calle_api_key: key }),
+            body: JSON.stringify(payload),
           });
           if (res.ok) {
-            this.showToast("CALL-E API key saved successfully!", "success");
+            this.showToast("Settings saved successfully!", "success");
             close();
             this.checkSettings();
           }
         } catch (e) {
           console.error(e);
+          this.showToast("Could not save settings.", "warning");
         }
       });
     }
@@ -876,14 +904,58 @@ class ContractorPilotApp {
       const res = await fetch(`${this.apiBase}/api/settings`);
       if (!res.ok) return;
       const data = await res.json();
+      
+      // CALL-E status
       const statusText = document.getElementById("calle-status-text");
       const badge = document.getElementById("header-calle-status");
+      const modalCalleBadge = document.getElementById("modal-calle-mode-badge");
 
-      if (data.calle_ready) {
+      if (data.is_live_ready) {
         if (statusText) statusText.innerText = "CALL-E: Live SDK Active";
         if (badge) badge.style.borderColor = "rgba(16, 185, 129, 0.4)";
+        if (modalCalleBadge) {
+          modalCalleBadge.innerText = "Live Outbound Calling Ready";
+          modalCalleBadge.style.background = "rgba(16, 185, 129, 0.25)";
+          modalCalleBadge.style.color = "var(--accent-emerald)";
+        }
       } else {
         if (statusText) statusText.innerText = "CALL-E: Interactive Sandbox Mode";
+        if (modalCalleBadge) {
+          modalCalleBadge.innerText = "Interactive Sandbox Mode (Free)";
+          modalCalleBadge.style.background = "rgba(16, 185, 129, 0.15)";
+          modalCalleBadge.style.color = "var(--accent-emerald)";
+        }
+      }
+
+      // Gemini AI status
+      const modalGeminiBadge = document.getElementById("modal-gemini-status-badge");
+      const step1AiBadge = document.getElementById("ai-engine-status-badge");
+
+      if (data.gemini_is_ready) {
+        const modelLabel = data.gemini_model || "Gemini 3.8 Flash";
+        if (modalGeminiBadge) {
+          modalGeminiBadge.innerText = `Active (${modelLabel})`;
+          modalGeminiBadge.style.background = "rgba(147, 51, 234, 0.25)";
+          modalGeminiBadge.style.color = "#d8b4fe";
+        }
+        if (step1AiBadge) {
+          step1AiBadge.innerText = `✨ ${modelLabel} AI Active`;
+          step1AiBadge.style.background = "rgba(147, 51, 234, 0.25)";
+          step1AiBadge.style.color = "#d8b4fe";
+          step1AiBadge.style.border = "1px solid rgba(147, 51, 234, 0.4)";
+        }
+      } else {
+        if (modalGeminiBadge) {
+          modalGeminiBadge.innerText = "Local Heuristic Engine";
+          modalGeminiBadge.style.background = "rgba(100, 116, 139, 0.2)";
+          modalGeminiBadge.style.color = "var(--text-muted)";
+        }
+        if (step1AiBadge) {
+          step1AiBadge.innerText = "⚙️ Local AI Engine Active";
+          step1AiBadge.style.background = "rgba(6, 182, 212, 0.15)";
+          step1AiBadge.style.color = "var(--accent-cyan)";
+          step1AiBadge.style.border = "1px solid rgba(6, 182, 212, 0.3)";
+        }
       }
     } catch (e) {
       console.warn(e);

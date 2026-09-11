@@ -14,10 +14,22 @@ from backend.main import app
 def run_test():
     client = TestClient(app)
 
-    # 1. Health
+    # 1. Health & Settings
     res1 = client.get("/api/health").json()
     print("1. Health Status:", res1)
     assert res1.get("app") == "ContractorPilot", f"Unexpected app name: {res1}"
+    assert "gemini_ready" in res1, "Missing gemini_ready in health status"
+
+    # Test settings update with Gemini model
+    r_settings = client.post("/api/settings", json={
+        "gemini_api_key": "AIzaSyTestKeyExample12345",
+        "gemini_model": "gemini-3.8-flash"
+    })
+    assert r_settings.status_code == 200
+    res_settings = client.get("/api/settings").json()
+    assert res_settings.get("gemini_is_ready") is True
+    assert res_settings.get("gemini_model") == "gemini-3.8-flash"
+    print(f"   Gemini Settings Configured: Model={res_settings['gemini_model']}, Ready={res_settings['gemini_is_ready']}")
 
     # 2. Voice Walkthrough Extraction
     payload = {
@@ -50,6 +62,8 @@ def run_test():
     assert res4["grand_total"] > 0, "Expected non-zero total"
 
     print("\n>>> ALL 4-STEP WORKFLOW TESTS PASSED SUCCESSFULLY IN USD ($) & US CUSTOMARY UNITS! <<<")
+    # Reset test key
+    client.post("/api/settings", json={"gemini_api_key": "", "gemini_model": "gemini-3.8-flash"})
 
 if __name__ == "__main__":
     run_test()

@@ -124,7 +124,7 @@
       "status": "QUOTE_READY",
       "rooms": [
         {
-          "id": "26aabc18-bce3-440d-b375-a0b8e9a7c564",
+          "id": "fc983a46-dbc0-4485-9224-1d9a9754fc2c",
           "name": "Open Living & Dining Room",
           "length": 25.0,
           "width": 16.0,
@@ -138,7 +138,7 @@
           "notes": "South-facing natural light, dimmable LED zones required."
         },
         {
-          "id": "bb6d1054-05bf-461b-9a88-91702cc689bc",
+          "id": "ca7d92f0-7891-413c-a2cf-584aea4d59d6",
           "name": "Chef's Kitchen",
           "length": 15.0,
           "width": 12.0,
@@ -152,7 +152,7 @@
           "notes": "Requires dual undermount sink connections and island wiring."
         },
         {
-          "id": "a956cb38-358c-403c-8dc8-0f34185ae7f7",
+          "id": "0c2654b3-08e7-48ba-87c4-0dbfb94d2631",
           "name": "Master Bathroom Suite",
           "length": 12.0,
           "width": 8.0,
@@ -169,7 +169,7 @@
       ],
       "requirements": [
         {
-          "id": "53aea915-f7a9-4ee2-97a7-ba877c730428",
+          "id": "40e5e875-d157-4359-95e2-992adfe4579f",
           "room_id": null,
           "room_name": "",
           "category": "Tiler",
@@ -181,7 +181,7 @@
           "notes": "520 sq ft porcelain layout, precision miter cuts, waterproof substrate."
         },
         {
-          "id": "50558d73-5d81-4d15-9d3d-03a70a2eedfa",
+          "id": "39edbd0c-748e-404d-b94d-920a3dc8c63a",
           "room_id": null,
           "room_name": "",
           "category": "Painter",
@@ -193,7 +193,7 @@
           "notes": "Level 4 drywall prep, dust mitigation, primer plus 2 topcoats."
         },
         {
-          "id": "8c00e0d0-a19f-4f88-b607-7c5c343b248d",
+          "id": "d678246f-c736-43eb-9e10-723b6c5ca4f2",
           "room_id": null,
           "room_name": "",
           "category": "Electrician",
@@ -205,7 +205,7 @@
           "notes": "NEC compliance, smart dimmer switches, and dedicated circuits."
         },
         {
-          "id": "1e15cc94-485b-43a6-8f91-6703dcbb5e2d",
+          "id": "139a86ee-a29d-4ffe-81e8-187c457581ea",
           "room_id": null,
           "room_name": "",
           "category": "Plumber",
@@ -217,7 +217,7 @@
           "notes": "PEX expansion lines, shower valves, and double vanity rough-ins."
         },
         {
-          "id": "22318d9b-1805-48e4-a024-58332b7014ef",
+          "id": "4b88504a-6608-4058-8ade-388aadfe500c",
           "room_id": null,
           "room_name": "",
           "category": "Flooring",
@@ -229,7 +229,7 @@
           "notes": "High-traffic porcelain, rectified edges with 10% cut allowance."
         },
         {
-          "id": "0c29e645-7ae3-47a5-a53b-e767a6580816",
+          "id": "ea25270d-ae50-45ec-aaa9-a987b3ece1c0",
           "room_id": null,
           "room_name": "",
           "category": "Flooring",
@@ -241,7 +241,7 @@
           "notes": "Beveled glazed finish with stain-resistant epoxy grout."
         },
         {
-          "id": "6364fd84-a8c0-425d-b2e7-f3a8fed33644",
+          "id": "50e3c1c3-a6f3-46d2-bf7a-44d3b3d3a472",
           "room_id": null,
           "room_name": "",
           "category": "Paint",
@@ -253,7 +253,7 @@
           "notes": "Warm Alabaster shade, washable zero-VOC formula."
         },
         {
-          "id": "b7c29baa-91e9-4d65-a5ab-c4837b0becaa",
+          "id": "b7333be2-e78b-4838-911c-0cf6fe39cab4",
           "room_id": null,
           "room_name": "",
           "category": "Electrical",
@@ -265,7 +265,7 @@
           "notes": "IC-rated, airtight housing with junction boxes included."
         },
         {
-          "id": "14100359-920f-495b-a54d-8646c6241e6b",
+          "id": "c642dac6-abb2-4c6c-9476-1b49fb2d6a1b",
           "room_id": null,
           "room_name": "",
           "category": "Plumbing",
@@ -279,9 +279,9 @@
       ],
       "offers": [
         {
-          "id": "f3d8fcc6-e874-4577-8e52-a2a7a7e69143",
+          "id": "242e2446-a5bd-46b4-b6a9-f855c8dabcea",
           "project_id": "proj-apt-f4",
-          "requirement_id": "53aea915-f7a9-4ee2-97a7-ba877c730428",
+          "requirement_id": "40e5e875-d157-4359-95e2-992adfe4579f",
           "requirement_name": "Tile & Substrate Installation (Master Tiler)",
           "target_type": "tradesperson",
           "target_id": "trade-mohamed",
@@ -298,12 +298,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
-          "created_at": "2026-09-11T14:23:52.500111"
+          "created_at": "2026-09-11T16:41:21.355962"
         },
         {
-          "id": "b18c39ee-b8ab-4f82-9bb3-d5c81c7b9c53",
+          "id": "3f5d20a6-0bc9-4b57-8267-d32e9d7046f8",
           "project_id": "proj-apt-f4",
-          "requirement_id": "53aea915-f7a9-4ee2-97a7-ba877c730428",
+          "requirement_id": "40e5e875-d157-4359-95e2-992adfe4579f",
           "requirement_name": "Tile & Substrate Installation (Master Tiler)",
           "target_type": "tradesperson",
           "target_id": "trade-karim",
@@ -320,12 +320,12 @@
           "is_recommended": false,
           "is_selected": false,
           "notes": "Availability confirmed by CALL-E for mobilization in 5 days.",
-          "created_at": "2026-09-11T14:23:52.500457"
+          "created_at": "2026-09-11T16:41:21.356307"
         },
         {
-          "id": "7d77cb1f-bdde-4981-b5d3-3404bc12e7f8",
+          "id": "c5940919-5ab2-4295-9d18-99f89dcbccd4",
           "project_id": "proj-apt-f4",
-          "requirement_id": "50558d73-5d81-4d15-9d3d-03a70a2eedfa",
+          "requirement_id": "39edbd0c-748e-404d-b94d-920a3dc8c63a",
           "requirement_name": "Surface Prep & 2-Coat Painting (Finish Painter)",
           "target_type": "tradesperson",
           "target_id": "trade-mustapha",
@@ -342,12 +342,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
-          "created_at": "2026-09-11T14:23:52.500718"
+          "created_at": "2026-09-11T16:41:21.356579"
         },
         {
-          "id": "5af7460b-2bc1-49e3-b8b3-04926be21bbd",
+          "id": "60019075-b303-4063-86be-778440f5ae68",
           "project_id": "proj-apt-f4",
-          "requirement_id": "8c00e0d0-a19f-4f88-b607-7c5c343b248d",
+          "requirement_id": "d678246f-c736-43eb-9e10-723b6c5ca4f2",
           "requirement_name": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
           "target_type": "tradesperson",
           "target_id": "trade-sofiane",
@@ -364,12 +364,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
-          "created_at": "2026-09-11T14:23:52.500983"
+          "created_at": "2026-09-11T16:41:21.356879"
         },
         {
-          "id": "378843a5-b6b4-4117-ac37-3fedd5a3ce54",
+          "id": "b114a618-57b7-4df6-aaa3-3f269a920d7d",
           "project_id": "proj-apt-f4",
-          "requirement_id": "1e15cc94-485b-43a6-8f91-6703dcbb5e2d",
+          "requirement_id": "139a86ee-a29d-4ffe-81e8-187c457581ea",
           "requirement_name": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
           "target_type": "tradesperson",
           "target_id": "trade-ali",
@@ -386,12 +386,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Availability confirmed by CALL-E for mobilization in 2 days.",
-          "created_at": "2026-09-11T14:23:52.501230"
+          "created_at": "2026-09-11T16:41:21.357125"
         },
         {
-          "id": "824ba3f0-d2f8-4764-a4d7-6a6efc09bbb3",
+          "id": "5193d101-9ad7-4c49-ab0d-7f24325e4ef9",
           "project_id": "proj-apt-f4",
-          "requirement_id": "22318d9b-1805-48e4-a024-58332b7014ef",
+          "requirement_id": "4b88504a-6608-4058-8ade-388aadfe500c",
           "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "target_type": "supplier",
           "target_id": "sup-ceram-b",
@@ -408,12 +408,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Immediate inventory verified by CALL-E (1300 sq ft). Contractor trade discount: 5.0%.",
-          "created_at": "2026-09-11T14:23:52.502359"
+          "created_at": "2026-09-11T16:41:21.357404"
         },
         {
-          "id": "fd900cc7-6866-4ca3-a671-4d42fa4926ea",
+          "id": "17412eb2-4155-4419-9220-c45210768265",
           "project_id": "proj-apt-f4",
-          "requirement_id": "22318d9b-1805-48e4-a024-58332b7014ef",
+          "requirement_id": "4b88504a-6608-4058-8ade-388aadfe500c",
           "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "target_type": "supplier",
           "target_id": "sup-ceram-a",
@@ -430,12 +430,12 @@
           "is_recommended": false,
           "is_selected": false,
           "notes": "Immediate inventory verified by CALL-E (1300 sq ft). Contractor trade discount: 2.0%.",
-          "created_at": "2026-09-11T14:23:52.502671"
+          "created_at": "2026-09-11T16:41:21.357674"
         },
         {
-          "id": "b451fc2e-f979-4f66-82e4-09f1a8d6954b",
+          "id": "04d481ff-64aa-4656-9a68-6e4c9cbe4fc0",
           "project_id": "proj-apt-f4",
-          "requirement_id": "0c29e645-7ae3-47a5-a53b-e767a6580816",
+          "requirement_id": "ea25270d-ae50-45ec-aaa9-a987b3ece1c0",
           "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
           "target_type": "supplier",
           "target_id": "sup-ceram-b",
@@ -452,12 +452,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Immediate inventory verified by CALL-E (112.5 sq ft). Contractor trade discount: 5.0%.",
-          "created_at": "2026-09-11T14:23:52.502979"
+          "created_at": "2026-09-11T16:41:21.357937"
         },
         {
-          "id": "44d8ab63-653b-42c0-877b-399913203f00",
+          "id": "22aa412c-984f-42f8-9c02-979785467656",
           "project_id": "proj-apt-f4",
-          "requirement_id": "0c29e645-7ae3-47a5-a53b-e767a6580816",
+          "requirement_id": "ea25270d-ae50-45ec-aaa9-a987b3ece1c0",
           "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
           "target_type": "supplier",
           "target_id": "sup-ceram-a",
@@ -474,12 +474,12 @@
           "is_recommended": false,
           "is_selected": false,
           "notes": "Immediate inventory verified by CALL-E (112.5 sq ft). Contractor trade discount: 2.0%.",
-          "created_at": "2026-09-11T14:23:52.503219"
+          "created_at": "2026-09-11T16:41:21.358140"
         },
         {
-          "id": "4f76b588-409c-403d-bfe4-b917e0277970",
+          "id": "1e1a025e-7908-410c-bd2b-6e4e859bf92a",
           "project_id": "proj-apt-f4",
-          "requirement_id": "6364fd84-a8c0-425d-b2e7-f3a8fed33644",
+          "requirement_id": "50e3c1c3-a6f3-46d2-bf7a-44d3b3d3a472",
           "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
           "target_type": "supplier",
           "target_id": "sup-peint-a",
@@ -496,12 +496,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Immediate inventory verified by CALL-E (25 gal). Contractor trade discount: 5.0%.",
-          "created_at": "2026-09-11T14:23:52.503486"
+          "created_at": "2026-09-11T16:41:21.358365"
         },
         {
-          "id": "bffa1d00-3d15-4599-9dac-fa093ffb03c8",
+          "id": "47782040-038e-4ec0-b235-fb44512a32b3",
           "project_id": "proj-apt-f4",
-          "requirement_id": "6364fd84-a8c0-425d-b2e7-f3a8fed33644",
+          "requirement_id": "50e3c1c3-a6f3-46d2-bf7a-44d3b3d3a472",
           "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
           "target_type": "supplier",
           "target_id": "sup-peint-b",
@@ -518,12 +518,12 @@
           "is_recommended": false,
           "is_selected": false,
           "notes": "Immediate inventory verified by CALL-E (25 gal). Contractor trade discount: 2.0%.",
-          "created_at": "2026-09-11T14:23:52.503721"
+          "created_at": "2026-09-11T16:41:21.358572"
         },
         {
-          "id": "b8aa34d4-08eb-4e89-bdff-7bb3d6156ed1",
+          "id": "fa481a7f-fafe-49cb-8885-8dce7b9aa15e",
           "project_id": "proj-apt-f4",
-          "requirement_id": "b7c29baa-91e9-4d65-a5ab-c4837b0becaa",
+          "requirement_id": "b7333be2-e78b-4838-911c-0cf6fe39cab4",
           "requirement_name": "7W Dimmable Recessed LED Downlights (3000K Warm White)",
           "target_type": "supplier",
           "target_id": "sup-elec-a",
@@ -540,12 +540,12 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Immediate inventory verified by CALL-E (60 units). Contractor trade discount: 5.0%.",
-          "created_at": "2026-09-11T14:23:52.504004"
+          "created_at": "2026-09-11T16:41:21.358824"
         },
         {
-          "id": "6198196e-e6c3-422c-95ad-5560dbadaa1f",
+          "id": "390b61f4-f672-41b8-9de5-87983d9e29ca",
           "project_id": "proj-apt-f4",
-          "requirement_id": "14100359-920f-495b-a54d-8646c6241e6b",
+          "requirement_id": "c642dac6-abb2-4c6c-9476-1b49fb2d6a1b",
           "requirement_name": "Designer Brushed Brass Thermostatic Mixer Faucets",
           "target_type": "supplier",
           "target_id": "sup-plomb-a",
@@ -562,18 +562,18 @@
           "is_recommended": true,
           "is_selected": true,
           "notes": "Immediate inventory verified by CALL-E (7.5 units). Contractor trade discount: 5.0%.",
-          "created_at": "2026-09-11T14:23:52.504268"
+          "created_at": "2026-09-11T16:41:21.359078"
         }
       ],
       "call_records": [
         {
-          "id": "b4443a7c-539d-4822-a44a-2df94cd44d6e",
+          "id": "9a415b4f-35ea-40c0-b1ea-b95d583bbaae",
           "project_id": "proj-apt-f4",
           "target_type": "tradesperson",
           "target_id": "trade-mohamed",
           "target_name": "Marcus Reed (Master Tiler)",
           "target_phone": "+1-555-018-1122",
-          "requirement_id": "53aea915-f7a9-4ee2-97a7-ba877c730428",
+          "requirement_id": "40e5e875-d157-4359-95e2-992adfe4579f",
           "requirement_name": "Tile & Substrate Installation (Master Tiler)",
           "status": "completed",
           "duration_seconds": 38,
@@ -597,16 +597,16 @@
             "lead_days": 2,
             "trade": "Master Tiler"
           },
-          "created_at": "2026-09-11T14:23:52.500310"
+          "created_at": "2026-09-11T16:41:21.356154"
         },
         {
-          "id": "4776df6e-53db-4704-969b-b79f25c2f44d",
+          "id": "d6cac053-c249-4324-9583-198a2638a963",
           "project_id": "proj-apt-f4",
           "target_type": "tradesperson",
           "target_id": "trade-karim",
           "target_name": "Kevin Vance (Tile Installer)",
           "target_phone": "+1-555-018-2233",
-          "requirement_id": "53aea915-f7a9-4ee2-97a7-ba877c730428",
+          "requirement_id": "40e5e875-d157-4359-95e2-992adfe4579f",
           "requirement_name": "Tile & Substrate Installation (Master Tiler)",
           "status": "completed",
           "duration_seconds": 45,
@@ -630,16 +630,16 @@
             "lead_days": 5,
             "trade": "Master Tiler"
           },
-          "created_at": "2026-09-11T14:23:52.500574"
+          "created_at": "2026-09-11T16:41:21.356428"
         },
         {
-          "id": "8e856627-0e8f-48f7-b273-a0d5f305743c",
+          "id": "c39cdad0-af36-4071-a77c-15575973b3dd",
           "project_id": "proj-apt-f4",
           "target_type": "tradesperson",
           "target_id": "trade-mustapha",
           "target_name": "David Chen (Finish Painter)",
           "target_phone": "+1-555-018-3344",
-          "requirement_id": "50558d73-5d81-4d15-9d3d-03a70a2eedfa",
+          "requirement_id": "39edbd0c-748e-404d-b94d-920a3dc8c63a",
           "requirement_name": "Surface Prep & 2-Coat Painting (Finish Painter)",
           "status": "completed",
           "duration_seconds": 38,
@@ -663,16 +663,16 @@
             "lead_days": 2,
             "trade": "Finish Painter"
           },
-          "created_at": "2026-09-11T14:23:52.500825"
+          "created_at": "2026-09-11T16:41:21.356726"
         },
         {
-          "id": "0cea74c3-275f-47fc-8150-ed26338cbc1c",
+          "id": "6b5d7074-d11b-443e-9aaf-f70a3687f0d9",
           "project_id": "proj-apt-f4",
           "target_type": "tradesperson",
           "target_id": "trade-sofiane",
           "target_name": "Anthony Brooks (Master Electrician)",
           "target_phone": "+1-555-018-5566",
-          "requirement_id": "8c00e0d0-a19f-4f88-b607-7c5c343b248d",
+          "requirement_id": "d678246f-c736-43eb-9e10-723b6c5ca4f2",
           "requirement_name": "Recessed Lighting Circuitry & Smart Dimmer Trim (Master Electrician)",
           "status": "completed",
           "duration_seconds": 38,
@@ -696,16 +696,16 @@
             "lead_days": 2,
             "trade": "Master Electrician"
           },
-          "created_at": "2026-09-11T14:23:52.501088"
+          "created_at": "2026-09-11T16:41:21.356991"
         },
         {
-          "id": "f6ee63cc-af57-411d-b658-7fe1e3b38727",
+          "id": "4b960c6e-557c-45ef-94cb-28075dd548b1",
           "project_id": "proj-apt-f4",
           "target_type": "tradesperson",
           "target_id": "trade-ali",
           "target_name": "James Wilson (Licensed Plumber)",
           "target_phone": "+1-555-018-4455",
-          "requirement_id": "1e15cc94-485b-43a6-8f91-6703dcbb5e2d",
+          "requirement_id": "139a86ee-a29d-4ffe-81e8-187c457581ea",
           "requirement_name": "Sanitary Rough-in & Trim Installation (Licensed Plumber)",
           "status": "completed",
           "duration_seconds": 38,
@@ -729,16 +729,16 @@
             "lead_days": 2,
             "trade": "Licensed Plumber"
           },
-          "created_at": "2026-09-11T14:23:52.501339"
+          "created_at": "2026-09-11T16:41:21.357229"
         },
         {
-          "id": "37c3eb53-7e59-43be-ae0d-e4d9f8f0544e",
+          "id": "9b860472-09c5-4fef-86dc-a8df37f3a601",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-ceram-b",
           "target_name": "Apex Tile & Stone Direct (Supplier B)",
           "target_phone": "+1-555-019-2831",
-          "requirement_id": "22318d9b-1805-48e4-a024-58332b7014ef",
+          "requirement_id": "4b88504a-6608-4058-8ade-388aadfe500c",
           "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "status": "completed",
           "duration_seconds": 45,
@@ -771,16 +771,16 @@
             "delivery_days": 1,
             "stock": 1300.0
           },
-          "created_at": "2026-09-11T14:23:52.502524"
+          "created_at": "2026-09-11T16:41:21.357513"
         },
         {
-          "id": "3d92abbd-c515-4954-b230-c0fefe099e64",
+          "id": "c3203d60-2d30-4b52-a7e2-c6bf68a31398",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-ceram-a",
           "target_name": "Grand Surface Materials (Supplier A)",
           "target_phone": "+1-555-019-3344",
-          "requirement_id": "22318d9b-1805-48e4-a024-58332b7014ef",
+          "requirement_id": "4b88504a-6608-4058-8ade-388aadfe500c",
           "requirement_name": "Porcelain Floor Tiles 24x24 (Calacatta Marble Finish)",
           "status": "completed",
           "duration_seconds": 50,
@@ -813,16 +813,16 @@
             "delivery_days": 3,
             "stock": 1300.0
           },
-          "created_at": "2026-09-11T14:23:52.502804"
+          "created_at": "2026-09-11T16:41:21.357791"
         },
         {
-          "id": "894ccb5f-b8bd-4323-9656-74a9dc18c507",
+          "id": "2d6e0ef3-184d-4a32-908b-46eee62b53a9",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-ceram-b",
           "target_name": "Apex Tile & Stone Direct (Supplier B)",
           "target_phone": "+1-555-019-2831",
-          "requirement_id": "0c29e645-7ae3-47a5-a53b-e767a6580816",
+          "requirement_id": "ea25270d-ae50-45ec-aaa9-a987b3ece1c0",
           "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
           "status": "completed",
           "duration_seconds": 45,
@@ -855,16 +855,16 @@
             "delivery_days": 1,
             "stock": 112.5
           },
-          "created_at": "2026-09-11T14:23:52.503098"
+          "created_at": "2026-09-11T16:41:21.358039"
         },
         {
-          "id": "3f3956ef-14e7-4957-80aa-3d7fafb23a56",
+          "id": "26adeba5-f51b-40a5-a178-5ae0bf15bf29",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-ceram-a",
           "target_name": "Grand Surface Materials (Supplier A)",
           "target_phone": "+1-555-019-3344",
-          "requirement_id": "0c29e645-7ae3-47a5-a53b-e767a6580816",
+          "requirement_id": "ea25270d-ae50-45ec-aaa9-a987b3ece1c0",
           "requirement_name": "Subway Glazed Ceramic Wall Tile (Kitchen Backsplash)",
           "status": "completed",
           "duration_seconds": 50,
@@ -897,16 +897,16 @@
             "delivery_days": 3,
             "stock": 112.5
           },
-          "created_at": "2026-09-11T14:23:52.503329"
+          "created_at": "2026-09-11T16:41:21.358237"
         },
         {
-          "id": "a40bc093-66cc-40a8-a6c4-eabe02a757d5",
+          "id": "9d104d37-fec9-4e91-833c-3701144756f9",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-peint-a",
           "target_name": "Sherwin ProFinish Coatings",
           "target_phone": "+1-555-019-5566",
-          "requirement_id": "6364fd84-a8c0-425d-b2e7-f3a8fed33644",
+          "requirement_id": "50e3c1c3-a6f3-46d2-bf7a-44d3b3d3a472",
           "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
           "status": "completed",
           "duration_seconds": 45,
@@ -939,16 +939,16 @@
             "delivery_days": 1,
             "stock": 25.0
           },
-          "created_at": "2026-09-11T14:23:52.503601"
+          "created_at": "2026-09-11T16:41:21.358464"
         },
         {
-          "id": "eee8e87d-013b-498b-9eef-5811c766f531",
+          "id": "8f83b77d-7328-40a0-98e2-7b2a0d21727d",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-peint-b",
           "target_name": "ColorCraft Express Supply",
           "target_phone": "+1-555-019-6677",
-          "requirement_id": "6364fd84-a8c0-425d-b2e7-f3a8fed33644",
+          "requirement_id": "50e3c1c3-a6f3-46d2-bf7a-44d3b3d3a472",
           "requirement_name": "Premium Interior Velvet Matte Paint (Ultra Durable)",
           "status": "completed",
           "duration_seconds": 50,
@@ -981,16 +981,16 @@
             "delivery_days": 3,
             "stock": 25.0
           },
-          "created_at": "2026-09-11T14:23:52.503833"
+          "created_at": "2026-09-11T16:41:21.358688"
         },
         {
-          "id": "d36a0730-848e-4637-a058-c069935044ac",
+          "id": "c0f2b128-8cd4-4b87-bb9d-88c69c50683e",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-elec-a",
           "target_name": "Metro Lighting & Electric Supply",
           "target_phone": "+1-555-019-7788",
-          "requirement_id": "b7c29baa-91e9-4d65-a5ab-c4837b0becaa",
+          "requirement_id": "b7333be2-e78b-4838-911c-0cf6fe39cab4",
           "requirement_name": "7W Dimmable Recessed LED Downlights (3000K Warm White)",
           "status": "completed",
           "duration_seconds": 45,
@@ -1023,16 +1023,16 @@
             "delivery_days": 1,
             "stock": 60.0
           },
-          "created_at": "2026-09-11T14:23:52.504128"
+          "created_at": "2026-09-11T16:41:21.358931"
         },
         {
-          "id": "04695613-e6f9-456e-ba34-c2277ee41813",
+          "id": "bbaefa68-affe-4444-a034-c2f11c1929a6",
           "project_id": "proj-apt-f4",
           "target_type": "supplier",
           "target_id": "sup-plomb-a",
           "target_name": "Prestige Bath & Plumbing Fixtures",
           "target_phone": "+1-555-019-8899",
-          "requirement_id": "14100359-920f-495b-a54d-8646c6241e6b",
+          "requirement_id": "c642dac6-abb2-4c6c-9476-1b49fb2d6a1b",
           "requirement_name": "Designer Brushed Brass Thermostatic Mixer Faucets",
           "status": "completed",
           "duration_seconds": 45,
@@ -1065,14 +1065,14 @@
             "delivery_days": 1,
             "stock": 7.5
           },
-          "created_at": "2026-09-11T14:23:52.504368"
+          "created_at": "2026-09-11T16:41:21.359191"
         }
       ],
       "voice_notes": "Walkthrough notes for The Miller Residence, 1,300 sq ft luxury condo remodel. Living room 400 sq ft: porcelain tile, velvet paint, 24 recessed LED lights. Kitchen 180 sq ft: backsplash tile, brass faucet. Master bath 96 sq ft: curbless walk-in shower. Schedule master tiler 4 days, finish painter 3 days, master electrician 2 days, and licensed plumber 2 days.",
       "quote": {
-        "id": "c80bcd40-ebdc-4914-aa40-facb483fca30",
+        "id": "d1e6882d-9721-4d9b-8a60-6c9ec76800b5",
         "project_id": "proj-apt-f4",
-        "quote_number": "CP-2026-705",
+        "quote_number": "CP-2026-166",
         "date_str": "Sep 11, 2026",
         "materials_subtotal": 3773.37,
         "labor_subtotal": 4306.56,

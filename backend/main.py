@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from backend.calle_service import calle_service
+from backend.gemini_service import gemini_service
 from backend.storage import (
     CallRecord,
     Offer,
@@ -115,7 +116,9 @@ class BatchProcurementRequest(BaseModel):
 
 
 class SettingsRequest(BaseModel):
-    calle_api_key: str
+    calle_api_key: Optional[str] = None
+    gemini_api_key: Optional[str] = None
+    gemini_model: Optional[str] = "gemini-3.8-flash"
 
 
 # ------------------ REST Endpoints ------------------
@@ -127,26 +130,41 @@ async def health_check() -> Dict[str, Any]:
         "app": "ContractorPilot",
         "calle_ready": calle_service.is_live_ready(),
         "calle_has_key": bool(calle_service.api_key),
+        "gemini_ready": gemini_service.is_configured(),
+        "gemini_model": gemini_service.model_name,
     }
 
 
 @app.get("/api/settings")
 async def get_settings() -> Dict[str, Any]:
-    masked_key = ""
+    masked_calle_key = ""
     if calle_service.api_key:
-        masked_key = f"{calle_service.api_key[:4]}...{calle_service.api_key[-4:]}" if len(calle_service.api_key) > 8 else "***"
+        masked_calle_key = f"{calle_service.api_key[:4]}...{calle_service.api_key[-4:]}" if len(calle_service.api_key) > 8 else "***"
+
+    masked_gemini_key = ""
+    if gemini_service.api_key:
+        masked_gemini_key = f"{gemini_service.api_key[:4]}...{gemini_service.api_key[-4:]}" if len(gemini_service.api_key) > 8 else "***"
+
     return {
-        "calle_api_key_masked": masked_key,
+        "calle_api_key_masked": masked_calle_key,
         "is_live_ready": calle_service.is_live_ready(),
+        "gemini_api_key_masked": masked_gemini_key,
+        "gemini_is_ready": gemini_service.is_configured(),
+        "gemini_model": gemini_service.model_name,
     }
 
 
 @app.post("/api/settings")
 async def update_settings(req: SettingsRequest) -> Dict[str, Any]:
-    calle_service.update_api_key(req.calle_api_key.strip())
+    if req.calle_api_key is not None:
+        calle_service.update_api_key(req.calle_api_key.strip())
+    if req.gemini_api_key is not None:
+        gemini_service.update_config(req.gemini_api_key.strip(), req.gemini_model)
     return {
         "success": True,
         "is_live_ready": calle_service.is_live_ready(),
+        "gemini_is_ready": gemini_service.is_configured(),
+        "gemini_model": gemini_service.model_name,
     }
 
 
@@ -604,12 +622,67 @@ def parse_voice_note_into_requirements(voice_text: str) -> Dict[str, Any]:
 
 @app.post("/api/projects/{project_id}/voice-extract")
 async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict[str, Any]:
-    """Analyzes the walkthrough voice dictation and extracts rooms, trade subcontractor scopes, and materials."""
+    """Analyzes the walkthrough voice dictation using Gemini 3.8 Flash (with local heuristic fallback)."""
     proj = store.projects.get(project_id)
     if not proj:
         raise HTTPException(status_code=404, detail="Project not found")
 
-    parsed = parse_voice_note_into_requirements(req.voice_text)
+    parsed: Optional[Dict[str, Any]] = None
+    ai_engine = "Local Heuristic Engine"
+
+    if gemini_service.is_configured():
+        try:
+            gemini_result = await gemini_service.analyze_walkthrough(req.voice_text)
+            if gemini_result:
+                gemini_rooms = [
+                    Room(
+                        name=str(r.get("name", "Remodel Area")),
+                        length=float(r.get("length", 15.0)),
+                        width=float(r.get("width", 12.0)),
+                        height=float(r.get("height", 9.0)),
+                        surface=float(r.get("surface", float(r.get("length", 15.0)) * float(r.get("width", 12.0)))),
+                        renovation_types=list(r.get("renovation_types", ["General Remodel"])),
+                        notes=str(r.get("notes", "Extracted by Gemini AI")),
+                    )
+                    for r in gemini_result.get("rooms", [])
+                ]
+                gemini_labor = [
+                    Requirement(
+                        category=str(t.get("category", "General Trade")),
+                        item_name=str(t.get("item_name", "Subcontractor Scope")),
+                        quantity=float(t.get("quantity", 2.0)),
+                        unit=str(t.get("unit", "days")),
+                        item_type="labor",
+                        estimated_unit_price=float(t.get("estimated_unit_price", 400.0)),
+                        notes=str(t.get("notes", "Estimated by Gemini AI")),
+                    )
+                    for t in gemini_result.get("tasks_by_trade", [])
+                ]
+                gemini_materials = [
+                    Requirement(
+                        category=str(m.get("category", "Supplies")),
+                        item_name=str(m.get("item_name", "Construction Material")),
+                        quantity=float(m.get("quantity", 1.0)),
+                        unit=str(m.get("unit", "units")),
+                        item_type="material",
+                        estimated_unit_price=float(m.get("estimated_unit_price", 50.0)),
+                        notes=str(m.get("notes", "Takeoff by Gemini AI")),
+                    )
+                    for m in gemini_result.get("materials", [])
+                ]
+                parsed = {
+                    "rooms": gemini_rooms,
+                    "tasks_by_trade": gemini_labor,
+                    "materials": gemini_materials,
+                }
+                used_model = gemini_result.get("ai_model", gemini_service.model_name)
+                ai_engine = f"Google Gemini ({used_model})"
+        except Exception as e:
+            print(f"[Gemini] Error analyzing walkthrough, falling back to local engine: {e}")
+
+    if not parsed:
+        parsed = parse_voice_note_into_requirements(req.voice_text)
+
     proj.voice_notes = req.voice_text
 
     if req.replace_existing:
@@ -629,6 +702,7 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
 
     return {
         "success": True,
+        "ai_engine": ai_engine,
         "transcription": req.voice_text,
         "rooms": [r.model_dump() for r in proj.rooms],
         "tasks_by_trade": [t.model_dump() for t in proj.requirements if t.item_type == "labor"],
