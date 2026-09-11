@@ -120,7 +120,7 @@ class SettingsRequest(BaseModel):
 
 # ------------------ REST Endpoints ------------------
 
-@app.get("/api/health")
+@app.api_route("/api/health", methods=["GET", "HEAD"])
 async def health_check() -> Dict[str, Any]:
     return {
         "status": "healthy",
@@ -1297,7 +1297,7 @@ if os.path.exists(FRONTEND_DIR):
         app.mount("/js", StaticFiles(directory=js_dir), name="js")
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def read_index() -> FileResponse:
     index_path = os.path.join(FRONTEND_DIR, "index.html")
     if os.path.exists(index_path):
