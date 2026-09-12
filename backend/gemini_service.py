@@ -160,14 +160,16 @@ class GeminiService:
             "}"
         )
 
+        clean_mime = (mime_type or "audio/webm").split(";")[0].strip()
+
         payload = {
             "contents": [
                 {
                     "parts": [
                         {"text": system_prompt},
                         {
-                            "inline_data": {
-                                "mime_type": mime_type,
+                            "inlineData": {
+                                "mimeType": clean_mime,
                                 "data": audio_base64
                             }
                         }
@@ -180,19 +182,20 @@ class GeminiService:
             }
         }
 
-        # Models with native audio support in Google AI Studio
+        # Models with native multimodal audio support in Google AI Studio
         audio_candidates = [
             "gemini-2.0-flash",
-            "gemini-2.5-flash",
             "gemini-1.5-flash",
+            "gemini-2.5-flash",
+            "gemini-1.5-pro",
             self.model_name
         ]
         candidates: List[str] = []
-        for m in [self.model_name] + audio_candidates:
-            if m not in candidates:
+        for m in audio_candidates:
+            if m and m not in candidates:
                 candidates.append(m)
 
-        async with httpx.AsyncClient(timeout=40.0) as client:
+        async with httpx.AsyncClient(timeout=45.0) as client:
             for model in candidates:
                 url = f"{GEMINI_API_BASE}/{model}:generateContent?key={self.api_key}"
                 try:
@@ -206,15 +209,23 @@ class GeminiService:
                             cleaned = raw_text.strip()
                             if cleaned.startswith("```json"):
                                 cleaned = cleaned[7:]
+                            elif cleaned.startswith("```"):
+                                cleaned = cleaned[3:]
                             if cleaned.endswith("```"):
                                 cleaned = cleaned[:-3]
+
+                            s_idx = cleaned.find("{")
+                            e_idx = cleaned.rfind("}")
+                            if s_idx != -1 and e_idx != -1:
+                                cleaned = cleaned[s_idx:e_idx + 1]
+
                             parsed = json.loads(cleaned.strip())
                             if "rooms" in parsed or "tasks_by_trade" in parsed or "transcription" in parsed:
                                 logger.info(f"Successfully processed direct audio walkthrough using {model}")
                                 parsed["ai_model"] = model
                                 return parsed
                     else:
-                        logger.warning(f"Gemini Audio API returned {response.status_code} for {model}: {response.text[:200]}")
+                        logger.warning(f"Gemini Audio API returned {response.status_code} for {model}: {response.text[:300]}")
                 except Exception as e:
                     logger.error(f"Error calling Gemini Audio with {model}: {e}")
                     continue
