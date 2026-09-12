@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ContractorPilot — Autonomous Voice Copilot: Jobsite Walkthrough to Proposal</title>
   <meta name="description" content="Contractors dictate walkthrough voice notes on site. AI structures trade scopes and materials, then CALL-E autonomously calls suppliers and subcontractors to build winning quotes.">
-  <link rel="stylesheet" href="css/style.css?v=20260912_5">
+  <link rel="stylesheet" href="css/style.css?v=20260912_6">
 </head>
 <body>
 
@@ -157,7 +157,12 @@
                 <span style="font-size: 0.72rem; color: var(--text-muted);">Real-time speech-to-text / editable before analysis</span>
               </div>
             </div>
-            <button class="btn-clean-text" id="btn-clear-transcript" title="Clear text">Clear</button>
+            <div class="transcript-header-actions" style="display: flex; align-items: center; gap: 0.65rem;">
+              <button class="btn-clean-text" id="btn-clear-transcript" title="Clear text">Clear</button>
+              <button class="btn btn-primary" id="btn-extract-voice" style="font-size: 0.85rem; padding: 0.42rem 0.95rem; white-space: nowrap; display: flex; align-items: center; gap: 0.35rem;">
+                ⚡ Analyze Walkthrough & Generate Remodel Scopes ➔
+              </button>
+            </div>
           </div>
 
           <!-- Textarea area -->
@@ -170,15 +175,11 @@
           </div>
 
           <!-- Action Footer -->
-          <div class="step-actions-footer">
-            <div>
-              <span id="transcription-word-count" style="font-size: 0.85rem; color: var(--text-muted);">
-                0 words
-              </span>
-            </div>
-            <button class="btn btn-primary" id="btn-extract-voice" style="font-size: 0.9rem; padding: 0.6rem 1.2rem;">
-              ⚡ Analyze Walkthrough & Generate Remodel Scopes ➔
-            </button>
+          <div class="step-actions-footer" style="padding-top: 0.4rem;">
+            <span id="transcription-word-count" style="font-size: 0.82rem; color: var(--text-muted);">
+              0 words
+            </span>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">Ready for instant Gemini extraction</span>
           </div>
         </div>
 
@@ -809,7 +810,7 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Application Scripts -->
-  <script src="js/calle_demo.js?v=20260912_5"></script>
-  <script src="js/app.js?v=20260912_5"></script>
+  <script src="js/calle_demo.js?v=20260912_6"></script>
+  <script src="js/app.js?v=20260912_6"></script>
 </body>
 </html>
