@@ -33,11 +33,11 @@ class CalleCallCenter {
         targetPhone: "+1-555-019-2831 (Sarah Jenkins, Pro Desk)",
         trackBadge: "🎙️ 2-Way Call: Sarah Jenkins (Apex Tile)",
         turns: [
-          { speaker: "contact", name: "Sarah Jenkins (Supplier)", text: "Apex Tile and Stone, Sarah speaking. How can I help you today?", time: 0.1 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hello Sarah! This is CALL-E, autonomous procurement copilot for ContractorPilot. We are sourcing 520 sq ft of 24x24 Calacatta porcelain floor tiles for an active condo remodel in Metro Area. Do you have that in stock, and what is your best contractor rate?", time: 3.5 },
-          { speaker: "contact", name: "Sarah Jenkins (Supplier)", text: "Hi CALL-E! Yes, we have five pallets ready in our warehouse. For 520 sq ft, our wholesale rate is $4.20 per sq ft, down from $4.50. And we'll deliver it to the jobsite in 48 hours with no freight charge.", time: 13.0 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "That's fantastic. $4.20 per sq ft with free jobsite delivery confirmed. I have captured your quote and added it to our master project proposal. Thank you, Sarah!", time: 21.0 },
-          { speaker: "contact", name: "Sarah Jenkins (Supplier)", text: "You got it! I've reserved the lot for ContractorPilot. Have a great day!", time: 26.5 }
+          { speaker: "contact", name: "Sarah Jenkins (Supplier)", text: "Apex Tile and Stone, Sarah speaking. How can I help you today?", startTime: 0.0, endTime: 5.45 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hello Sarah! This is CALL-E, autonomous procurement copilot for ContractorPilot. We are sourcing 520 sq ft of 24x24 Calacatta porcelain floor tiles for an active condo remodel in Metro Area. Do you have that in stock, and what is your best contractor rate?", startTime: 5.45, endTime: 23.35 },
+          { speaker: "contact", name: "Sarah Jenkins (Supplier)", text: "Hi CALL-E! Yes, we have five pallets ready in our warehouse. For 520 sq ft, our wholesale rate is $4.20 per sq ft, down from $4.50. And we'll deliver it to the jobsite in 48 hours with no freight charge.", startTime: 23.35, endTime: 41.52 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "That's fantastic. $4.20 per sq ft with free jobsite delivery confirmed. I have captured your quote and added it to our master project proposal. Thank you, Sarah!", startTime: 41.52, endTime: 52.97 },
+          { speaker: "contact", name: "Sarah Jenkins (Supplier)", text: "You got it! I've reserved the lot for ContractorPilot. Have a great day!", startTime: 52.97, endTime: 59.64 }
         ],
         extracted: { price: "$4.20 / sq ft", discount: "6.7 % ($4.20 vs $4.50)", stock: "In Stock (5 Pallets)", delay: "2 business days (Free Freight)" }
       },
@@ -50,11 +50,11 @@ class CalleCallCenter {
         targetPhone: "+1-555-018-1122 (Marcus Reed, Master Tiler)",
         trackBadge: "🎙️ 2-Way Call: Marcus Reed (Master Tiler)",
         turns: [
-          { speaker: "contact", name: "Marcus Reed (Tiler)", text: "Marcus Reed here. What project do you have for me?", time: 0.1 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hi Marcus! CALL-E calling on behalf of ContractorPilot. We have a 520 sq ft porcelain tile scope for the Miller Residence remodel, including kitchen floors and a curbless master shower. What is your current day rate and estimated duration?", time: 3.2 },
-          { speaker: "contact", name: "Marcus Reed (Tiler)", text: "Sounds like a solid job. My day rate is $425. For that layout with the shower pan slope and leveling, I'll need four days. I can start next Tuesday.", time: 12.8 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Perfect. 4 days at $425 per day, starting next Tuesday. I've logged your terms into the project schedule and cost sheet. Thanks Marcus!", time: 19.5 },
-          { speaker: "contact", name: "Marcus Reed (Tiler)", text: "Awesome. Text me the jobsite address and lockbox code on Monday. Catch you later!", time: 25.0 }
+          { speaker: "contact", name: "Marcus Reed (Tiler)", text: "Marcus Reed here. What project do you have for me?", startTime: 0.0, endTime: 4.63 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hi Marcus! CALL-E calling on behalf of ContractorPilot. We have a 520 sq ft porcelain tile scope for the Miller Residence remodel, including kitchen floors and a curbless master shower. What is your current day rate and estimated duration?", startTime: 4.63, endTime: 19.92 },
+          { speaker: "contact", name: "Marcus Reed (Tiler)", text: "Sounds like a solid job. My day rate is $425. For that layout with the shower pan slope and leveling, I'll need four days. I can start next Tuesday.", startTime: 19.92, endTime: 33.58 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Perfect. 4 days at $425 per day, starting next Tuesday. I've logged your terms into the project schedule and cost sheet. Thanks Marcus!", startTime: 33.58, endTime: 43.49 },
+          { speaker: "contact", name: "Marcus Reed (Tiler)", text: "Awesome. Text me the jobsite address and lockbox code on Monday. Catch you later!", startTime: 43.49, endTime: 51.07 }
         ],
         extracted: { price: "$425 / day", discount: "Confirmed Rate", stock: "Available next Tuesday", delay: "4 working days" }
       },
@@ -67,11 +67,11 @@ class CalleCallCenter {
         targetPhone: "+1-555-019-5566 (Mark Stevens, Commercial)",
         trackBadge: "🎙️ 2-Way Call: Mark Stevens (Sherwin Paint)",
         turns: [
-          { speaker: "contact", name: "Mark Stevens (Supplier)", text: "Sherwin ProFinish, Mark speaking at the contractor desk.", time: 0.1 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hello Mark, CALL-E here from ContractorPilot. We need 10 gallons of Ultra Durable velvet matte interior paint in Alabaster tone for an interior remodel. Can you confirm stock and your wholesale contractor price?", time: 3.0 },
-          { speaker: "contact", name: "Mark Stevens (Supplier)", text: "Hey CALL-E! Yep, plenty in stock. On your pro account, that's $58 a gallon, saving you about $7 a gallon. I can have all 10 gallons tinted and ready for will-call pickup by 2 PM today, or courier delivery tomorrow morning.", time: 12.5 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Confirmed at $58 per gallon for 10 gallons. I have logged this offer in our procurement system. Thank you Mark!", time: 20.0 },
-          { speaker: "contact", name: "Mark Stevens (Supplier)", text: "Anytime! It'll be labeled under ContractorPilot at the counter. Have a good one!", time: 25.5 }
+          { speaker: "contact", name: "Mark Stevens (Supplier)", text: "Sherwin ProFinish, Mark speaking at the contractor desk.", startTime: 0.0, endTime: 4.13 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hello Mark, CALL-E here from ContractorPilot. We need 10 gallons of Ultra Durable velvet matte interior paint in Alabaster tone for an interior remodel. Can you confirm stock and your wholesale contractor price?", startTime: 4.13, endTime: 17.59 },
+          { speaker: "contact", name: "Mark Stevens (Supplier)", text: "Hey CALL-E! Yep, plenty in stock. On your pro account, that's $58 a gallon, saving you about $7 a gallon. I can have all 10 gallons tinted and ready for will-call pickup by 2 PM today, or courier delivery tomorrow morning.", startTime: 17.59, endTime: 34.68 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Confirmed at $58 per gallon for 10 gallons. I have logged this offer in our procurement system. Thank you Mark!", startTime: 34.68, endTime: 41.69 },
+          { speaker: "contact", name: "Mark Stevens (Supplier)", text: "Anytime! It'll be labeled under ContractorPilot at the counter. Have a good one!", startTime: 41.69, endTime: 48.96 }
         ],
         extracted: { price: "$58 / gal", discount: "-10.7% ($7 off list)", stock: "In Stock (Will-Call ready)", delay: "Same day / Next day" }
       },
@@ -84,11 +84,11 @@ class CalleCallCenter {
         targetPhone: "+1-555-018-9900 (Elena Rodriguez, Finishes)",
         trackBadge: "🎙️ 2-Way Call: Elena Rodriguez (Waterproofing)",
         turns: [
-          { speaker: "contact", name: "Elena Rodriguez (Artisan)", text: "Elena Rodriguez Tile and Waterproofing, how can I help?", time: 0.1 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hi Elena! This is CALL-E from ContractorPilot. We have a master bathroom remodel requiring full waterproof membrane and curbless shower prep. What is your day rate and availability?", time: 3.2 },
-          { speaker: "contact", name: "Elena Rodriguez (Artisan)", text: "Hi! For curbless waterproofing and walls, my rate is $400 a day. It's a three-day scope, and I provide a 10-year moisture warranty. I can start next Thursday.", time: 11.5 },
-          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Noted: 3 days at $400 a day with 10-year warranty, starting next Thursday. Terms captured and scored in our proposal builder. Thank you, Elena!", time: 18.0 },
-          { speaker: "contact", name: "Elena Rodriguez (Artisan)", text: "Perfect! Looking forward to working with ContractorPilot. Bye!", time: 23.0 }
+          { speaker: "contact", name: "Elena Rodriguez (Artisan)", text: "Elena Rodriguez Tile and Waterproofing, how can I help?", startTime: 0.0, endTime: 4.22 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hi Elena! This is CALL-E from ContractorPilot. We have a master bathroom remodel requiring full waterproof membrane and curbless shower prep. What is your day rate and availability?", startTime: 4.22, endTime: 15.28 },
+          { speaker: "contact", name: "Elena Rodriguez (Artisan)", text: "Hi! For curbless waterproofing and walls, my rate is $400 a day. It's a three-day scope, and I provide a 10-year moisture warranty. I can start next Thursday.", startTime: 15.28, endTime: 27.42 },
+          { speaker: "ai", name: "CALL-E (AI Agent)", text: "Noted: 3 days at $400 a day with 10-year warranty, starting next Thursday. Terms captured and scored in our proposal builder. Thank you, Elena!", startTime: 27.42, endTime: 37.24 },
+          { speaker: "contact", name: "Elena Rodriguez (Artisan)", text: "Perfect! Looking forward to working with ContractorPilot. Bye!", startTime: 37.24, endTime: 42.14 }
         ],
         extracted: { price: "$400 / day", discount: "10-Yr Moisture Warranty", stock: "Starts next Thursday", delay: "3 working days" }
       }
@@ -275,7 +275,7 @@ class CalleCallCenter {
     this.startWaveAnimation();
     this.isPlayingAudio = true;
 
-    // Time updates & synchronized dialogue streaming
+    // Time updates & synchronized dialogue streaming (turns appear strictly AFTER vocal ends)
     let displayedIndices = new Set();
     this.currentAudio.ontimeupdate = () => {
       const curTime = this.currentAudio.currentTime;
@@ -283,19 +283,48 @@ class CalleCallCenter {
       const secs = String(Math.floor(curTime % 60)).padStart(2, "0");
       if (durationTag) durationTag.innerText = `${mins}:${secs}`;
 
-      // Check turns
+      // 1. Detect if a speaker is actively talking right now
+      let activeSpeakingTurn = null;
+      sc.turns.forEach((turn) => {
+        if (curTime >= turn.startTime && curTime < turn.endTime) {
+          activeSpeakingTurn = turn;
+        }
+      });
+
+      // 2. Render turn text ONLY after that speaker has FINISHED speaking!
       sc.turns.forEach((turn, idx) => {
-        if (curTime >= turn.time && !displayedIndices.has(idx)) {
+        if (curTime >= turn.endTime && !displayedIndices.has(idx)) {
           displayedIndices.add(idx);
           if (transcriptBox) {
+            const liveInd = document.getElementById("live-speaking-indicator");
+            if (liveInd) liveInd.remove();
+
             const msg = document.createElement("div");
             msg.className = `transcript-msg ${turn.speaker}`;
             msg.innerHTML = `<strong>${turn.name}:</strong> ${turn.text}`;
             transcriptBox.appendChild(msg);
-            transcriptBox.scrollTop = transcriptBox.scrollHeight;
+
+            // Autoscroll strictly to bottom as messages fill or exceed card
+            this.scrollTranscriptToBottom();
           }
         }
       });
+
+      // 3. Live speaking indicator while vocal piece is playing
+      if (transcriptBox && activeSpeakingTurn) {
+        let liveInd = document.getElementById("live-speaking-indicator");
+        if (!liveInd) {
+          liveInd = document.createElement("div");
+          liveInd.id = "live-speaking-indicator";
+          transcriptBox.appendChild(liveInd);
+        }
+        liveInd.className = `transcript-msg ${activeSpeakingTurn.speaker} speaking-live`;
+        liveInd.innerHTML = `<strong>${activeSpeakingTurn.name}:</strong> 🎙️ <em>Speaking...</em> <span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>`;
+        this.scrollTranscriptToBottom();
+      } else {
+        const liveInd = document.getElementById("live-speaking-indicator");
+        if (liveInd) liveInd.remove();
+      }
 
       // Show extracted terms at 70% of call
       if (this.currentAudio.duration && curTime >= this.currentAudio.duration * 0.7) {
@@ -315,11 +344,16 @@ class CalleCallCenter {
           if (app && app.showToast) {
             app.showToast(`Terms agreed with ${sc.targetName}!`, "success");
           }
+          this.scrollTranscriptToBottom();
         }
       }
     };
 
     this.currentAudio.onended = () => {
+      const liveInd = document.getElementById("live-speaking-indicator");
+      if (liveInd) liveInd.remove();
+      this.scrollTranscriptToBottom();
+
       this.isPlayingAudio = false;
       this.stopWaveAnimation();
       if (stateText) stateText.innerText = "CALL COMPLETED (OFFER SAVED)";
@@ -378,6 +412,19 @@ class CalleCallCenter {
     setTimeout(() => {
       this.playCallAudio();
     }, 800);
+  }
+
+  scrollTranscriptToBottom() {
+    const transcriptBox = document.getElementById("monitor-transcript-messages");
+    if (!transcriptBox) return;
+    transcriptBox.scrollTo({
+      top: transcriptBox.scrollHeight,
+      behavior: "smooth"
+    });
+    // Ensure scroll reaches absolute bottom even with active animations
+    setTimeout(() => {
+      transcriptBox.scrollTop = transcriptBox.scrollHeight;
+    }, 40);
   }
 
   handleStreamEvent(event) {
