@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ContractorPilot — Autonomous Voice Copilot: Jobsite Walkthrough to Proposal</title>
   <meta name="description" content="Contractors dictate walkthrough voice notes on site. AI structures trade scopes and materials, then CALL-E autonomously calls suppliers and subcontractors to build winning quotes.">
-  <link rel="stylesheet" href="css/style.css?v=20260912_8">
+  <link rel="stylesheet" href="css/style.css?v=20260912_10">
 </head>
 <body>
 
@@ -108,6 +108,12 @@
             <div class="mic-status-label" id="mic-status-text">
               Click the microphone to dictate notes live
             </div>
+            <!-- Language Selector Pill -->
+            <div class="mic-lang-selector" style="margin-top: 0.65rem; display: flex; align-items: center; justify-content: center; gap: 0.45rem;">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Lang:</span>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-lang-fr" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; border-radius: var(--radius-pill); cursor: pointer;">🇫🇷 FR</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-lang-en" style="font-size: 0.75rem; padding: 0.2rem 0.55rem; border-radius: var(--radius-pill); cursor: pointer;">🇺🇸 EN</button>
+            </div>
           </div>
 
           <!-- Dynamic Audio Soundwave Bars -->
@@ -170,7 +176,7 @@
             <textarea 
               id="voice-transcription-input" 
               class="voice-textarea" 
-              placeholder="Example: Walkthrough notes for The Miller Residence, 1,300 sq ft condo remodel. Living room (400 sq ft): prep walls, 2 coats of washable velvet matte paint, install 24 recessed LED downlights on smart dimmers. Kitchen (180 sq ft) and Master Bath (96 sq ft): install 520 sq ft of 24x24 porcelain floor tiles. In master bath: curbless walk-in shower waterproofing, double vanity, and designer brass thermostatic mixer faucets. Schedule master tiler for 4 days, finish painter for 3 days, licensed plumber for 2 days, and master electrician for 2 days..."
+              placeholder="🎙️ Click the microphone above to dictate walkthrough notes, or choose a preset scenario below..."
             ></textarea>
           </div>
 
@@ -327,17 +333,13 @@
 
           <!-- Real Neural Audio Voice Player Bar -->
           <div class="call-audio-player-bar" id="monitor-audio-player-bar">
-            <div class="audio-player-meta" style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
-              <span class="badge" id="monitor-audio-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-size: 0.72rem; padding: 0.2rem 0.5rem; white-space: nowrap;">
-                🎙️ Neural Call Audio
-              </span>
-              <span id="monitor-audio-track-name" style="font-size: 0.8rem; color: var(--text-main); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                Apex Tile (Sarah Jenkins) ⟷ CALL-E AI
-              </span>
+            <div class="audio-player-meta">
+              <span class="badge" id="monitor-audio-badge">🎙️ 2-Way Audio</span>
+              <span id="monitor-audio-track-name">Apex Tile (Sarah Jenkins)</span>
             </div>
-            <button class="btn btn-secondary btn-sm" id="btn-play-monitor-audio" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35); color: var(--accent-cyan); font-weight: 600; display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+            <button class="btn btn-secondary btn-sm" id="btn-play-monitor-audio">
               <span id="monitor-audio-play-icon">▶️</span>
-              <span id="monitor-audio-play-text">Play Audio Call</span>
+              <span id="monitor-audio-play-text">Play Audio</span>
             </button>
           </div>
 
@@ -812,7 +814,7 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Application Scripts -->
-  <script src="js/calle_demo.js?v=20260912_8"></script>
-  <script src="js/app.js?v=20260912_8"></script>
+  <script src="js/calle_demo.js?v=20260912_10"></script>
+  <script src="js/app.js?v=20260912_10"></script>
 </body>
 </html>

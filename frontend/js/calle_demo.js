@@ -31,7 +31,7 @@ class CalleCallCenter {
         targetName: "Apex Tile & Stone Direct (Sarah Jenkins)",
         targetDesc: "Sourcing 520 sq ft Calacatta Porcelain Tiles 24x24",
         targetPhone: "+1-555-019-2831 (Sarah Jenkins, Pro Desk)",
-        trackBadge: "🎙️ 2-Way Call: Sarah Jenkins (Apex Tile)",
+        trackBadge: "🎙️ 2-Way Audio",
         turns: [
           { speaker: "contact", name: "Sarah Jenkins (Supplier)", text: "Apex Tile and Stone, Sarah speaking. How can I help you today?", startTime: 0.0, endTime: 5.45 },
           { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hello Sarah! This is CALL-E, autonomous procurement copilot for ContractorPilot. We are sourcing 520 sq ft of 24x24 Calacatta porcelain floor tiles for an active condo remodel in Metro Area. Do you have that in stock, and what is your best contractor rate?", startTime: 5.45, endTime: 23.35 },
@@ -48,7 +48,7 @@ class CalleCallCenter {
         targetName: "Marcus Reed (Master Tile Setter)",
         targetDesc: "Labor: 520 sq ft Porcelain & Curbless Shower Pan",
         targetPhone: "+1-555-018-1122 (Marcus Reed, Master Tiler)",
-        trackBadge: "🎙️ 2-Way Call: Marcus Reed (Master Tiler)",
+        trackBadge: "🎙️ 2-Way Audio",
         turns: [
           { speaker: "contact", name: "Marcus Reed (Tiler)", text: "Marcus Reed here. What project do you have for me?", startTime: 0.0, endTime: 4.63 },
           { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hi Marcus! CALL-E calling on behalf of ContractorPilot. We have a 520 sq ft porcelain tile scope for the Miller Residence remodel, including kitchen floors and a curbless master shower. What is your current day rate and estimated duration?", startTime: 4.63, endTime: 19.92 },
@@ -65,7 +65,7 @@ class CalleCallCenter {
         targetName: "Sherwin ProFinish Coatings (Mark Stevens)",
         targetDesc: "Sourcing 10 gal Ultra Durable Velvet Matte (Alabaster)",
         targetPhone: "+1-555-019-5566 (Mark Stevens, Commercial)",
-        trackBadge: "🎙️ 2-Way Call: Mark Stevens (Sherwin Paint)",
+        trackBadge: "🎙️ 2-Way Audio",
         turns: [
           { speaker: "contact", name: "Mark Stevens (Supplier)", text: "Sherwin ProFinish, Mark speaking at the contractor desk.", startTime: 0.0, endTime: 4.13 },
           { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hello Mark, CALL-E here from ContractorPilot. We need 10 gallons of Ultra Durable velvet matte interior paint in Alabaster tone for an interior remodel. Can you confirm stock and your wholesale contractor price?", startTime: 4.13, endTime: 17.59 },
@@ -82,7 +82,7 @@ class CalleCallCenter {
         targetName: "Elena Rodriguez (Tile & Waterproofing)",
         targetDesc: "Labor: Master Bath Waterproof Membrane & Curbless Shower",
         targetPhone: "+1-555-018-9900 (Elena Rodriguez, Finishes)",
-        trackBadge: "🎙️ 2-Way Call: Elena Rodriguez (Waterproofing)",
+        trackBadge: "🎙️ 2-Way Audio",
         turns: [
           { speaker: "contact", name: "Elena Rodriguez (Artisan)", text: "Elena Rodriguez Tile and Waterproofing, how can I help?", startTime: 0.0, endTime: 4.22 },
           { speaker: "ai", name: "CALL-E (AI Agent)", text: "Hi Elena! This is CALL-E from ContractorPilot. We have a master bathroom remodel requiring full waterproof membrane and curbless shower prep. What is your day rate and availability?", startTime: 4.22, endTime: 15.28 },
@@ -280,7 +280,7 @@ class CalleCallCenter {
     if (transcriptBox) transcriptBox.innerHTML = "";
     if (stateText) stateText.innerText = "IN CALL (LIVE NEURAL AUDIO)";
     if (playIcon) playIcon.innerText = "⏸️";
-    if (playText) playText.innerText = "Pause Call Audio";
+    if (playText) playText.innerText = "Pause Audio";
 
     this.startWaveAnimation();
     this.isPlayingAudio = true;
@@ -397,7 +397,7 @@ class CalleCallCenter {
 
     if (stateText) stateText.innerText = "CALL PAUSED";
     if (playIcon) playIcon.innerText = "▶️";
-    if (playText) playText.innerText = "Resume Call Audio";
+    if (playText) playText.innerText = "Resume Audio";
   }
 
   stopCurrentAudio() {
@@ -412,7 +412,7 @@ class CalleCallCenter {
     const playIcon = document.getElementById("monitor-audio-play-icon");
     const playText = document.getElementById("monitor-audio-play-text");
     if (playIcon) playIcon.innerText = "▶️";
-    if (playText) playText.innerText = "Play Audio Call";
+    if (playText) playText.innerText = "Play Audio";
   }
 
   // Called automatically when user clicks batch procurement

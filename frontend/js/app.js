@@ -22,6 +22,8 @@ class ContractorPilotApp {
     this.recognition = null;
     this.recordTimerInterval = null;
     this.recordSeconds = 0;
+    this.dictationLang = (navigator.language && navigator.language.startsWith("fr")) ? "fr-FR" : "en-US";
+    this.speechFinalTranscript = "";
     // API Base URL (dynamic for localhost, cloud deployment, and remote hosts)
     this.apiBase = (window.location.protocol.startsWith("http") && window.location.host) ? "" : "http://127.0.0.1:8000";
   }
@@ -52,10 +54,22 @@ class ContractorPilotApp {
     this.setupSpeechRecognition();
     this.setupEventListeners();
     this.initAudioStudio();
+    this.resetWalkthroughTextarea();
     await this.checkSettings();
     await this.loadProjectDetails(this.currentProjectId);
     if (window.calleCenter) {
       window.calleCenter.init(this.currentProjectId);
+    }
+  }
+
+  resetWalkthroughTextarea() {
+    const textarea = document.getElementById("voice-transcription-input");
+    if (textarea) {
+      textarea.value = "";
+      textarea.placeholder = (this.dictationLang === "fr-FR")
+        ? "🎙️ Cliquez sur le microphone ci-contre pour dicter vos notes de chantier, ou cliquez sur un scénario ci-dessous..."
+        : "🎙️ Click the microphone on the left to dictate your walkthrough notes, or click a demo scenario below...";
+      this.updateWordCount();
     }
   }
 
@@ -107,35 +121,66 @@ class ContractorPilotApp {
 
   setupSpeechRecognition() {
     const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRec) {
-      this.recognition = new SpeechRec();
-      this.recognition.lang = "en-US";
-      this.recognition.continuous = true;
-      this.recognition.interimResults = true;
-
-      this.recognition.onresult = (event) => {
-        let currentTranscript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          currentTranscript += event.results[i][0].transcript;
-        }
-        const textarea = document.getElementById("voice-transcription-input");
-        if (textarea) {
-          textarea.value = (textarea.value ? textarea.value + " " : "") + currentTranscript;
-          this.updateWordCount();
-        }
-      };
-
-      this.recognition.onerror = (event) => {
-        console.warn("[SpeechRecognition] Error:", event.error);
-        this.stopVoiceRecording();
-      };
-
-      this.recognition.onend = () => {
-        if (this.isRecording) {
-          this.stopVoiceRecording();
-        }
-      };
+    if (!SpeechRec) {
+      console.warn("[SpeechRecognition] Web Speech API not supported in this browser.");
+      return;
     }
+
+    this.recognition = new SpeechRec();
+    this.recognition.lang = this.dictationLang;
+    this.recognition.continuous = true;
+    this.recognition.interimResults = true;
+
+    this.recognition.onresult = (event) => {
+      let interim = "";
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          this.speechFinalTranscript += event.results[i][0].transcript + " ";
+        } else {
+          interim += event.results[i][0].transcript;
+        }
+      }
+      const textarea = document.getElementById("voice-transcription-input");
+      if (textarea) {
+        textarea.value = (this.speechFinalTranscript + interim).trim();
+        this.updateWordCount();
+      }
+    };
+
+    this.recognition.onerror = (event) => {
+      console.warn("[SpeechRecognition] Error:", event.error);
+      if (event.error === "no-speech") {
+        // Do not abort on brief silence pause; continue listening!
+        return;
+      }
+      if (event.error === "not-allowed") {
+        this.showToast(
+          (this.dictationLang === "fr-FR")
+            ? "Accès micro refusé. Veuillez autoriser le microphone dans la barre d'adresse de votre navigateur."
+            : "Microphone access blocked. Please allow microphone in your browser URL bar.",
+          "error"
+        );
+      } else if (event.error === "network") {
+        this.showToast(
+          (this.dictationLang === "fr-FR")
+            ? "Erreur réseau lors de la reconnaissance vocale."
+            : "Speech recognition network error.",
+          "error"
+        );
+      }
+      this.stopVoiceRecording();
+    };
+
+    this.recognition.onend = () => {
+      // Chrome stops recognition on brief silence; auto-restart if still recording!
+      if (this.isRecording) {
+        try {
+          this.recognition.start();
+        } catch (e) {
+          // Ignore if already starting
+        }
+      }
+    };
   }
 
   toggleVoiceRecording() {
@@ -147,11 +192,37 @@ class ContractorPilotApp {
   }
 
   startVoiceRecording() {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) {
+      alert(
+        (this.dictationLang === "fr-FR")
+          ? "La reconnaissance vocale n'est pas supportée sur ce navigateur. Veuillez utiliser Google Chrome ou saisir vos notes au clavier."
+          : "Speech recognition is not supported in this browser. Please use Google Chrome or type notes directly."
+      );
+      return;
+    }
+
     this.isRecording = true;
+    this.speechFinalTranscript = "";
+
+    // Clear previous or demo text so the user's voice appears cleanly!
+    const textarea = document.getElementById("voice-transcription-input");
+    if (textarea) {
+      textarea.value = "";
+      textarea.placeholder = (this.dictationLang === "fr-FR")
+        ? "🔴 Écoute en cours... Parlez dans votre microphone, vos notes s'affichent ici en direct..."
+        : "🔴 Listening... Speak into your microphone, your notes will appear here...";
+      this.updateWordCount();
+    }
+
     const btnMic = document.getElementById("btn-toggle-mic");
     const statusText = document.getElementById("mic-status-text");
     if (btnMic) btnMic.classList.add("recording");
-    if (statusText) statusText.innerText = "🔴 Recording in progress... Describe your jobsite & tasks";
+    if (statusText) {
+      statusText.innerText = (this.dictationLang === "fr-FR")
+        ? "🔴 Enregistrement en cours... Décrivez le chantier et les travaux"
+        : "🔴 Recording in progress... Describe your jobsite & tasks";
+    }
 
     this.recordSeconds = 0;
     this.updateRecordTimer();
@@ -162,9 +233,10 @@ class ContractorPilotApp {
 
     if (this.recognition) {
       try {
+        this.recognition.lang = this.dictationLang;
         this.recognition.start();
       } catch (e) {
-        console.warn(e);
+        console.warn("[SpeechRec] start:", e);
       }
     }
   }
@@ -174,7 +246,11 @@ class ContractorPilotApp {
     const btnMic = document.getElementById("btn-toggle-mic");
     const statusText = document.getElementById("mic-status-text");
     if (btnMic) btnMic.classList.remove("recording");
-    if (statusText) statusText.innerText = "Dictation finished. You can review or edit below.";
+    if (statusText) {
+      statusText.innerText = (this.dictationLang === "fr-FR")
+        ? "✅ Dictée terminée. Vous pouvez vérifier ou modifier le texte ci-contre."
+        : "✅ Dictation finished. You can review or edit below.";
+    }
 
     if (this.recordTimerInterval) {
       clearInterval(this.recordTimerInterval);
@@ -217,6 +293,57 @@ class ContractorPilotApp {
       btnMic.addEventListener("click", () => this.toggleVoiceRecording());
     }
 
+    // Language selection buttons (FR / EN)
+    const btnLangFr = document.getElementById("btn-lang-fr");
+    const btnLangEn = document.getElementById("btn-lang-en");
+    const refreshLangUI = () => {
+      if (btnLangFr && btnLangEn) {
+        if (this.dictationLang === "fr-FR") {
+          btnLangFr.style.background = "rgba(6, 182, 212, 0.35)";
+          btnLangFr.style.borderColor = "var(--accent-cyan)";
+          btnLangFr.style.color = "#fff";
+          btnLangEn.style.background = "transparent";
+          btnLangEn.style.borderColor = "rgba(255, 255, 255, 0.15)";
+          btnLangEn.style.color = "var(--text-muted)";
+        } else {
+          btnLangEn.style.background = "rgba(6, 182, 212, 0.35)";
+          btnLangEn.style.borderColor = "var(--accent-cyan)";
+          btnLangEn.style.color = "#fff";
+          btnLangFr.style.background = "transparent";
+          btnLangFr.style.borderColor = "rgba(255, 255, 255, 0.15)";
+          btnLangFr.style.color = "var(--text-muted)";
+        }
+      }
+    };
+    refreshLangUI();
+
+    if (btnLangFr) {
+      btnLangFr.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.dictationLang = "fr-FR";
+        if (this.recognition) this.recognition.lang = "fr-FR";
+        refreshLangUI();
+        const textarea = document.getElementById("voice-transcription-input");
+        if (textarea && !textarea.value) {
+          textarea.placeholder = "🎙️ Cliquez sur le microphone ci-contre pour dicter vos notes de chantier, ou cliquez sur un scénario ci-dessous...";
+        }
+        this.showToast("Langue de dictée réglée sur Français 🇫🇷", "info");
+      });
+    }
+    if (btnLangEn) {
+      btnLangEn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.dictationLang = "en-US";
+        if (this.recognition) this.recognition.lang = "en-US";
+        refreshLangUI();
+        const textarea = document.getElementById("voice-transcription-input");
+        if (textarea && !textarea.value) {
+          textarea.placeholder = "🎙️ Click the microphone on the left to dictate your walkthrough notes, or click a demo scenario below...";
+        }
+        this.showToast("Dictation language set to English 🇺🇸", "info");
+      });
+    }
+
     // Textarea input
     const textarea = document.getElementById("voice-transcription-input");
     if (textarea) {
@@ -227,10 +354,8 @@ class ContractorPilotApp {
     const btnClear = document.getElementById("btn-clear-transcript");
     if (btnClear) {
       btnClear.addEventListener("click", () => {
-        if (textarea) {
-          textarea.value = "";
-          this.updateWordCount();
-        }
+        this.resetWalkthroughTextarea();
+        this.showToast((this.dictationLang === "fr-FR") ? "Zone de dictée effacée." : "Transcript cleared.", "info");
       });
     }
 
