@@ -110,17 +110,26 @@ def capture_all_screens():
         time.sleep(1.2)
         page.screenshot(path=str(OUTPUT_DIR / "07_step4_proposal_studio.png"))
 
-        # 8. Step 4 - Official Client Proposal Sheet (Scroll down)
-        print(" -> Capturing 08_step4_printable_quote.png...")
+        # 8. Step 4 - Official Client Proposal Sheet - Header & Scopes (Image 1)
+        print(" -> Capturing 08_step4_proposal_top.png...")
         page.evaluate("""
-            const sheet = document.getElementById('printable-quote-sheet-container');
-            if (sheet) sheet.scrollIntoView({ behavior: 'instant', block: 'center' });
+            const sheet = document.getElementById('printable-quote-document');
+            if (sheet) sheet.scrollIntoView({ behavior: 'instant', block: 'start' });
         """)
-        time.sleep(1.0)
-        page.screenshot(path=str(OUTPUT_DIR / "08_step4_printable_quote.png"))
+        time.sleep(1.2)
+        page.screenshot(path=str(OUTPUT_DIR / "08_step4_proposal_top.png"))
+
+        # 9. Step 4 - Official Client Proposal Sheet - Total $9,696 & Signature Block (Image 2)
+        print(" -> Capturing 09_step4_proposal_bottom.png...")
+        page.evaluate("""
+            const totalRow = document.querySelector('.tfoot-grand-total');
+            if (totalRow) totalRow.scrollIntoView({ behavior: 'instant', block: 'center' });
+        """)
+        time.sleep(1.2)
+        page.screenshot(path=str(OUTPUT_DIR / "09_step4_proposal_bottom.png"))
 
         browser.close()
-        print("\n[+] ALL 8 HD SCREENSHOTS CAPTURED SUCCESSFULLY IN 1920x1080!")
+        print("\n[+] ALL 9 HD SCREENSHOTS CAPTURED SUCCESSFULLY IN 1920x1080!")
 
 
 if __name__ == "__main__":

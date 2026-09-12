@@ -28,6 +28,7 @@ Thumbs.db
 # Internal docs & scratch files (Keep only README.md)
 *.md
 !README.md
+GUIDE_ENREGISTREMENT_APPEL_DEMO.md
 Liens.txt
 
 # Local video assets

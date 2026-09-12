@@ -109,19 +109,31 @@ SCENES = [
         "title": "Scene 7: Step 4 — Proposal Studio & Markup Slider",
         "type": "single",
         "text": (
-            "In Step 4, bids are evaluated with multi-criteria scoring. The contractor can tune their gross markup slider in real time, "
-            "setting a 20 percent margin to compute a profitable turnkey proposal of nine thousand six hundred and ninety-five dollars."
+            "In Step 4, vendor offers are scored across price, lead time, and reliability. "
+            "The contractor tunes their gross profit markup to twenty percent in real time."
         )
     },
     {
         "id": "scene_08",
-        "screenshot": "08_step4_printable_quote.png",
-        "vocal_file": "08_vocal_step4_printable_quote.mp3",
-        "title": "Scene 8: Proposal CP-2026-001 & Conclusion",
+        "screenshot": "08_step4_proposal_top.png",
+        "vocal_file": "08_vocal_step4_proposal_top.mp3",
+        "title": "Scene 8: Official Client Proposal CP-2026-001",
         "type": "single",
         "text": (
-            "Proposal CP-2026-001 is ready with itemized breakdowns and a formal client signature block, exportable as PDF. "
-            "From jobsite walkthrough to signed contract in minutes, that is ContractorPilot with CALL-E. Thank you!"
+            "Here is the official client proposal CP-2026-001 for The Miller Residence, "
+            "featuring certified itemized breakdowns for tile, paint, electrical, and plumbing scopes."
+        )
+    },
+    {
+        "id": "scene_09",
+        "screenshot": "09_step4_proposal_bottom.png",
+        "vocal_file": "09_vocal_step4_proposal_bottom.mp3",
+        "title": "Scene 9: Turnkey Contract Sum $9,696 & Signed Acceptance",
+        "type": "single",
+        "text": (
+            "With verified subtotals, the final contract sum reaches nine thousand six hundred and ninety-six dollars, "
+            "complete with payment milestones and an authorized client signature block. "
+            "From jobsite walkthrough to signed proposal in minutes: that is ContractorPilot with CALL-E. Thank you!"
         )
     }
 ]

@@ -75,33 +75,45 @@
     <!-- STEP 1 : JOBSITE WALKTHROUGH & VOICE NOTE CAPTURE              -->
     <!-- ============================================================== -->
     <section class="step-pane active" id="pane-step-1">
-      <div class="step-welcome-card card">
-        <div class="step-welcome-header">
-          <div>
-            <h2>🎙️ Step 1: Jobsite Walkthrough & Voice Note Capture</h2>
-            <p>
-              On the jobsite, dictate your observations out loud. Describe rooms, measurements, work to perform (tile, paint, electrical, plumbing), and specified materials.
-            </p>
-          </div>
-          <div class="badge-tag" id="ai-engine-status-badge" style="background: rgba(147,51,234,0.15); color: #c084fc; border: 1px solid rgba(147,51,234,0.3); font-weight: 600;">
+      <div class="step-nav-bar">
+        <div>
+          <h2>🎙️ Step 1: Jobsite Walkthrough & Voice Note Capture</h2>
+          <p>
+            On the jobsite, dictate your observations out loud. AI extracts rooms, measurements, trades, and specified materials.
+          </p>
+        </div>
+        <div class="step-nav-buttons">
+          <div class="badge-tag" id="ai-engine-status-badge" style="background: rgba(147,51,234,0.15); color: #c084fc; border: 1px solid rgba(147,51,234,0.3); font-weight: 600; padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); font-size: 0.82rem;">
             ✨ Gemini 3.8 Flash AI
           </div>
         </div>
+      </div>
 
-        <!-- Voice Recording Studio -->
-        <div class="voice-studio-box">
+      <!-- Walkthrough Dashboard : 2-Column Zero-Overflow Layout -->
+      <div class="walkthrough-dashboard-grid">
+
+        <!-- CARD 1 : L'ÉCRAN DE DICTÉE VOCALE (Voice Mic Screen & Presets) -->
+        <div class="card walkthrough-mic-card">
+          <div class="monitor-header">
+            <div class="call-badge-indicator" id="walkthrough-badge-status">
+              <span class="pulse-circle"></span>
+              <span id="walkthrough-state-text">AI LISTENING READY</span>
+            </div>
+            <div class="call-duration-tag" id="mic-timer-display">00:00</div>
+          </div>
+
+          <!-- Central Voice Mic Orb -->
           <div class="voice-mic-container">
             <button class="mic-record-btn" id="btn-toggle-mic" title="Click to start voice walkthrough dictation">
               <span class="mic-icon" id="mic-icon-symbol">🎙️</span>
               <span class="mic-pulse-ring"></span>
             </button>
             <div class="mic-status-label" id="mic-status-text">
-              Click the microphone to dictate your jobsite notes live
+              Click the microphone to dictate notes live
             </div>
-            <div class="mic-timer" id="mic-timer-display">00:00</div>
           </div>
 
-          <!-- Dynamic Soundwave Bars -->
+          <!-- Dynamic Audio Soundwave Bars -->
           <div class="audio-waveform-bar-container" id="audio-waveform-bars">
             <span class="wave-bar"></span>
             <span class="wave-bar"></span>
@@ -123,47 +135,56 @@
 
           <!-- Quick Demo Walkthrough Presets -->
           <div class="demo-voice-prompts">
-            <span class="demo-prompt-label">💡 Or load a walkthrough preset:</span>
-            <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-complete">
-              🏢 Full Remodel 1,300 sq ft (Living + Kitchen + Bath)
-            </button>
-            <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-light">
-              ⚡ Lighting & Velvet Paint Package
-            </button>
-            <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-bath">
-              🛁 Master Bathroom Suite Remodel
-            </button>
+            <span class="demo-prompt-label">💡 One-Click Demo Presets:</span>
+            <div class="demo-preset-buttons">
+              <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-complete">
+                🏢 Full Remodel 1,300 sq ft (Living + Kitchen + Bath)
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-light">
+                ⚡ Lighting & Velvet Paint Package
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btn-demo-prompt-bath">
+                🛁 Master Bathroom Suite Remodel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 : LA TRANSCRIPTION DE LA DICTÉE (Live Text & Extraction Action) -->
+        <div class="card walkthrough-transcript-card">
+          <div class="monitor-header transcript-card-header">
+            <div class="transcript-header-left" style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="font-size: 1.25rem;">📝</span>
+              <div>
+                <h3 style="font-family: var(--font-display); font-size: 0.98rem; color: var(--text-main); margin: 0;">Walkthrough Voice Transcription</h3>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Real-time speech-to-text / editable before analysis</span>
+              </div>
+            </div>
+            <button class="btn-clean-text" id="btn-clear-transcript" title="Clear text">Clear</button>
           </div>
 
-          <!-- Transcription Display & Edit Box -->
-          <div class="transcription-wrapper">
-            <div class="transcription-header">
-              <label for="voice-transcription-input">
-                <strong>📝 Walkthrough Voice Transcription:</strong>
-                <span style="font-weight: 400; color: var(--text-muted); font-size: 0.8rem;">(Editable before AI analysis)</span>
-              </label>
-              <button class="btn-clean-text" id="btn-clear-transcript" title="Clear text">Clear</button>
-            </div>
+          <!-- Textarea area -->
+          <div class="walkthrough-textarea-wrapper">
             <textarea 
               id="voice-transcription-input" 
               class="voice-textarea" 
-              rows="6" 
               placeholder="Example: Walkthrough notes for The Miller Residence, 1,300 sq ft condo remodel. Living room (400 sq ft): prep walls, 2 coats of washable velvet matte paint, install 24 recessed LED downlights on smart dimmers. Kitchen (180 sq ft) and Master Bath (96 sq ft): install 520 sq ft of 24x24 porcelain floor tiles. In master bath: curbless walk-in shower waterproofing, double vanity, and designer brass thermostatic mixer faucets. Schedule master tiler for 4 days, finish painter for 3 days, licensed plumber for 2 days, and master electrician for 2 days..."
             ></textarea>
           </div>
 
-          <!-- Step 1 Action Footer -->
+          <!-- Action Footer -->
           <div class="step-actions-footer">
             <div>
               <span id="transcription-word-count" style="font-size: 0.85rem; color: var(--text-muted);">
                 0 words
               </span>
             </div>
-            <button class="btn btn-primary btn-lg" id="btn-extract-voice">
+            <button class="btn btn-primary" id="btn-extract-voice" style="font-size: 0.9rem; padding: 0.6rem 1.2rem;">
               ⚡ Analyze Walkthrough & Generate Remodel Scopes ➔
             </button>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -278,11 +299,11 @@
         </div>
       </div>
 
-      <!-- CALL-E Live Call Center Dashboard -->
+      <!-- CALL-E Live Call Center Dashboard : 3-Column Zero-Overflow Layout -->
       <div class="call-center-dashboard-grid">
         
-        <!-- Live Call Monitor -->
-        <div class="card call-monitor-card">
+        <!-- CARD 1 : L'ÉCRAN D'APPEL (Call Screen, Live Waveform & Negotiated Terms) -->
+        <div class="card call-monitor-card call-screen-card">
           <div class="monitor-header">
             <div class="call-badge-indicator" id="monitor-badge-status">
               <span class="pulse-circle"></span>
@@ -303,33 +324,23 @@
 
           <!-- Dynamic Audio Soundwave Visualizer -->
           <div class="call-voice-wave-container">
-            <canvas id="call-wave-canvas" width="600" height="70"></canvas>
+            <canvas id="call-wave-canvas" width="600" height="52"></canvas>
           </div>
 
           <!-- Real Neural Audio Voice Player Bar -->
-          <div class="call-audio-player-bar" id="monitor-audio-player-bar" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: var(--radius-sm); padding: 0.6rem 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;">
-            <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+          <div class="call-audio-player-bar" id="monitor-audio-player-bar">
+            <div class="audio-player-meta" style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
               <span class="badge" id="monitor-audio-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-size: 0.72rem; padding: 0.2rem 0.5rem; white-space: nowrap;">
                 🎙️ Neural Call Audio
               </span>
-              <span id="monitor-audio-track-name" style="font-size: 0.82rem; color: var(--text-main); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              <span id="monitor-audio-track-name" style="font-size: 0.8rem; color: var(--text-main); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 Apex Tile (Sarah Jenkins) ⟷ CALL-E AI
               </span>
             </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
-              <button class="btn btn-secondary" id="btn-play-monitor-audio" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35); color: var(--accent-cyan); font-weight: 600; display: flex; align-items: center; gap: 0.35rem;">
-                <span id="monitor-audio-play-icon">▶️</span>
-                <span id="monitor-audio-play-text">Play Audio Call</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Live Audio Dialogue Streaming Box -->
-          <div class="call-transcript-box" id="monitor-transcript-messages">
-            <div class="transcript-placeholder">
-              <div class="phone-ring-animation" id="phone-ring-anim" style="display: none;">🔔 Ringing...</div>
-              <span>Live telephone conversation will stream here turn by turn...</span>
-            </div>
+            <button class="btn btn-secondary btn-sm" id="btn-play-monitor-audio" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.35); color: var(--accent-cyan); font-weight: 600; display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+              <span id="monitor-audio-play-icon">▶️</span>
+              <span id="monitor-audio-play-text">Play Audio Call</span>
+            </button>
           </div>
 
           <!-- Real-Time Extracted Negotiation Data -->
@@ -356,19 +367,44 @@
           </div>
         </div>
 
-        <!-- Session Call History & Control Panel -->
+        <!-- CARD 2 : LA TRANSCRIPTION EN DIRECT (Dedicated Live Dialogue Feed) -->
+        <div class="card call-transcript-card">
+          <div class="monitor-header transcript-card-header">
+            <div class="transcript-header-left" style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="font-size: 1.25rem;">💬</span>
+              <div>
+                <h3 style="font-family: var(--font-display); font-size: 0.98rem; color: var(--text-main); margin: 0;">Live Call Transcript</h3>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Turn-by-turn neural dialogue stream</span>
+              </div>
+            </div>
+            <div class="transcript-status-pill" id="transcript-status-badge">
+              <span class="pulse-circle" style="background: var(--accent-indigo);"></span>
+              <span style="color: var(--accent-indigo); font-size: 0.72rem; font-weight: 600;">LIVE FEED</span>
+            </div>
+          </div>
+
+          <!-- Live Audio Dialogue Streaming Box -->
+          <div class="call-transcript-box" id="monitor-transcript-messages">
+            <div class="transcript-placeholder">
+              <div class="phone-ring-animation" id="phone-ring-anim" style="display: none;">🔔 Ringing...</div>
+              <span>Live telephone conversation will stream here turn by turn...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3 : Session Call History & Control Panel -->
         <div class="card call-session-panel">
           <div class="panel-header">
             <h3>📞 Procurement Call Log</h3>
             <span class="badge" id="badge-calls-count">0 calls</span>
           </div>
 
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-            Autonomous calls placed to verified suppliers and licensed subcontractors.
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Autonomous calls placed to verified suppliers & licensed pros.
           </p>
 
           <div class="batch-call-controls">
-            <button class="btn btn-primary" id="btn-relaunch-batch-calls" style="width: 100%; margin-bottom: 0.8rem;">
+            <button class="btn btn-primary" id="btn-relaunch-batch-calls" style="width: 100%; margin-bottom: 0.75rem; font-size: 0.88rem; padding: 0.55rem 0.9rem;">
               ⚡ Relaunch All Live Calls
             </button>
           </div>
