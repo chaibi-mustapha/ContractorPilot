@@ -17,13 +17,17 @@ class ContractorPilotApp {
     this.currency = "$";
     this.currentNeedsFilter = "all";
 
-    // Speech Recognition
+    // Speech & Audio Recording (Direct Gemini Multimodal Audio)
     this.isRecording = false;
     this.recognition = null;
     this.recordTimerInterval = null;
     this.recordSeconds = 0;
     this.dictationLang = (navigator.language && navigator.language.startsWith("fr")) ? "fr-FR" : "en-US";
     this.speechFinalTranscript = "";
+    this.mediaStream = null;
+    this.mediaRecorder = null;
+    this.audioChunks = [];
+    this.currentAudioMimeType = "audio/webm";
     // API Base URL (dynamic for localhost, cloud deployment, and remote hosts)
     this.apiBase = (window.location.protocol.startsWith("http") && window.location.host) ? "" : "http://127.0.0.1:8000";
   }
@@ -191,27 +195,41 @@ class ContractorPilotApp {
     }
   }
 
-  startVoiceRecording() {
-    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRec) {
+  async startVoiceRecording() {
+    // 1. Check microphone access (getUserMedia is universal across all browsers: Chrome, Brave, Firefox, Safari, Edge)
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       alert(
         (this.dictationLang === "fr-FR")
-          ? "La reconnaissance vocale n'est pas supportée sur ce navigateur. Veuillez utiliser Google Chrome ou saisir vos notes au clavier."
-          : "Speech recognition is not supported in this browser. Please use Google Chrome or type notes directly."
+          ? "Votre navigateur ne permet pas l'accès au microphone."
+          : "Microphone access is not supported in this browser."
+      );
+      return;
+    }
+
+    try {
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      console.error("[Microphone] Permission error:", err);
+      this.showToast(
+        (this.dictationLang === "fr-FR")
+          ? "Accès micro refusé. Veuillez autoriser le microphone dans la barre d'adresse de votre navigateur."
+          : "Microphone permission denied. Please allow microphone access in your browser URL bar.",
+        "error"
       );
       return;
     }
 
     this.isRecording = true;
     this.speechFinalTranscript = "";
+    this.audioChunks = [];
 
     // Clear previous or demo text so the user's voice appears cleanly!
     const textarea = document.getElementById("voice-transcription-input");
     if (textarea) {
       textarea.value = "";
       textarea.placeholder = (this.dictationLang === "fr-FR")
-        ? "🔴 Écoute en cours... Parlez dans votre microphone, vos notes s'affichent ici en direct..."
-        : "🔴 Listening... Speak into your microphone, your notes will appear here...";
+        ? "🔴 Enregistrement audio en direct... Parlez dans votre microphone, vos paroles seront transcrites et analysées par Google Gemini !"
+        : "🔴 Recording live audio... Speak into your microphone, your words will be transcribed and analyzed by Google Gemini!";
       this.updateWordCount();
     }
 
@@ -220,8 +238,8 @@ class ContractorPilotApp {
     if (btnMic) btnMic.classList.add("recording");
     if (statusText) {
       statusText.innerText = (this.dictationLang === "fr-FR")
-        ? "🔴 Enregistrement en cours... Décrivez le chantier et les travaux"
-        : "🔴 Recording in progress... Describe your jobsite & tasks";
+        ? "🔴 Enregistrement audio en cours... Cliquez à nouveau sur le micro quand vous avez fini pour envoyer à Gemini"
+        : "🔴 Audio recording in progress... Click the mic again when finished to analyze with Gemini";
     }
 
     this.recordSeconds = 0;
@@ -231,26 +249,39 @@ class ContractorPilotApp {
       this.updateRecordTimer();
     }, 1000);
 
+    // Setup MediaRecorder for universal cross-browser audio capture
+    try {
+      const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+        ? "audio/webm;codecs=opus"
+        : (MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "audio/mp4");
+      this.currentAudioMimeType = mimeType;
+      this.mediaRecorder = new MediaRecorder(this.mediaStream, { mimeType });
+      this.mediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          this.audioChunks.push(e.data);
+        }
+      };
+      this.mediaRecorder.start(250);
+    } catch (e) {
+      console.warn("[MediaRecorder] start error:", e);
+    }
+
+    // Optional parallel SpeechRecognition for live visual text streaming (if browser supports it)
     if (this.recognition) {
       try {
         this.recognition.lang = this.dictationLang;
         this.recognition.start();
       } catch (e) {
-        console.warn("[SpeechRec] start:", e);
+        // Safe to ignore if unsupported on Brave/Firefox
       }
     }
   }
 
-  stopVoiceRecording() {
+  async stopVoiceRecording() {
     this.isRecording = false;
     const btnMic = document.getElementById("btn-toggle-mic");
     const statusText = document.getElementById("mic-status-text");
     if (btnMic) btnMic.classList.remove("recording");
-    if (statusText) {
-      statusText.innerText = (this.dictationLang === "fr-FR")
-        ? "✅ Dictée terminée. Vous pouvez vérifier ou modifier le texte ci-contre."
-        : "✅ Dictation finished. You can review or edit below.";
-    }
 
     if (this.recordTimerInterval) {
       clearInterval(this.recordTimerInterval);
@@ -260,10 +291,101 @@ class ContractorPilotApp {
     if (this.recognition) {
       try {
         this.recognition.stop();
-      } catch (e) {
-        console.warn(e);
+      } catch (e) {}
+    }
+
+    // Stop mediaRecorder & release microphone tracks
+    if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
+      this.mediaRecorder.stop();
+    }
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach((track) => track.stop());
+      this.mediaStream = null;
+    }
+
+    if (statusText) {
+      statusText.innerText = (this.dictationLang === "fr-FR")
+        ? "✨ Envoi de votre enregistrement à Google Gemini AI..."
+        : "✨ Sending audio note to Google Gemini AI for direct analysis...";
+    }
+
+    // Allow recorder to deliver final audio chunk
+    await new Promise((resolve) => setTimeout(resolve, 350));
+
+    if (this.audioChunks.length > 0) {
+      const audioBlob = new Blob(this.audioChunks, { type: this.currentAudioMimeType || "audio/webm" });
+      this.audioChunks = [];
+      await this.sendAudioToGemini(audioBlob, this.currentAudioMimeType || "audio/webm");
+    } else {
+      if (statusText) {
+        statusText.innerText = (this.dictationLang === "fr-FR")
+          ? "✅ Dictée terminée. Vous pouvez vérifier ou modifier le texte ci-contre."
+          : "✅ Dictation finished. You can review or edit below.";
       }
     }
+  }
+
+  async sendAudioToGemini(audioBlob, mimeType) {
+    const statusText = document.getElementById("mic-status-text");
+    const textarea = document.getElementById("voice-transcription-input");
+
+    const reader = new FileReader();
+    reader.readAsDataURL(audioBlob);
+    reader.onloadend = async () => {
+      const base64Data = reader.result.split(",")[1];
+      if (!base64Data) return;
+
+      try {
+        if (statusText) {
+          statusText.innerText = (this.dictationLang === "fr-FR")
+            ? "⏳ Google Gemini 3.8 Flash analyse votre voix et prépare les corps d'état..."
+            : "⏳ Google Gemini 3.8 Flash is analyzing your voice & structuring scopes...";
+        }
+
+        const res = await fetch(`${this.apiBase}/api/projects/${this.currentProjectId}/voice-extract-audio`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            audio_base64: base64Data,
+            mime_type: mimeType.split(";")[0],
+            replace_existing: true,
+          }),
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detail || "Error calling Gemini Audio API");
+        }
+
+        const data = await res.json();
+        if (textarea) {
+          textarea.value = data.transcription || "";
+          this.updateWordCount();
+        }
+
+        if (statusText) {
+          statusText.innerText = (this.dictationLang === "fr-FR")
+            ? "✅ Audio analysé avec succès par Google Gemini !"
+            : "✅ Voice walkthrough successfully analyzed by Google Gemini!";
+        }
+        this.showToast(
+          (this.dictationLang === "fr-FR")
+            ? "✨ Audio analysé avec succès par Google Gemini !"
+            : "✨ Audio analyzed by Google Gemini!",
+          "success"
+        );
+
+        // Refresh project data & scopes in Step 2
+        await this.loadProjectDetails(this.currentProjectId);
+
+      } catch (err) {
+        console.error("[sendAudioToGemini] Error:", err);
+        if (statusText) {
+          statusText.innerText = "⚠️ " + err.message;
+        }
+        this.showToast("Erreur Gemini Audio: " + err.message, "error");
+      }
+    };
   }
 
   updateRecordTimer() {

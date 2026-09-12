@@ -100,6 +100,12 @@ class VoiceExtractRequest(BaseModel):
     replace_existing: bool = True
 
 
+class VoiceExtractAudioRequest(BaseModel):
+    audio_base64: str
+    mime_type: str = "audio/webm"
+    replace_existing: bool = True
+
+
 class UpdateRequirementRequest(BaseModel):
     category: Optional[str] = None
     item_name: Optional[str] = None
@@ -704,6 +710,88 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
         "success": True,
         "ai_engine": ai_engine,
         "transcription": req.voice_text,
+        "rooms": [r.model_dump() for r in proj.rooms],
+        "tasks_by_trade": [t.model_dump() for t in proj.requirements if t.item_type == "labor"],
+        "materials": [m.model_dump() for m in proj.requirements if m.item_type == "material"],
+        "all_requirements": [r.model_dump() for r in proj.requirements],
+    }
+
+
+@app.post("/api/projects/{project_id}/voice-extract-audio")
+async def voice_extract_audio_needs(project_id: str, req: VoiceExtractAudioRequest) -> Dict[str, Any]:
+    """Transcribes and analyzes raw recorded audio directly using Google Gemini Multimodal Audio API."""
+    proj = store.projects.get(project_id)
+    if not proj:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if not gemini_service.is_configured():
+        raise HTTPException(status_code=400, detail="Gemini API Key is not configured on the server")
+
+    parsed = await gemini_service.analyze_walkthrough_audio(req.audio_base64, req.mime_type)
+    if not parsed:
+        raise HTTPException(status_code=500, detail="Gemini audio analysis did not return structured results")
+
+    transcription = str(parsed.get("transcription", "")).strip() or "Jobsite audio walkthrough note"
+
+    gemini_rooms = [
+        Room(
+            name=str(r.get("name", "Remodel Area")),
+            length=float(r.get("length", 15.0)),
+            width=float(r.get("width", 12.0)),
+            height=float(r.get("height", 9.0)),
+            surface=float(r.get("surface", float(r.get("length", 15.0)) * float(r.get("width", 12.0)))),
+            renovation_types=list(r.get("renovation_types", ["General Remodel"])),
+            notes=str(r.get("notes", "Extracted from Audio by Gemini AI")),
+        )
+        for r in parsed.get("rooms", [])
+    ]
+    gemini_labor = [
+        Requirement(
+            category=str(t.get("category", "General Trade")),
+            item_name=str(t.get("item_name", "Subcontractor Scope")),
+            quantity=float(t.get("quantity", 2.0)),
+            unit=str(t.get("unit", "days")),
+            item_type="labor",
+            estimated_unit_price=float(t.get("estimated_unit_price", 400.0)),
+            notes=str(t.get("notes", "Estimated by Gemini AI")),
+        )
+        for t in parsed.get("tasks_by_trade", [])
+    ]
+    gemini_materials = [
+        Requirement(
+            category=str(m.get("category", "Supplies")),
+            item_name=str(m.get("item_name", "Construction Material")),
+            quantity=float(m.get("quantity", 1.0)),
+            unit=str(m.get("unit", "units")),
+            item_type="material",
+            estimated_unit_price=float(m.get("estimated_unit_price", 50.0)),
+            notes=str(m.get("notes", "Takeoff by Gemini AI")),
+        )
+        for m in parsed.get("materials", [])
+    ]
+
+    proj.voice_notes = transcription
+
+    if req.replace_existing:
+        proj.rooms = gemini_rooms
+        proj.requirements = gemini_labor + gemini_materials
+    else:
+        existing_names = {r.item_name.lower() for r in proj.requirements}
+        for item in gemini_labor + gemini_materials:
+            if item.item_name.lower() not in existing_names:
+                proj.requirements.append(item)
+        for room in gemini_rooms:
+            if not any(r.name == room.name for r in proj.rooms):
+                proj.rooms.append(room)
+
+    proj.status = "REQUIREMENTS_READY"
+    store.save()
+
+    used_model = parsed.get("ai_model", gemini_service.model_name)
+    return {
+        "success": True,
+        "ai_engine": f"Google Gemini ({used_model}) [Direct Audio]",
+        "transcription": transcription,
         "rooms": [r.model_dump() for r in proj.rooms],
         "tasks_by_trade": [t.model_dump() for t in proj.requirements if t.item_type == "labor"],
         "materials": [m.model_dump() for m in proj.requirements if m.item_type == "material"],
