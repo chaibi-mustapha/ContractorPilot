@@ -1829,6 +1829,13 @@ body {
   justify-content: center;
 }
 
+#call-wave-canvas {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 52px !important;
+  display: block;
+}
+
 .call-audio-player-bar {
   background: rgba(15, 23, 42, 0.75);
   border: 1px solid rgba(6, 182, 212, 0.25);
@@ -2481,10 +2488,17 @@ body {
 }
 
 /* Tableau du Devis */
+.quote-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1.75rem;
+}
+
 .quote-table {
   width: 100%;
+  min-width: 580px;
   border-collapse: collapse;
-  margin-bottom: 2rem;
 }
 
 .quote-table th {
@@ -2693,6 +2707,678 @@ body {
 .call-audio-player-bar:hover {
   border-color: rgba(6, 182, 212, 0.5) !important;
   box-shadow: 0 0 16px rgba(6, 182, 212, 0.15);
+}
+
+/* ==========================================================================
+   Comprehensive Responsive System (Large Screens, Laptops, Tablets, & Mobile)
+   ========================================================================== */
+
+/* ------------------ 1. Ultra-Wide & Large Desktops (>= 1600px) ------------------ */
+@media (min-width: 1600px) {
+  .main-content {
+    max-width: 1560px;
+    padding: 2.5rem 3rem;
+  }
+
+  .app-header {
+    padding: 1rem 3.5rem;
+  }
+
+  .stepper-nav {
+    padding: 0.9rem 3.5rem;
+    gap: 1.5rem;
+  }
+
+  .step-btn {
+    padding: 0.6rem 1.25rem;
+  }
+
+  .step-title {
+    font-size: 1rem;
+  }
+
+  .step-desc {
+    font-size: 0.82rem;
+  }
+
+  .walkthrough-textarea-wrapper .voice-textarea {
+    min-height: 290px;
+    max-height: 380px;
+    font-size: 0.96rem;
+  }
+
+  .call-transcript-box {
+    min-height: 330px;
+    max-height: 420px;
+  }
+
+  .printable-quote-sheet {
+    padding: 3.5rem;
+  }
+}
+
+@media (min-width: 2000px) {
+  .main-content {
+    max-width: 1720px;
+    padding: 3rem 4rem;
+  }
+
+  .app-header {
+    padding: 1.25rem 4.5rem;
+  }
+
+  .stepper-nav {
+    padding: 1rem 4.5rem;
+    gap: 2rem;
+  }
+
+  .step-divider {
+    width: 60px;
+  }
+}
+
+/* ------------------ 2. Small Desktops & Laptops (<= 1200px) ------------------ */
+@media (max-width: 1200px) {
+  .main-content {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .stepper-nav {
+    padding: 0.75rem 1.25rem;
+    gap: 0.75rem;
+  }
+
+  .step-btn {
+    padding: 0.5rem 0.75rem;
+    gap: 0.6rem;
+  }
+
+  .step-title {
+    font-size: 0.88rem;
+  }
+
+  .step-desc {
+    font-size: 0.72rem;
+  }
+
+  .step-divider {
+    width: 24px;
+  }
+
+  .call-center-dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .call-session-panel {
+    grid-column: span 2;
+  }
+
+  .financial-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ------------------ 3. Tablets & Compact Screens (<= 992px) ------------------ */
+@media (max-width: 992px) {
+  .app-header {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .stepper-nav {
+    padding: 0.65rem 1rem;
+    gap: 0.5rem;
+  }
+
+  /* Compact stepper: Hide step descriptions to avoid ugly multi-line text crowding */
+  .step-desc {
+    display: none !important;
+  }
+
+  .step-btn {
+    padding: 0.45rem 0.8rem;
+  }
+
+  .step-divider {
+    width: 16px;
+  }
+
+  .walkthrough-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .needs-split-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .printable-quote-sheet {
+    padding: 2rem;
+  }
+
+  .quote-sheet-header {
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .quote-meta-box {
+    text-align: left;
+    border-left: none;
+    border-top: 2px solid #E2E8F0;
+    padding-left: 0;
+    padding-top: 1rem;
+    width: 100%;
+  }
+
+  .quote-client-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ------------------ 4. Mobile Devices & Small Tablets (<= 768px) ------------------ */
+@media (max-width: 768px) {
+  body {
+    font-size: 0.95rem;
+  }
+
+  .app-header {
+    padding: 0.65rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .brand-wrapper {
+    gap: 0.65rem;
+  }
+
+  .brand-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 1.25rem;
+  }
+
+  .brand-text h1 {
+    font-size: 1.15rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.68rem;
+  }
+
+  .header-actions {
+    gap: 0.5rem;
+  }
+
+  .calle-badge-status {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.76rem;
+  }
+
+  /* Stepper on Mobile: Smooth Horizontal Scroll */
+  .stepper-nav {
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0.55rem 0.85rem;
+    gap: 0.5rem;
+    top: 0;
+    position: sticky;
+  }
+
+  .stepper-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .step-btn {
+    flex-shrink: 0;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .step-divider {
+    display: none;
+  }
+
+  .main-content {
+    padding: 1rem 0.85rem;
+  }
+
+  .step-nav-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .step-nav-bar h2 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .step-nav-bar p {
+    font-size: 0.82rem;
+  }
+
+  .step-nav-buttons {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .step-nav-buttons .btn {
+    flex: 1;
+    min-width: 130px;
+    justify-content: center;
+    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Step 1 */
+  .walkthrough-mic-card,
+  .walkthrough-transcript-card {
+    padding: 1rem;
+  }
+
+  .transcript-card-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .transcript-header-left {
+    min-width: 0;
+  }
+
+  .transcript-header-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  #btn-extract-voice {
+    flex: 1;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+    font-size: 0.8rem;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .walkthrough-textarea-wrapper .voice-textarea {
+    min-height: 220px;
+    max-height: 300px;
+    font-size: 0.88rem;
+  }
+
+  .demo-preset-buttons .btn {
+    white-space: normal;
+    text-align: left;
+    height: auto;
+    padding: 0.5rem 0.75rem;
+    line-height: 1.3;
+  }
+
+  /* Step 2 */
+  .detected-rooms-bar {
+    padding: 0.85rem 1rem;
+    gap: 0.6rem;
+  }
+
+  .needs-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    padding-bottom: 0.2rem;
+  }
+
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-tab {
+    flex-shrink: 0;
+    font-size: 0.78rem;
+  }
+
+  .needs-estimate-pill {
+    text-align: center;
+    font-size: 0.8rem;
+  }
+
+  .column-header {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .need-item-card {
+    padding: 0.85rem;
+  }
+
+  #btn-consult-all-bottom {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+    font-size: 0.88rem;
+    padding: 0.8rem 1rem;
+    line-height: 1.3;
+  }
+
+  /* Step 3 */
+  .call-center-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .call-session-panel {
+    grid-column: span 1;
+  }
+
+  .call-transcript-box {
+    min-height: 260px;
+    max-height: 350px;
+  }
+
+  .transcript-msg {
+    max-width: 95%;
+  }
+
+  .call-audio-player-bar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  #btn-play-monitor-audio {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Step 4 */
+  .financial-summary-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .fin-card {
+    padding: 1rem;
+  }
+
+  .fin-value {
+    font-size: 1.35rem;
+  }
+
+  .margin-control-card {
+    padding: 1.1rem;
+  }
+
+  .margin-slider-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .offers-ranking-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .printable-quote-sheet {
+    padding: 1.5rem;
+  }
+
+  .quote-sheet-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .quote-toolbar-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .quote-toolbar-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .quote-footer-terms {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  /* Modals */
+  .modal-card {
+    max-width: 94vw;
+    width: 94vw;
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  /* Toasts */
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .toast-item {
+    max-width: 100%;
+  }
+}
+
+/* ------------------ 5. Extra-Small Mobile Devices (<= 480px) ------------------ */
+@media (max-width: 480px) {
+  .app-header {
+    padding: 0.55rem 0.75rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .brand-wrapper {
+    justify-content: flex-start;
+  }
+
+  .edition-badge {
+    display: none !important;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .calle-badge-status {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.5rem;
+  }
+
+  #btn-open-settings {
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.78rem;
+  }
+
+  .stepper-nav {
+    top: 0;
+    padding: 0.45rem 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .step-btn {
+    padding: 0.35rem 0.6rem;
+    gap: 0.4rem;
+  }
+
+  .step-num {
+    width: 26px;
+    height: 26px;
+    font-size: 0.8rem;
+  }
+
+  .step-title {
+    font-size: 0.78rem;
+  }
+
+  .main-content {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .mic-record-btn {
+    width: 74px;
+    height: 74px;
+  }
+
+  .mic-icon {
+    font-size: 1.9rem;
+  }
+
+  .transcript-card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .transcript-header-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .btn-clean-text {
+    text-align: right;
+    padding: 0.2rem 0;
+  }
+
+  #btn-extract-voice {
+    width: 100%;
+    font-size: 0.82rem;
+    padding: 0.6rem;
+  }
+
+  .need-item-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .need-item-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* CALL-E live call screen */
+  .current-call-target-card {
+    gap: 0.65rem;
+    padding: 0.65rem;
+  }
+
+  .target-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 1.15rem;
+  }
+
+  .target-details h3 {
+    font-size: 0.95rem;
+  }
+
+  .extracted-metrics-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+  }
+
+  .call-stats-strip {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.25rem;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .call-stat-num {
+    font-size: 0.95rem;
+  }
+
+  .call-stat-lbl {
+    font-size: 0.62rem;
+  }
+
+  /* Step 4 financial summary */
+  .financial-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fin-value {
+    font-size: 1.25rem;
+  }
+
+  .margin-presets-row {
+    gap: 0.35rem;
+  }
+
+  .btn-margin-preset {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .printable-quote-sheet {
+    padding: 1rem !important;
+    border-radius: var(--radius-md);
+  }
+
+  .company-brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .company-logo {
+    width: 44px;
+    height: 44px;
+    font-size: 1.8rem;
+  }
+
+  .company-name {
+    font-size: 1.05rem;
+  }
+
+  .quote-title {
+    font-size: 1.25rem;
+  }
+
+  .quote-number {
+    font-size: 0.95rem;
+  }
+
+  .modal-card {
+    padding: 1.15rem;
+    max-height: 92vh;
+  }
+
+  #studio-active-player {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding: 0.65rem 0.85rem;
+  }
 }
 
 /* ------------------ Print Media Query ------------------ */

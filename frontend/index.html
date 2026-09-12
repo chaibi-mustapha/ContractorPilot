@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ContractorPilot — Autonomous Voice Copilot: Jobsite Walkthrough to Proposal</title>
   <meta name="description" content="Contractors dictate walkthrough voice notes on site. AI structures trade scopes and materials, then CALL-E autonomously calls suppliers and subcontractors to build winning quotes.">
-  <link rel="stylesheet" href="css/style.css?v=20260912_7">
+  <link rel="stylesheet" href="css/style.css?v=20260912_8">
 </head>
 <body>
 
@@ -564,34 +564,36 @@
         </div>
 
         <!-- Proposal Line Items Table -->
-        <table class="quote-table">
-          <thead>
-            <tr>
-              <th style="width: 42%;">Scope Description & Materials</th>
-              <th style="width: 14%;">Type</th>
-              <th style="width: 12%; text-align: right;">Quantity</th>
-              <th style="width: 16%; text-align: right;">Unit Price</th>
-              <th style="width: 16%; text-align: right;">Total Amount</th>
-            </tr>
-          </thead>
-          <tbody id="quote-table-body">
-            <!-- Injected via JS -->
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="4" class="tfoot-label">Materials & Supplies Subtotal:</td>
-              <td class="tfoot-val" id="quote-subtotal-materials">$0</td>
-            </tr>
-            <tr>
-              <td colspan="4" class="tfoot-label">Subcontractor Labor Subtotal:</td>
-              <td class="tfoot-val" id="quote-subtotal-labor">$0</td>
-            </tr>
-            <tr class="tfoot-grand-total">
-              <td colspan="4" class="tfoot-label">TOTAL CONTRACT SUM:</td>
-              <td class="tfoot-val" id="quote-grand-total-display">$0</td>
-            </tr>
-          </tfoot>
-        </table>
+        <div class="quote-table-wrapper">
+          <table class="quote-table">
+            <thead>
+              <tr>
+                <th style="width: 42%;">Scope Description & Materials</th>
+                <th style="width: 14%;">Type</th>
+                <th style="width: 12%; text-align: right;">Quantity</th>
+                <th style="width: 16%; text-align: right;">Unit Price</th>
+                <th style="width: 16%; text-align: right;">Total Amount</th>
+              </tr>
+            </thead>
+            <tbody id="quote-table-body">
+              <!-- Injected via JS -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" class="tfoot-label">Materials & Supplies Subtotal:</td>
+                <td class="tfoot-val" id="quote-subtotal-materials">$0</td>
+              </tr>
+              <tr>
+                <td colspan="4" class="tfoot-label">Subcontractor Labor Subtotal:</td>
+                <td class="tfoot-val" id="quote-subtotal-labor">$0</td>
+              </tr>
+              <tr class="tfoot-grand-total">
+                <td colspan="4" class="tfoot-label">TOTAL CONTRACT SUM:</td>
+                <td class="tfoot-val" id="quote-grand-total-display">$0</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
         <div class="quote-footer-terms">
           <div class="terms-col">
@@ -810,7 +812,7 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Application Scripts -->
-  <script src="js/calle_demo.js?v=20260912_7"></script>
-  <script src="js/app.js?v=20260912_7"></script>
+  <script src="js/calle_demo.js?v=20260912_8"></script>
+  <script src="js/app.js?v=20260912_8"></script>
 </body>
 </html>

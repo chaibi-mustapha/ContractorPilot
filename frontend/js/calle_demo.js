@@ -108,6 +108,16 @@ class CalleCallCenter {
     this.canvas = document.getElementById("call-wave-canvas");
     if (this.canvas) {
       this.ctx = this.canvas.getContext("2d");
+      const resize = () => {
+        if (this.canvas && this.canvas.parentElement) {
+          const w = this.canvas.parentElement.clientWidth || 300;
+          this.canvas.width = w;
+          this.canvas.height = 52;
+          if (!this.isPlayingAudio) this.drawIdleWave();
+        }
+      };
+      resize();
+      window.addEventListener("resize", resize);
       this.drawIdleWave();
     }
   }
