@@ -146,5 +146,6 @@ docker run -p 8000:8000 contractorpilot
 ---
 
 ## 👥 Authors
-Built for the **Devpost CALL-E Hackathon** (September 2026).
+- **Mustapha Chaibi** ([@chaibi-mustapha](https://github.com/chaibi-mustapha))
+- Built for the **Devpost CALL-E Hackathon** (September 2026).
 
