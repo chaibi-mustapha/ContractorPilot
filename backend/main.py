@@ -1381,5 +1381,12 @@ if os.path.exists(FRONTEND_DIR):
 async def read_index() -> FileResponse:
     index_path = os.path.join(FRONTEND_DIR, "index.html")
     if os.path.exists(index_path):
-        return FileResponse(index_path)
+        return FileResponse(
+            index_path,
+            headers={
+                "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+                "Pragma": "no-cache",
+                "Expires": "0",
+            },
+        )
     return FileResponse(__file__)
