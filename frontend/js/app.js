@@ -231,6 +231,23 @@ class ContractorPilotApp {
 
   goToStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > 4) return;
+
+    // Automatically pause any running CALL-E live audio when navigating away from Step 3
+    if (stepNumber !== 3 && window.calleCenter) {
+      try {
+        if (typeof window.calleCenter.pauseCallAudio === "function") {
+          window.calleCenter.pauseCallAudio();
+        }
+      } catch (e) {
+        console.warn("[CalleCenter] Error pausing audio on step transition:", e);
+      }
+    }
+
+    // Stop mic recording if navigating away from Step 1
+    if (stepNumber !== 1 && this.isRecording) {
+      this.stopVoiceRecording();
+    }
+
     this.currentStep = stepNumber;
 
     // Update Step buttons
