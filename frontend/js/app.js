@@ -220,17 +220,75 @@ class ContractorPilotApp {
 
   // ------------------ Stepper Navigation ------------------
 
+  isCallInProgress() {
+    if (!window.calleCenter) return false;
+    const cc = window.calleCenter;
+    if (cc.isCallScheduled || cc.isPlayingAudio) return true;
+    if (cc.currentAudio && !cc.currentAudio.paused && !cc.currentAudio.ended) return true;
+    if (cc.currentAudio && cc.currentAudio.currentTime > 0 && !cc.callCompleted) return true;
+    return false;
+  }
+
+  showCallInProgressModal() {
+    const modal = document.getElementById("modal-call-in-progress");
+    const desc = document.getElementById("call-in-progress-desc");
+    const targetBadge = document.getElementById("modal-call-target-badge");
+
+    let targetName = "Supplier / Subcontractor";
+    if (window.calleCenter) {
+      const sc = window.calleCenter.scenarios[window.calleCenter.currentScenarioKey] || window.calleCenter.scenarios["apex_tile"];
+      if (sc && sc.targetName) targetName = sc.targetName;
+    }
+
+    if (targetBadge) {
+      targetBadge.innerText = `Active Call: ${targetName}`;
+    }
+
+    if (desc) {
+      desc.innerHTML = `CALL-E is currently negotiating firm pricing, volume discounts, and delivery dates with <strong style="color: var(--accent-cyan);">${targetName}</strong>.<br><br>Please wait for the live conversation to complete before reviewing the proposal.`;
+    }
+
+    if (modal) {
+      modal.classList.add("active");
+    }
+  }
+
+  hideCallInProgressModal() {
+    const modal = document.getElementById("modal-call-in-progress");
+    if (modal) {
+      modal.classList.remove("active");
+    }
+  }
+
+  tryGoToStep4() {
+    if (this.isCallInProgress()) {
+      this.showCallInProgressModal();
+      return;
+    }
+    this.goToStep(4);
+  }
+
   setupStepper() {
     document.querySelectorAll(".step-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const step = parseInt(btn.getAttribute("data-step"), 10);
-        this.goToStep(step);
+        if (step === 4) {
+          this.tryGoToStep4();
+        } else {
+          this.goToStep(step);
+        }
       });
     });
   }
 
   goToStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > 4) return;
+
+    // Block navigation to Step 4 if live call dialogue is still in progress
+    if (stepNumber === 4 && this.isCallInProgress()) {
+      this.showCallInProgressModal();
+      return;
+    }
 
     // Automatically pause any running CALL-E live audio when navigating away from Step 3
     if (stepNumber !== 3 && window.calleCenter) {
@@ -749,6 +807,26 @@ class ContractorPilotApp {
 
     // Settings modal
     this.setupSettingsModal();
+
+    // Call in progress modal actions
+    const btnWaitCall = document.getElementById("btn-wait-call-finish");
+    if (btnWaitCall) {
+      btnWaitCall.addEventListener("click", () => {
+        this.hideCallInProgressModal();
+      });
+    }
+
+    const btnFastForward = document.getElementById("btn-fast-forward-call");
+    if (btnFastForward) {
+      btnFastForward.addEventListener("click", () => {
+        if (window.calleCenter && typeof window.calleCenter.completeCallImmediately === "function") {
+          window.calleCenter.completeCallImmediately();
+        } else {
+          this.hideCallInProgressModal();
+          this.goToStep(4);
+        }
+      });
+    }
   }
 
   // ------------------ API Calls & Data Handling ------------------

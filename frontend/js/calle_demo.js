@@ -21,6 +21,8 @@ class CalleCallCenter {
     this.currentAudio = null;
     this.activeAudioTrack = "audio/dialog_calle_and_apex_tile.mp3";
     this.isPlayingAudio = false;
+    this.isCallScheduled = false;
+    this.callCompleted = false;
 
     // Available Live Demo Scenarios
     this.scenarios = {
@@ -224,6 +226,8 @@ class CalleCallCenter {
       this.stopCurrentAudio();
     }
     this.currentScenarioKey = scenarioKey || "apex_tile";
+    this.callCompleted = false;
+    this.isCallScheduled = false;
     const sc = this.scenarios[this.currentScenarioKey] || this.scenarios["apex_tile"];
 
     const targetName = document.getElementById("monitor-target-name");
@@ -365,6 +369,8 @@ class CalleCallCenter {
       this.scrollTranscriptToBottom();
 
       this.isPlayingAudio = false;
+      this.isCallScheduled = false;
+      this.callCompleted = true;
       this.stopWaveAnimation();
       if (stateText) stateText.innerText = "CALL COMPLETED (OFFER SAVED)";
       if (playIcon) playIcon.innerText = "▶️";
@@ -376,12 +382,85 @@ class CalleCallCenter {
         if (app.showToast) {
           app.showToast("Verified offer saved to master comparison!", "success");
         }
+        // If the waiting modal is active, automatically close it and advance to Step 4
+        const modal = document.getElementById("modal-call-in-progress");
+        if (modal && modal.classList.contains("active")) {
+          modal.classList.remove("active");
+          app.showToast("Call ended. Proceeding to Client Proposal...", "info");
+          setTimeout(() => app.goToStep(4), 500);
+        }
       }
     };
 
     this.currentAudio.play().catch((e) => {
       console.warn("Audio autoplay policy:", e);
     });
+  }
+
+  completeCallImmediately() {
+    const sc = this.scenarios[this.currentScenarioKey] || this.scenarios["apex_tile"];
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      try {
+        this.currentAudio.currentTime = this.currentAudio.duration || 60;
+      } catch (e) {
+        // Audio might not be fully loaded
+      }
+    }
+
+    this.isPlayingAudio = false;
+    this.isCallScheduled = false;
+    this.callCompleted = true;
+    this.stopWaveAnimation();
+
+    const stateText = document.getElementById("monitor-call-state-text");
+    const playIcon = document.getElementById("monitor-audio-play-icon");
+    const playText = document.getElementById("monitor-audio-play-text");
+    const transcriptBox = document.getElementById("monitor-transcript-messages");
+    const extBox = document.getElementById("monitor-extracted-box");
+    const liveInd = document.getElementById("live-speaking-indicator");
+    if (liveInd) liveInd.remove();
+
+    if (stateText) stateText.innerText = "CALL COMPLETED (OFFER SAVED)";
+    if (playIcon) playIcon.innerText = "▶️";
+    if (playText) playText.innerText = "Replay Call Audio";
+
+    // Immediately render all dialogue turns
+    if (transcriptBox && sc && sc.turns) {
+      transcriptBox.innerHTML = "";
+      sc.turns.forEach((turn) => {
+        const msg = document.createElement("div");
+        msg.className = `transcript-msg ${turn.speaker}`;
+        msg.innerHTML = `<strong>${turn.name}:</strong> ${turn.text}`;
+        transcriptBox.appendChild(msg);
+      });
+      this.scrollTranscriptToBottom();
+    }
+
+    // Immediately reveal negotiated terms
+    if (extBox && sc && sc.extracted) {
+      extBox.style.display = "block";
+      const p = document.getElementById("live-extract-price");
+      const d = document.getElementById("live-extract-discount");
+      const s = document.getElementById("live-extract-stock");
+      const del = document.getElementById("live-extract-delay");
+
+      if (p) p.innerText = sc.extracted.price;
+      if (d) d.innerText = sc.extracted.discount;
+      if (s) s.innerText = sc.extracted.stock;
+      if (del) del.innerText = sc.extracted.delay;
+    }
+
+    const app = window.contractorPilotApp;
+    if (app) {
+      app.loadProjectDetails(this.currentProjectId);
+      if (app.showToast) {
+        app.showToast(`Negotiation completed with ${sc.targetName}! Offer saved.`, "success");
+      }
+      const modal = document.getElementById("modal-call-in-progress");
+      if (modal) modal.classList.remove("active");
+      setTimeout(() => app.goToStep(4), 300);
+    }
   }
 
   pauseCallAudio() {
@@ -417,9 +496,12 @@ class CalleCallCenter {
 
   // Called automatically when user clicks batch procurement
   simulateDemoCallFlow() {
+    this.isCallScheduled = true;
+    this.callCompleted = false;
     this.loadScenario("apex_tile");
     // Play with small delay so user has seen the cards
     setTimeout(() => {
+      this.isCallScheduled = false;
       this.playCallAudio();
     }, 800);
   }
