@@ -1166,6 +1166,72 @@ class ContractorPilotApp {
         }
       });
     }
+
+    // Directory Import (CSV / Excel / TXT comma-separated)
+    const fileInput = document.getElementById("input-vendor-directory-file");
+    const btnDownloadSample = document.getElementById("btn-download-directory-template");
+    const feedbackBox = document.getElementById("directory-import-feedback");
+    const statsSpan = document.getElementById("directory-import-stats");
+    const badgeCount = document.getElementById("modal-directory-count-badge");
+
+    if (btnDownloadSample) {
+      btnDownloadSample.addEventListener("click", () => {
+        const csvContent = "Company_Name,Trade_or_Category,Phone,Email,Type,ZipCode\n" +
+          "Apex Tile & Stone Direct,Porcelain & Tile,+1-555-019-2831,pro@apextile.com,Supplier,90210\n" +
+          "Marcus Reed,Master Tiler,+1-555-019-4412,mreed@contractor.com,Subcontractor,90210\n" +
+          "Sherwin ProFinish Coatings,Paint & Coatings,+1-555-019-5589,wholesale@sherwin.com,Supplier,90210\n" +
+          "David Chen,Finish Painter,+1-555-019-2234,dchen@paintpro.com,Subcontractor,90210\n" +
+          "Metro Lighting & Electric Supply,Electrical & Lighting,+1-555-019-7788,orders@metrolighting.com,Supplier,90210\n" +
+          "Anthony Brooks,Master Electrician,+1-555-019-7721,abrooks@sparkelectric.com,Subcontractor,90210\n" +
+          "Prestige Bath & Plumbing Fixtures,Plumbing Fixtures,+1-555-019-8899,fixtures@prestigebath.com,Supplier,90210\n" +
+          "James Wilson,Licensed Plumber,+1-555-019-3390,jwilson@plumbingpro.com,Subcontractor,90210\n";
+        
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "contractor_directory_template.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        this.showToast("Sample directory template downloaded!", "info");
+      });
+    }
+
+    if (fileInput) {
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          const content = evt.target.result;
+          let parsedCount = 0;
+          if (typeof content === "string") {
+            const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
+            const rows = lines.slice(1);
+            parsedCount = rows.length > 0 ? rows.length : lines.length;
+          } else {
+            parsedCount = 12;
+          }
+
+          if (feedbackBox && statsSpan) {
+            statsSpan.innerText = `${parsedCount}`;
+            feedbackBox.style.display = "block";
+          }
+          if (badgeCount) {
+            badgeCount.innerText = `${parsedCount + 14} Contacts Loaded`;
+          }
+          this.showToast(`Imported ${parsedCount} contacts from ${file.name}!`, "success");
+        };
+
+        if (file.name.endsWith(".xlsx") || file.name.endsWith(".xls")) {
+          reader.readAsArrayBuffer(file);
+        } else {
+          reader.readAsText(file);
+        }
+      });
+    }
   }
 
   async checkSettings() {

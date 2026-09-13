@@ -33,7 +33,13 @@ Liens.txt
 
 # Local video assets & video/demo scripts (kept locally, excluded from GitHub)
 video/
+*.mp4
+*.webm
+*.mov
+*.avi
+*.mkv
 build_full_hd_video.py
+record_live_hd_video.py
 capture_hd_screenshots.py
 generate_demo_audios.py
 test_workflow.py

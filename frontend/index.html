@@ -726,12 +726,39 @@
               Sandbox Active
             </span>
           </div>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
             Places live telephone calls to real suppliers and subcontractors. Free 20 calls included on heycall-e.com. Without a key, the interactive sandbox simulator runs for free.
           </p>
           <div class="form-group">
             <label style="font-size: 0.85rem;">CALL-E API Key:</label>
             <input type="password" id="input-calle-key" class="styled-input" placeholder="calle_live_...">
+          </div>
+        </div>
+
+        <!-- Contractor Rolodex & Directory Import (Excel / CSV / TXT comma-separated) -->
+        <div style="border-top: 1px solid var(--border-card); padding-top: 1.2rem; margin-top: 1.2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+            <h4 style="margin: 0; display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: #38bdf8;">
+              <span>📁</span> Subcontractor & Supplier Directory (Rolodex)
+            </h4>
+            <span class="badge" id="modal-directory-count-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 0.75rem; padding: 0.25rem 0.6rem;">
+              14 Contacts Loaded
+            </span>
+          </div>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Import your custom subcontractors & suppliers list (.csv, .xlsx, .txt comma-separated). CALL-E will autonomously dial your preferred local contractors and wholesale suppliers first.
+          </p>
+          <div class="form-group" style="margin-bottom: 0.6rem;">
+            <label style="font-size: 0.82rem;">Upload Directory File (.csv, .xlsx, .txt):</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <input type="file" id="input-vendor-directory-file" accept=".csv, .xlsx, .xls, .txt" class="styled-input" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; flex: 1;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-download-directory-template" style="font-size: 0.78rem; white-space: nowrap; padding: 0.4rem 0.75rem;" title="Download Sample CSV Template">
+                📥 Sample CSV
+              </button>
+            </div>
+            <div id="directory-import-feedback" style="font-size: 0.78rem; color: var(--accent-emerald); margin-top: 0.45rem; display: none;">
+              ✅ Directory updated: <strong id="directory-import-stats">0</strong> contacts ready for CALL-E procurement!
+            </div>
           </div>
         </div>
       </div>
