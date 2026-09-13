@@ -242,7 +242,14 @@ class ContractorPilotApp {
     const offersCount = this.getVerifiedOffersCount();
 
     if (inProgress) {
-      btnToStep4.innerHTML = `⏳ Call in Progress (Negotiating Terms...)`;
+      let timeStr = "";
+      if (window.calleCenter && window.calleCenter.currentAudio && window.calleCenter.currentAudio.duration) {
+        const cur = window.calleCenter.currentAudio.currentTime || 0;
+        const dur = window.calleCenter.currentAudio.duration || 60;
+        const rem = Math.max(0, Math.ceil(dur - cur));
+        timeStr = ` (${rem}s remaining)`;
+      }
+      btnToStep4.innerHTML = `⏳ Conversation in Progress${timeStr}`;
       btnToStep4.style.opacity = "0.85";
       btnToStep4.title = "Awaiting end of conversation to verify pricing and artisan availability";
     } else if (offersCount === 0) {
@@ -278,8 +285,8 @@ class ContractorPilotApp {
       }
       if (actionsEl) {
         actionsEl.innerHTML = `
-          <button class="btn btn-secondary" id="btn-cancel-modal-proposals" style="padding: 0.7rem 1.4rem;">Cancel</button>
-          <button class="btn btn-primary" id="btn-launch-from-modal" style="padding: 0.7rem 1.4rem; background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%); font-weight: 600;">📞 Launch Sourcing Calls Now</button>
+          <button class="btn btn-secondary" id="btn-cancel-modal-proposals" style="padding: 0.75rem 1.6rem;">Cancel</button>
+          <button class="btn btn-primary" id="btn-launch-from-modal" style="padding: 0.75rem 1.6rem; background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%); font-weight: 600;">📞 Launch Sourcing Calls Now</button>
         `;
         const btnCancel = document.getElementById("btn-cancel-modal-proposals");
         if (btnCancel) btnCancel.onclick = () => this.hideCallInProgressModal();
@@ -296,7 +303,7 @@ class ContractorPilotApp {
         if (sc && sc.targetName) targetName = sc.targetName;
       }
 
-      if (iconEl) iconEl.innerText = "📞";
+      if (iconEl) iconEl.innerText = "⏳";
       if (pulseEl) pulseEl.style.background = "var(--accent-cyan)";
       if (badgeEl) {
         badgeEl.innerText = `Active Call: ${targetName}`;
@@ -308,24 +315,12 @@ class ContractorPilotApp {
       }
       if (actionsEl) {
         actionsEl.innerHTML = `
-          <button class="btn btn-secondary" id="btn-wait-call-finish" style="padding: 0.7rem 1.4rem; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 0.4rem;">
-            🎧 Wait & Listen to Call
-          </button>
-          <button class="btn btn-primary" id="btn-fast-forward-call" style="padding: 0.7rem 1.4rem; font-size: 0.92rem; background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;">
-            ⚡ Fast-Forward Call & Lock Terms ➔
+          <button class="btn btn-secondary" id="btn-wait-call-finish" style="padding: 0.75rem 2.2rem; font-size: 0.95rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+            🎧 Return & Listen to Call
           </button>
         `;
         const btnWait = document.getElementById("btn-wait-call-finish");
         if (btnWait) btnWait.onclick = () => this.hideCallInProgressModal();
-        const btnFast = document.getElementById("btn-fast-forward-call");
-        if (btnFast) btnFast.onclick = () => {
-          if (window.calleCenter && typeof window.calleCenter.completeCallImmediately === "function") {
-            window.calleCenter.completeCallImmediately();
-          } else {
-            this.hideCallInProgressModal();
-            this.goToStep(4);
-          }
-        };
       }
     }
 
@@ -905,18 +900,6 @@ class ContractorPilotApp {
     if (btnWaitCall) {
       btnWaitCall.addEventListener("click", () => {
         this.hideCallInProgressModal();
-      });
-    }
-
-    const btnFastForward = document.getElementById("btn-fast-forward-call");
-    if (btnFastForward) {
-      btnFastForward.addEventListener("click", () => {
-        if (window.calleCenter && typeof window.calleCenter.completeCallImmediately === "function") {
-          window.calleCenter.completeCallImmediately();
-        } else {
-          this.hideCallInProgressModal();
-          this.goToStep(4);
-        }
       });
     }
   }

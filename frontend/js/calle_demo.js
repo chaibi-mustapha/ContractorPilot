@@ -301,6 +301,21 @@ class CalleCallCenter {
       const secs = String(Math.floor(curTime % 60)).padStart(2, "0");
       if (durationTag) durationTag.innerText = `${mins}:${secs}`;
 
+      // Update modal live timer if modal is active
+      const modalLiveTime = document.getElementById("modal-live-time");
+      const modalTotalTime = document.getElementById("modal-total-time");
+      if (modalLiveTime) modalLiveTime.innerText = `${mins}:${secs}`;
+      if (modalTotalTime && this.currentAudio.duration) {
+        const tMins = String(Math.floor(this.currentAudio.duration / 60)).padStart(2, "0");
+        const tSecs = String(Math.floor(this.currentAudio.duration % 60)).padStart(2, "0");
+        modalTotalTime.innerText = `${tMins}:${tSecs}`;
+      }
+
+      // Update Step 3 button with live countdown
+      if (window.contractorPilotApp && typeof window.contractorPilotApp.updateStep3TransitionState === "function") {
+        window.contractorPilotApp.updateStep3TransitionState();
+      }
+
       // 1. Detect if a speaker is actively talking right now
       let activeSpeakingTurn = null;
       sc.turns.forEach((turn) => {
@@ -389,9 +404,17 @@ class CalleCallCenter {
         // If the waiting modal is active, automatically close it and advance to Step 4
         const modal = document.getElementById("modal-call-in-progress");
         if (modal && modal.classList.contains("active")) {
-          modal.classList.remove("active");
-          app.showToast("Call ended. Proceeding to Client Proposal...", "info");
-          setTimeout(() => app.goToStep(4), 500);
+          const titleEl = document.getElementById("modal-call-title");
+          const descEl = document.getElementById("call-in-progress-desc");
+          const iconEl = document.getElementById("modal-call-icon");
+          if (iconEl) iconEl.innerText = "✅";
+          if (titleEl) titleEl.innerText = "Conversation Completed & Verified!";
+          if (descEl) descEl.innerHTML = "Firm pricing and artisan availability confirmed. Unlocking Client Proposal...";
+          app.showToast("Call ended. Proceeding to Client Proposal...", "success");
+          setTimeout(() => {
+            modal.classList.remove("active");
+            app.goToStep(4);
+          }, 800);
         }
       }
     };
