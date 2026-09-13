@@ -229,23 +229,104 @@ class ContractorPilotApp {
     return false;
   }
 
-  showCallInProgressModal() {
+  getVerifiedOffersCount() {
+    if (!this.projectData || !Array.isArray(this.projectData.offers)) return 0;
+    return this.projectData.offers.length;
+  }
+
+  updateStep3TransitionState() {
+    const btnToStep4 = document.getElementById("btn-to-step-4");
+    if (!btnToStep4) return;
+
+    const inProgress = this.isCallInProgress();
+    const offersCount = this.getVerifiedOffersCount();
+
+    if (inProgress) {
+      btnToStep4.innerHTML = `⏳ Call in Progress (Negotiating Terms...)`;
+      btnToStep4.style.opacity = "0.85";
+      btnToStep4.title = "Awaiting end of conversation to verify pricing and artisan availability";
+    } else if (offersCount === 0) {
+      btnToStep4.innerHTML = `🔒 Sourcing Required (0 Proposals)`;
+      btnToStep4.style.opacity = "0.85";
+      btnToStep4.title = "Launch CALL-E procurement calls first to collect verified quotes";
+    } else {
+      btnToStep4.innerHTML = `🏆 View Comparison & Client Proposal ➔ (${offersCount} Verified Proposals)`;
+      btnToStep4.style.opacity = "1";
+      btnToStep4.title = "Proceed to client proposal and offers matrix";
+    }
+  }
+
+  showCallInProgressModal(mode = "call_in_progress") {
     const modal = document.getElementById("modal-call-in-progress");
-    const desc = document.getElementById("call-in-progress-desc");
-    const targetBadge = document.getElementById("modal-call-target-badge");
+    const iconEl = document.getElementById("modal-call-icon");
+    const pulseEl = document.getElementById("modal-call-pulse");
+    const badgeEl = document.getElementById("modal-call-target-badge");
+    const titleEl = document.getElementById("modal-call-title");
+    const descEl = document.getElementById("call-in-progress-desc");
+    const actionsEl = document.getElementById("modal-call-actions");
 
-    let targetName = "Supplier / Subcontractor";
-    if (window.calleCenter) {
-      const sc = window.calleCenter.scenarios[window.calleCenter.currentScenarioKey] || window.calleCenter.scenarios["apex_tile"];
-      if (sc && sc.targetName) targetName = sc.targetName;
-    }
+    if (mode === "no_proposals") {
+      if (iconEl) iconEl.innerText = "📋";
+      if (pulseEl) pulseEl.style.background = "#f59e0b";
+      if (badgeEl) {
+        badgeEl.innerText = "Minimum Proposals Required";
+        badgeEl.style.color = "#f59e0b";
+      }
+      if (titleEl) titleEl.innerText = "No Verified Proposals Collected";
+      if (descEl) {
+        descEl.innerHTML = `Without completed subcontractor or supplier calls, pricing, discounts, and artisan availability remain unknown.<br><br>A minimum of <strong>1 verified proposal</strong> is required before generating the comparison matrix and client proposal.`;
+      }
+      if (actionsEl) {
+        actionsEl.innerHTML = `
+          <button class="btn btn-secondary" id="btn-cancel-modal-proposals" style="padding: 0.7rem 1.4rem;">Cancel</button>
+          <button class="btn btn-primary" id="btn-launch-from-modal" style="padding: 0.7rem 1.4rem; background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%); font-weight: 600;">📞 Launch Sourcing Calls Now</button>
+        `;
+        const btnCancel = document.getElementById("btn-cancel-modal-proposals");
+        if (btnCancel) btnCancel.onclick = () => this.hideCallInProgressModal();
+        const btnLaunch = document.getElementById("btn-launch-from-modal");
+        if (btnLaunch) btnLaunch.onclick = () => {
+          this.hideCallInProgressModal();
+          this.launchBatchConsultation();
+        };
+      }
+    } else {
+      let targetName = "Supplier / Subcontractor";
+      if (window.calleCenter) {
+        const sc = window.calleCenter.scenarios[window.calleCenter.currentScenarioKey] || window.calleCenter.scenarios["apex_tile"];
+        if (sc && sc.targetName) targetName = sc.targetName;
+      }
 
-    if (targetBadge) {
-      targetBadge.innerText = `Active Call: ${targetName}`;
-    }
-
-    if (desc) {
-      desc.innerHTML = `CALL-E is currently negotiating firm pricing, volume discounts, and delivery dates with <strong style="color: var(--accent-cyan);">${targetName}</strong>.<br><br>Please wait for the live conversation to complete before reviewing the proposal.`;
+      if (iconEl) iconEl.innerText = "📞";
+      if (pulseEl) pulseEl.style.background = "var(--accent-cyan)";
+      if (badgeEl) {
+        badgeEl.innerText = `Active Call: ${targetName}`;
+        badgeEl.style.color = "var(--accent-cyan)";
+      }
+      if (titleEl) titleEl.innerText = "Live Sourcing Call in Progress";
+      if (descEl) {
+        descEl.innerHTML = `CALL-E is currently negotiating firm pricing, volume discounts, and delivery dates with <strong style="color: var(--accent-cyan);">${targetName}</strong>.<br><br>Until the conversation finishes, exact unit prices and availability remain unconfirmed. Please wait for the conversation to conclude to lock in the required proposals.`;
+      }
+      if (actionsEl) {
+        actionsEl.innerHTML = `
+          <button class="btn btn-secondary" id="btn-wait-call-finish" style="padding: 0.7rem 1.4rem; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 0.4rem;">
+            🎧 Wait & Listen to Call
+          </button>
+          <button class="btn btn-primary" id="btn-fast-forward-call" style="padding: 0.7rem 1.4rem; font-size: 0.92rem; background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem;">
+            ⚡ Fast-Forward Call & Lock Terms ➔
+          </button>
+        `;
+        const btnWait = document.getElementById("btn-wait-call-finish");
+        if (btnWait) btnWait.onclick = () => this.hideCallInProgressModal();
+        const btnFast = document.getElementById("btn-fast-forward-call");
+        if (btnFast) btnFast.onclick = () => {
+          if (window.calleCenter && typeof window.calleCenter.completeCallImmediately === "function") {
+            window.calleCenter.completeCallImmediately();
+          } else {
+            this.hideCallInProgressModal();
+            this.goToStep(4);
+          }
+        };
+      }
     }
 
     if (modal) {
@@ -262,7 +343,11 @@ class ContractorPilotApp {
 
   tryGoToStep4() {
     if (this.isCallInProgress()) {
-      this.showCallInProgressModal();
+      this.showCallInProgressModal("call_in_progress");
+      return;
+    }
+    if (this.getVerifiedOffersCount() === 0) {
+      this.showCallInProgressModal("no_proposals");
       return;
     }
     this.goToStep(4);
@@ -284,10 +369,16 @@ class ContractorPilotApp {
   goToStep(stepNumber) {
     if (stepNumber < 1 || stepNumber > 4) return;
 
-    // Block navigation to Step 4 if live call dialogue is still in progress
-    if (stepNumber === 4 && this.isCallInProgress()) {
-      this.showCallInProgressModal();
-      return;
+    // Block navigation to Step 4 if live call dialogue is still in progress or no proposals exist
+    if (stepNumber === 4) {
+      if (this.isCallInProgress()) {
+        this.showCallInProgressModal("call_in_progress");
+        return;
+      }
+      if (this.getVerifiedOffersCount() === 0) {
+        this.showCallInProgressModal("no_proposals");
+        return;
+      }
     }
 
     // Automatically pause any running CALL-E live audio when navigating away from Step 3
@@ -329,6 +420,7 @@ class ContractorPilotApp {
       this.renderNeedsLists();
     } else if (stepNumber === 3) {
       this.renderSessionCalls();
+      this.updateStep3TransitionState();
     } else if (stepNumber === 4) {
       this.refreshQuote();
       this.renderOffersRanking();
@@ -840,6 +932,7 @@ class ContractorPilotApp {
       this.renderNeedsLists();
       this.renderSessionCalls();
       this.renderOffersRanking();
+      this.updateStep3TransitionState();
     } catch (e) {
       console.error("[loadProjectDetails] Error:", e);
     }

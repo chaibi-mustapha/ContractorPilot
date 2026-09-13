@@ -289,6 +289,10 @@ class CalleCallCenter {
     this.startWaveAnimation();
     this.isPlayingAudio = true;
 
+    if (window.contractorPilotApp && typeof window.contractorPilotApp.updateStep3TransitionState === "function") {
+      window.contractorPilotApp.updateStep3TransitionState();
+    }
+
     // Time updates & synchronized dialogue streaming (turns appear strictly AFTER vocal ends)
     let displayedIndices = new Set();
     this.currentAudio.ontimeupdate = () => {
@@ -477,6 +481,10 @@ class CalleCallCenter {
     if (stateText) stateText.innerText = "CALL PAUSED";
     if (playIcon) playIcon.innerText = "▶️";
     if (playText) playText.innerText = "Resume Audio";
+
+    if (window.contractorPilotApp && typeof window.contractorPilotApp.updateStep3TransitionState === "function") {
+      window.contractorPilotApp.updateStep3TransitionState();
+    }
   }
 
   stopCurrentAudio() {
@@ -492,6 +500,10 @@ class CalleCallCenter {
     const playText = document.getElementById("monitor-audio-play-text");
     if (playIcon) playIcon.innerText = "▶️";
     if (playText) playText.innerText = "Play Audio";
+
+    if (window.contractorPilotApp && typeof window.contractorPilotApp.updateStep3TransitionState === "function") {
+      window.contractorPilotApp.updateStep3TransitionState();
+    }
   }
 
   // Called automatically when user clicks batch procurement
