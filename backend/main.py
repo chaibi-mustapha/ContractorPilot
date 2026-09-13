@@ -194,7 +194,7 @@ async def list_projects() -> List[Dict[str, Any]]:
 async def get_project(project_id: str) -> Dict[str, Any]:
     proj = store.projects.get(project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
     return proj.model_dump()
 
 
@@ -219,7 +219,7 @@ async def create_project(req: CreateProjectRequest) -> Dict[str, Any]:
 async def add_room(project_id: str, req: AddRoomRequest) -> Dict[str, Any]:
     proj = store.projects.get(project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     room = Room(
         name=req.name,
@@ -239,7 +239,7 @@ async def add_room(project_id: str, req: AddRoomRequest) -> Dict[str, Any]:
 async def add_requirement(project_id: str, req: AddRequirementRequest) -> Dict[str, Any]:
     proj = store.projects.get(project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     req_obj = Requirement(
         room_id=req.room_id,
@@ -261,11 +261,11 @@ async def add_requirement(project_id: str, req: AddRequirementRequest) -> Dict[s
 async def update_requirement(project_id: str, requirement_id: str, req: UpdateRequirementRequest) -> Dict[str, Any]:
     proj = store.projects.get(project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     target = next((r for r in proj.requirements if r.id == requirement_id), None)
     if not target:
-        raise HTTPException(status_code=404, detail="Besoin introuvable")
+        raise HTTPException(status_code=404, detail="Requirement not found")
 
     if req.category is not None:
         target.category = req.category
@@ -290,12 +290,12 @@ async def update_requirement(project_id: str, requirement_id: str, req: UpdateRe
 async def delete_requirement(project_id: str, requirement_id: str) -> Dict[str, Any]:
     proj = store.projects.get(project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     initial_len = len(proj.requirements)
     proj.requirements = [r for r in proj.requirements if r.id != requirement_id]
     if len(proj.requirements) == initial_len:
-        raise HTTPException(status_code=404, detail="Besoin introuvable")
+        raise HTTPException(status_code=404, detail="Requirement not found")
 
     store.save()
     return {"success": True, "deleted_id": requirement_id}
@@ -328,8 +328,8 @@ def parse_voice_note_into_requirements(voice_text: str) -> Dict[str, Any]:
         return {
             "is_relevant": False,
             "rejection_reason": (
-                "Le contenu dicté ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état. "
-                "Veuillez dicter les pièces, dimensions, matériaux ou travaux d'artisans à réaliser."
+                "The dictation does not appear to describe home renovation, remodeling, or contractor trades. "
+                "Please dictate rooms, dimensions, materials, or subcontractor tasks to perform."
             ),
             "rooms": [],
             "tasks_by_trade": [],
@@ -730,7 +730,7 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
     # Validate topic relevance
     if parsed.get("is_relevant") is False or (not parsed.get("rooms") and not parsed.get("tasks_by_trade") and not parsed.get("materials")):
         rejection_reason = parsed.get("rejection_reason") or (
-            "Le contenu dicté ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état de chantier."
+            "The dictated walkthrough does not appear to describe home renovation, remodeling, or contractor trade work."
         )
         return {
             "success": False,
@@ -812,17 +812,17 @@ async def voice_extract_audio_needs(project_id: str, req: VoiceExtractAudioReque
         if last_err == "rate_limit":
             raise HTTPException(
                 status_code=429,
-                detail="Le quota de requêtes Google Gemini est temporairement atteint (15 req/min). Veuillez patienter 15 à 20 secondes avant de relancer l'enregistrement."
+                detail="Google Gemini request quota temporarily reached (15 req/min). Please wait 15-20 seconds before recording again."
             )
         elif last_err == "auth_error":
             raise HTTPException(
                 status_code=401,
-                detail="Clé API Google Gemini invalide ou manquante. Veuillez vérifier votre clé API dans les réglages."
+                detail="Google Gemini API key invalid or missing. Please check your API key in Settings."
             )
         else:
             raise HTTPException(
                 status_code=422,
-                detail="L'analyse audio Gemini n'a pas détecté d'instructions exploitables dans cet enregistrement. Parlez distinctement dans votre micro (au moins 10 secondes) ou utilisez un scénario démo 1-clic ci-dessous."
+                detail="Gemini audio analysis did not detect actionable remodel scopes in this recording. Please speak clearly into your microphone (for at least 10 seconds), or use one of the one-click demo presets below."
             )
 
     transcription = str(parsed.get("transcription", "")).strip()
@@ -834,7 +834,7 @@ async def voice_extract_audio_needs(project_id: str, req: VoiceExtractAudioReque
     # Validate topic relevance
     if parsed.get("is_relevant") is False or (not parsed.get("rooms") and not parsed.get("tasks_by_trade") and not parsed.get("materials")):
         rejection_reason = parsed.get("rejection_reason") or (
-            "L'enregistrement audio ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état de chantier."
+            "The audio recording does not appear to describe home renovation, construction scopes, or contractor trade work."
         )
         return {
             "success": False,
@@ -1075,11 +1075,11 @@ def calculate_offer_score(
 async def trigger_call(req: TriggerCallRequest) -> Dict[str, Any]:
     proj = store.projects.get(req.project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
-    # Recherche de la cible
-    target_name = "Fournisseur Inconnu"
-    target_phone = "+213550000000"
+    # Target lookup
+    target_name = "Supplier Unknown"
+    target_phone = "+15550000000"
     reliability = 85
 
     if req.target_type == "supplier":
@@ -1095,13 +1095,13 @@ async def trigger_call(req: TriggerCallRequest) -> Dict[str, Any]:
             target_phone = trd.phone
             reliability = trd.reliability_score
 
-    # Recherche du besoin
+    # Requirement lookup
     req_item = next((r for r in proj.requirements if r.id == req.requirement_id), None)
     if not req_item:
-        raise HTTPException(status_code=404, detail="Besoin introuvable")
+        raise HTTPException(status_code=404, detail="Requirement not found")
 
     if req.is_live and calle_service.is_live_ready():
-        # Appel réel CALL-E via le SDK
+        # Live CALL-E execution via SDK
         try:
             call_res = await calle_service.execute_live_call(
                 target_type=req.target_type,
@@ -1112,7 +1112,7 @@ async def trigger_call(req: TriggerCallRequest) -> Dict[str, Any]:
                 unit=req_item.unit,
                 project_location=proj.location,
             )
-            # Enregistrement
+            # Record call
             rec = CallRecord(
                 project_id=proj.id,
                 target_type=req.target_type,
@@ -1124,14 +1124,14 @@ async def trigger_call(req: TriggerCallRequest) -> Dict[str, Any]:
                 status="completed",
                 calle_call_id=call_res.get("id"),
                 duration_seconds=call_res.get("duration", 45),
-                transcript=[{"speaker": "CALL-E", "text": "Appel réel effectué avec succès."}],
+                transcript=[{"speaker": "CALL-E", "text": "Live call completed successfully."}],
                 extracted_data=call_res.get("result", {}),
             )
             proj.call_records.append(rec)
             store.save()
             return {"status": "success", "mode": "live", "call": rec.model_dump()}
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Erreur API CALL-E: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"CALL-E API Error: {str(e)}")
     else:
         # Fallback simulation
         # Générer et stocker une offre
@@ -1194,13 +1194,13 @@ async def trigger_call(req: TriggerCallRequest) -> Dict[str, Any]:
 
 @app.post("/api/calls/batch-procurement")
 async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
-    """Lance automatiquement la consultation par CALL-E pour tous les besoins (travaux et matériaux)."""
+    """Automatically launches CALL-E consultations for all scopes (labor & materials)."""
     proj = store.projects.get(req.project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     if not proj.requirements:
-        raise HTTPException(status_code=400, detail="Aucun besoin défini pour ce projet. Veuillez d'abord analyser vos notes vocales.")
+        raise HTTPException(status_code=400, detail="No requirements or scopes defined for this project. Please analyze your walkthrough voice notes first.")
 
     # Nettoyage des anciennes offres de ce projet pour recalculer un bilan frais
     proj.offers = []
@@ -1376,13 +1376,13 @@ async def batch_procurement(req: BatchProcurementRequest) -> Dict[str, Any]:
 async def select_offer(req: SelectOfferRequest) -> Dict[str, Any]:
     proj = store.projects.get(req.project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     target_offer = next((o for o in proj.offers if o.id == req.offer_id), None)
     if not target_offer:
-        raise HTTPException(status_code=404, detail="Offre introuvable")
+        raise HTTPException(status_code=404, detail="Offer not found")
 
-    # Désélectionner les autres offres du même requirement_id
+    # Deselect other offers for the same requirement_id
     if req.is_selected:
         for o in proj.offers:
             if o.requirement_id == target_offer.requirement_id:
@@ -1399,7 +1399,7 @@ async def select_offer(req: SelectOfferRequest) -> Dict[str, Any]:
 async def generate_quote(req: GenerateQuoteRequest) -> Dict[str, Any]:
     proj = store.projects.get(req.project_id)
     if not proj:
-        raise HTTPException(status_code=404, detail="Projet introuvable")
+        raise HTTPException(status_code=404, detail="Project not found")
 
     materials_subtotal = 0.0
     labor_subtotal = 0.0

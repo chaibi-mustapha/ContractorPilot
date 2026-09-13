@@ -165,7 +165,7 @@ class ContractorPilotApp {
     this.recognition = null;
     this.recordTimerInterval = null;
     this.recordSeconds = 0;
-    this.dictationLang = (navigator.language && navigator.language.startsWith("fr")) ? "fr-FR" : "en-US";
+    this.dictationLang = "en-US";
     this.speechFinalTranscript = "";
     this.mediaStream = null;
     this.mediaRecorder = null;
@@ -213,9 +213,7 @@ class ContractorPilotApp {
     const textarea = document.getElementById("voice-transcription-input");
     if (textarea) {
       textarea.value = "";
-      textarea.placeholder = (this.dictationLang === "fr-FR")
-        ? "🎙️ Cliquez sur le microphone ci-contre pour dicter vos notes de chantier, ou cliquez sur un scénario ci-dessous..."
-        : "🎙️ Click the microphone on the left to dictate your walkthrough notes, or click a demo scenario below...";
+      textarea.placeholder = "🎙️ Click the microphone on the left to dictate your walkthrough notes, or click a demo scenario below...";
       this.updateWordCount();
     }
   }
@@ -302,9 +300,7 @@ class ContractorPilotApp {
       }
       if (event.error === "not-allowed") {
         this.showToast(
-          (this.dictationLang === "fr-FR")
-            ? "Accès micro refusé. Veuillez autoriser le microphone dans la barre d'adresse de votre navigateur."
-            : "Microphone access blocked. Please allow microphone in your browser URL bar.",
+          "Microphone access blocked. Please allow microphone in your browser URL bar.",
           "error"
         );
         this.stopVoiceRecording();
@@ -338,11 +334,7 @@ class ContractorPilotApp {
   async startVoiceRecording() {
     // 1. Check microphone access (getUserMedia is universal across all browsers: Chrome, Brave, Firefox, Safari, Edge)
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert(
-        (this.dictationLang === "fr-FR")
-          ? "Votre navigateur ne permet pas l'accès au microphone."
-          : "Microphone access is not supported in this browser."
-      );
+      alert("Microphone access is not supported in this browser.");
       return;
     }
 
@@ -351,9 +343,7 @@ class ContractorPilotApp {
     } catch (err) {
       console.error("[Microphone] Permission error:", err);
       this.showToast(
-        (this.dictationLang === "fr-FR")
-          ? "Accès micro refusé. Veuillez autoriser le microphone dans la barre d'adresse de votre navigateur."
-          : "Microphone permission denied. Please allow microphone access in your browser URL bar.",
+        "Microphone permission denied. Please allow microphone access in your browser URL bar.",
         "error"
       );
       return;
@@ -367,9 +357,7 @@ class ContractorPilotApp {
     const textarea = document.getElementById("voice-transcription-input");
     if (textarea) {
       textarea.value = "";
-      textarea.placeholder = (this.dictationLang === "fr-FR")
-        ? "🔴 Enregistrement audio en direct... Parlez dans votre microphone, vos paroles seront transcrites et analysées par Google Gemini !"
-        : "🔴 Recording live audio... Speak into your microphone, your words will be transcribed and analyzed by Google Gemini!";
+      textarea.placeholder = "🔴 Recording live audio... Speak into your microphone, your words will be transcribed and analyzed by Google Gemini!";
       this.updateWordCount();
     }
 
@@ -377,9 +365,7 @@ class ContractorPilotApp {
     const statusText = document.getElementById("mic-status-text");
     if (btnMic) btnMic.classList.add("recording");
     if (statusText) {
-      statusText.innerText = (this.dictationLang === "fr-FR")
-        ? "🔴 Enregistrement audio en cours... Cliquez à nouveau sur le micro quand vous avez fini pour envoyer à Gemini"
-        : "🔴 Audio recording in progress... Click the mic again when finished to analyze with Gemini";
+      statusText.innerText = "🔴 Audio recording in progress... Click the mic again when finished to analyze with Gemini";
     }
 
     this.recordSeconds = 0;
@@ -466,9 +452,7 @@ class ContractorPilotApp {
     }
 
     if (statusText) {
-      statusText.innerText = (this.dictationLang === "fr-FR")
-        ? "✨ Finalisation et envoi à Google Gemini..."
-        : "✨ Finalizing and sending to Google Gemini...";
+      statusText.innerText = "✨ Finalizing and sending to Google Gemini...";
     }
 
     // Allow recorders to flush final chunks before releasing hardware tracks
@@ -490,14 +474,10 @@ class ContractorPilotApp {
     if (wavBlob && wavBlob.size > 800 && avgVol < 0.0015 && peakVol < 0.008 && this.recordSeconds >= 2) {
       console.warn("[Microphone] Detected silence, avgVolume:", avgVol, "peak:", peakVol);
       if (statusText) {
-        statusText.innerText = (this.dictationLang === "fr-FR")
-          ? "⚠️ Aucun son détecté. Vérifiez que votre micro n'est pas en sourdine et parlez plus fort."
-          : "⚠️ No voice sound detected. Please verify your microphone is unmuted and speak louder.";
+        statusText.innerText = "⚠️ No voice sound detected. Please verify your microphone is unmuted and speak louder.";
       }
       this.showToast(
-        (this.dictationLang === "fr-FR")
-          ? "Microphone silencieux ou muet. Vérifiez vos réglages micro."
-          : "Microphone silent. Please check your microphone input level.",
+        "Microphone silent. Please check your microphone input level.",
         "warning"
       );
       return;
@@ -511,9 +491,7 @@ class ContractorPilotApp {
       await this.sendAudioToGemini(audioBlob, this.currentAudioMimeType || "audio/webm");
     } else {
       if (statusText) {
-        statusText.innerText = (this.dictationLang === "fr-FR")
-          ? "✅ Dictée terminée. Vous pouvez vérifier ou modifier le texte ci-contre."
-          : "✅ Dictation finished. You can review or edit below.";
+        statusText.innerText = "✅ Dictation finished. You can review or edit below.";
       }
     }
   }
@@ -531,9 +509,7 @@ class ContractorPilotApp {
 
       try {
         if (statusText) {
-          statusText.innerText = (this.dictationLang === "fr-FR")
-            ? "⏳ Google Gemini analyse votre enregistrement audio et extrait les corps d'état..."
-            : "⏳ Google Gemini is analyzing your voice recording & structuring scopes...";
+          statusText.innerText = "⏳ Google Gemini is analyzing your voice recording & structuring scopes...";
         }
 
         const res = await fetch(`${this.apiBase}/api/projects/${this.currentProjectId}/voice-extract-audio`, {
@@ -569,14 +545,10 @@ class ContractorPilotApp {
 
         const engine = data.ai_engine || "Google Gemini";
         if (statusText) {
-          statusText.innerText = (this.dictationLang === "fr-FR")
-            ? `✅ Audio analysé avec succès par ${engine} !`
-            : `✅ Walkthrough successfully analyzed by ${engine}!`;
+          statusText.innerText = `✅ Walkthrough successfully analyzed by ${engine}!`;
         }
         this.showToast(
-          (this.dictationLang === "fr-FR")
-            ? `✨ Analyse audio réussie (${engine}) !`
-            : `✨ Audio analyzed successfully (${engine})!`,
+          `✨ Audio analyzed successfully (${engine})!`,
           "success"
         );
 
@@ -585,22 +557,18 @@ class ContractorPilotApp {
 
       } catch (err) {
         console.error("[sendAudioToGemini] Error:", err);
-        const errMsg = err.message || "Erreur d'analyse audio";
+        const errMsg = err.message || "Audio analysis error";
         if (statusText) {
           statusText.innerText = "⚠️ " + errMsg;
         }
         if (errMsg.toLowerCase().includes("quota") || errMsg.includes("429")) {
           this.showToast(
-            (this.dictationLang === "fr-FR")
-              ? "⏳ Quota Gemini temporairement atteint. Attendez 15 à 20s avant de relancer."
-              : "⏳ Gemini quota rate limit reached. Please wait 15-20s before trying again.",
+            "⏳ Gemini quota rate limit reached. Please wait 15-20s before trying again.",
             "warning"
           );
         } else if (textarea && textarea.value.trim().length > 0) {
           this.showToast(
-            (this.dictationLang === "fr-FR")
-              ? "Transcription prête ! Cliquez sur 'Analyze Walkthrough' pour générer les devis."
-              : "Transcript ready! Click 'Analyze Walkthrough' to generate scopes.",
+            "Transcript ready! Click 'Analyze Walkthrough' to generate scopes.",
             "info"
           );
         } else {
@@ -637,57 +605,6 @@ class ContractorPilotApp {
       btnMic.addEventListener("click", () => this.toggleVoiceRecording());
     }
 
-    // Language selection buttons (FR / EN)
-    const btnLangFr = document.getElementById("btn-lang-fr");
-    const btnLangEn = document.getElementById("btn-lang-en");
-    const refreshLangUI = () => {
-      if (btnLangFr && btnLangEn) {
-        if (this.dictationLang === "fr-FR") {
-          btnLangFr.style.background = "rgba(6, 182, 212, 0.35)";
-          btnLangFr.style.borderColor = "var(--accent-cyan)";
-          btnLangFr.style.color = "#fff";
-          btnLangEn.style.background = "transparent";
-          btnLangEn.style.borderColor = "rgba(255, 255, 255, 0.15)";
-          btnLangEn.style.color = "var(--text-muted)";
-        } else {
-          btnLangEn.style.background = "rgba(6, 182, 212, 0.35)";
-          btnLangEn.style.borderColor = "var(--accent-cyan)";
-          btnLangEn.style.color = "#fff";
-          btnLangFr.style.background = "transparent";
-          btnLangFr.style.borderColor = "rgba(255, 255, 255, 0.15)";
-          btnLangFr.style.color = "var(--text-muted)";
-        }
-      }
-    };
-    refreshLangUI();
-
-    if (btnLangFr) {
-      btnLangFr.addEventListener("click", (e) => {
-        e.stopPropagation();
-        this.dictationLang = "fr-FR";
-        if (this.recognition) this.recognition.lang = "fr-FR";
-        refreshLangUI();
-        const textarea = document.getElementById("voice-transcription-input");
-        if (textarea && !textarea.value) {
-          textarea.placeholder = "🎙️ Cliquez sur le microphone ci-contre pour dicter vos notes de chantier, ou cliquez sur un scénario ci-dessous...";
-        }
-        this.showToast("Langue de dictée réglée sur Français 🇫🇷", "info");
-      });
-    }
-    if (btnLangEn) {
-      btnLangEn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        this.dictationLang = "en-US";
-        if (this.recognition) this.recognition.lang = "en-US";
-        refreshLangUI();
-        const textarea = document.getElementById("voice-transcription-input");
-        if (textarea && !textarea.value) {
-          textarea.placeholder = "🎙️ Click the microphone on the left to dictate your walkthrough notes, or click a demo scenario below...";
-        }
-        this.showToast("Dictation language set to English 🇺🇸", "info");
-      });
-    }
-
     // Textarea input
     const textarea = document.getElementById("voice-transcription-input");
     if (textarea) {
@@ -699,7 +616,7 @@ class ContractorPilotApp {
     if (btnClear) {
       btnClear.addEventListener("click", () => {
         this.resetWalkthroughTextarea();
-        this.showToast((this.dictationLang === "fr-FR") ? "Zone de dictée effacée." : "Transcript cleared.", "info");
+        this.showToast("Transcript cleared.", "info");
       });
     }
 
@@ -885,20 +802,14 @@ class ContractorPilotApp {
     const titleEl = document.getElementById("off-topic-title");
     const btnConfirm = document.getElementById("btn-confirm-off-topic");
 
-    const isFr = (this.dictationLang === "fr-FR");
-
     if (titleEl) {
-      titleEl.innerText = isFr ? "Sujet hors métier détecté" : "Off-Topic Dictation Detected";
+      titleEl.innerText = "Off-Topic Dictation Detected";
     }
     if (msgEl) {
-      msgEl.innerHTML = (message || (
-        isFr
-          ? "Le contenu dicté ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état.<br><br>Veuillez dicter les pièces, mesures, matériaux ou prestations d'artisans à réaliser."
-          : "The dictation does not appear to be related to a remodel, construction, or trade work project.<br><br>Please describe rooms, dimensions, materials, or contractor scopes."
-      )).replace(/\n/g, "<br>");
+      msgEl.innerHTML = (message || "The dictation does not appear to describe home renovation, construction scopes, or contractor trade work.<br><br>Please dictate specific rooms, dimensions, materials, or subcontractor tasks to perform.").replace(/\n/g, "<br>");
     }
     if (btnConfirm) {
-      btnConfirm.innerText = isFr ? "OK, recommencer la dictée" : "OK, restart dictation";
+      btnConfirm.innerText = "OK, Restart Dictation";
       btnConfirm.onclick = () => {
         if (modal) modal.classList.remove("active");
         this.clearWalkthroughInput();
@@ -908,7 +819,7 @@ class ContractorPilotApp {
     if (modal) {
       modal.classList.add("active");
     } else {
-      alert(message || "Sujet hors métier détecté.");
+      alert(message || "Off-Topic Dictation Detected");
       this.clearWalkthroughInput();
     }
   }
@@ -922,9 +833,7 @@ class ContractorPilotApp {
       textarea.focus();
     }
     if (statusText) {
-      statusText.innerText = (this.dictationLang === "fr-FR")
-        ? "🎙️ Prêt pour une nouvelle dictée de chantier..."
-        : "🎙️ Ready for a new jobsite walkthrough dictation...";
+      statusText.innerText = "🎙️ Ready for a new jobsite walkthrough dictation...";
     }
     this.speechFinalTranscript = "";
   }
