@@ -6,6 +6,107 @@
  * Step 4 : Vendor Comparison & Official Client Proposal
  */
 
+/**
+ * High-Fidelity Cross-Browser WAV Recorder
+ * Direct 16-bit PCM Mono 16kHz WAV generation for Google Gemini Multimodal Audio
+ */
+class WavAudioRecorder {
+  constructor() {
+    this.audioCtx = null;
+    this.sourceNode = null;
+    this.processorNode = null;
+    this.chunks = [];
+    this.sampleRate = 16000;
+  }
+
+  async start(stream) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return false;
+    try {
+      this.audioCtx = new AudioContextClass({ sampleRate: 16000 });
+      this.sampleRate = this.audioCtx.sampleRate || 16000;
+      this.sourceNode = this.audioCtx.createMediaStreamSource(stream);
+      // 4096 buffer size, 1 channel in, 1 channel out
+      this.processorNode = this.audioCtx.createScriptProcessor(4096, 1, 1);
+      this.chunks = [];
+
+      this.processorNode.onaudioprocess = (e) => {
+        const inputData = e.inputBuffer.getChannelData(0);
+        this.chunks.push(new Float32Array(inputData));
+      };
+
+      this.sourceNode.connect(this.processorNode);
+      this.processorNode.connect(this.audioCtx.destination);
+      return true;
+    } catch (e) {
+      console.warn("[WavAudioRecorder] init failed, fallback to MediaRecorder:", e);
+      return false;
+    }
+  }
+
+  async stop() {
+    if (this.sourceNode) {
+      try { this.sourceNode.disconnect(); } catch (e) {}
+      this.sourceNode = null;
+    }
+    if (this.processorNode) {
+      try { this.processorNode.disconnect(); } catch (e) {}
+      this.processorNode = null;
+    }
+    if (this.audioCtx && this.audioCtx.state !== "closed") {
+      try { await this.audioCtx.close(); } catch (e) {}
+      this.audioCtx = null;
+    }
+
+    let totalLength = 0;
+    for (const c of this.chunks) totalLength += c.length;
+    if (totalLength === 0) return null;
+
+    const merged = new Float32Array(totalLength);
+    let offset = 0;
+    for (const c of this.chunks) {
+      merged.set(c, offset);
+      offset += c.length;
+    }
+    this.chunks = [];
+
+    return this.encodeWav(merged, this.sampleRate);
+  }
+
+  encodeWav(samples, sampleRate) {
+    const buffer = new ArrayBuffer(44 + samples.length * 2);
+    const view = new DataView(buffer);
+
+    const writeString = (offset, str) => {
+      for (let i = 0; i < str.length; i++) {
+        view.setUint8(offset + i, str.charCodeAt(i));
+      }
+    };
+
+    writeString(0, "RIFF");
+    view.setUint32(4, 36 + samples.length * 2, true);
+    writeString(8, "WAVE");
+    writeString(12, "fmt ");
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true); // PCM
+    view.setUint16(22, 1, true); // Mono
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true);
+    view.setUint16(34, 16, true);
+    writeString(36, "data");
+    view.setUint32(40, samples.length * 2, true);
+
+    let offset = 44;
+    for (let i = 0; i < samples.length; i++, offset += 2) {
+      let s = Math.max(-1, Math.min(1, samples[i]));
+      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+
+    return new Blob([buffer], { type: "audio/wav" });
+  }
+}
+
 class ContractorPilotApp {
   constructor() {
     this.currentProjectId = "proj-apt-f4";
@@ -17,7 +118,8 @@ class ContractorPilotApp {
     this.currency = "$";
     this.currentNeedsFilter = "all";
 
-    // Speech & Audio Recording (Direct Gemini Multimodal Audio)
+    // Speech & Audio Recording (Direct Gemini Multimodal Audio + WAV Recorder)
+    this.wavRecorder = new WavAudioRecorder();
     this.isRecording = false;
     this.recognition = null;
     this.recordTimerInterval = null;
@@ -27,7 +129,7 @@ class ContractorPilotApp {
     this.mediaStream = null;
     this.mediaRecorder = null;
     this.audioChunks = [];
-    this.currentAudioMimeType = "audio/webm";
+    this.currentAudioMimeType = "audio/wav";
     // API Base URL (dynamic for localhost, cloud deployment, and remote hosts)
     this.apiBase = (window.location.protocol.startsWith("http") && window.location.host) ? "" : "http://127.0.0.1:8000";
   }
@@ -164,15 +266,12 @@ class ContractorPilotApp {
             : "Microphone access blocked. Please allow microphone in your browser URL bar.",
           "error"
         );
+        this.stopVoiceRecording();
       } else if (event.error === "network") {
-        this.showToast(
-          (this.dictationLang === "fr-FR")
-            ? "Erreur réseau lors de la reconnaissance vocale."
-            : "Speech recognition network error.",
-          "error"
-        );
+        console.warn("[SpeechRecognition] Network warning - continuing audio capture.");
       }
-      this.stopVoiceRecording();
+      // Do not stop audio recording on non-fatal speech recognition errors:
+      // the microphone is still capturing high-fidelity audio for Gemini!
     };
 
     this.recognition.onend = () => {
@@ -249,7 +348,14 @@ class ContractorPilotApp {
       this.updateRecordTimer();
     }, 1000);
 
-    // Setup MediaRecorder for universal cross-browser audio capture
+    // 1. Start High-Fidelity WAV recording (native for Google Gemini)
+    try {
+      await this.wavRecorder.start(this.mediaStream);
+    } catch (e) {
+      console.warn("[WavRecorder] start failed, relying on MediaRecorder:", e);
+    }
+
+    // 2. Setup MediaRecorder as universal cross-browser backup
     try {
       const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
         ? "audio/webm;codecs=opus"
@@ -266,7 +372,7 @@ class ContractorPilotApp {
       console.warn("[MediaRecorder] start error:", e);
     }
 
-    // Optional parallel SpeechRecognition for live visual text streaming (if browser supports it)
+    // 3. Optional parallel SpeechRecognition for live visual text streaming (if browser supports it)
     if (this.recognition) {
       try {
         this.recognition.lang = this.dictationLang;
@@ -294,6 +400,14 @@ class ContractorPilotApp {
       } catch (e) {}
     }
 
+    // Stop high-fidelity WAV recorder
+    let wavBlob = null;
+    try {
+      wavBlob = await this.wavRecorder.stop();
+    } catch (e) {
+      console.warn("[WavRecorder] stop error:", e);
+    }
+
     // Stop mediaRecorder & release microphone tracks
     if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
       this.mediaRecorder.stop();
@@ -309,10 +423,12 @@ class ContractorPilotApp {
         : "✨ Sending audio note to Google Gemini AI for direct analysis...";
     }
 
-    // Allow recorder to deliver final audio chunk
+    // Allow recorders to flush final chunks
     await new Promise((resolve) => setTimeout(resolve, 350));
 
-    if (this.audioChunks.length > 0) {
+    if (wavBlob && wavBlob.size > 800) {
+      await this.sendAudioToGemini(wavBlob, "audio/wav");
+    } else if (this.audioChunks.length > 0) {
       const audioBlob = new Blob(this.audioChunks, { type: this.currentAudioMimeType || "audio/webm" });
       this.audioChunks = [];
       await this.sendAudioToGemini(audioBlob, this.currentAudioMimeType || "audio/webm");
@@ -328,6 +444,7 @@ class ContractorPilotApp {
   async sendAudioToGemini(audioBlob, mimeType) {
     const statusText = document.getElementById("mic-status-text");
     const textarea = document.getElementById("voice-transcription-input");
+    const currentText = textarea ? textarea.value.trim() : "";
 
     const reader = new FileReader();
     reader.readAsDataURL(audioBlob);
@@ -338,8 +455,8 @@ class ContractorPilotApp {
       try {
         if (statusText) {
           statusText.innerText = (this.dictationLang === "fr-FR")
-            ? "⏳ Google Gemini 3.8 Flash analyse votre voix et prépare les corps d'état..."
-            : "⏳ Google Gemini 3.8 Flash is analyzing your voice & structuring scopes...";
+            ? "⏳ Google Gemini analyse votre enregistrement audio et extrait les corps d'état..."
+            : "⏳ Google Gemini is analyzing your voice recording & structuring scopes...";
         }
 
         const res = await fetch(`${this.apiBase}/api/projects/${this.currentProjectId}/voice-extract-audio`, {
@@ -347,7 +464,8 @@ class ContractorPilotApp {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             audio_base64: base64Data,
-            mime_type: mimeType.split(";")[0],
+            mime_type: (mimeType || "audio/wav").split(";")[0],
+            voice_text: currentText,
             replace_existing: true,
           }),
         });
@@ -358,20 +476,21 @@ class ContractorPilotApp {
         }
 
         const data = await res.json();
-        if (textarea) {
-          textarea.value = data.transcription || "";
+        if (textarea && data.transcription) {
+          textarea.value = data.transcription;
           this.updateWordCount();
         }
 
+        const engine = data.ai_engine || "Google Gemini";
         if (statusText) {
           statusText.innerText = (this.dictationLang === "fr-FR")
-            ? "✅ Audio analysé avec succès par Google Gemini !"
-            : "✅ Voice walkthrough successfully analyzed by Google Gemini!";
+            ? `✅ Audio analysé avec succès par ${engine} !`
+            : `✅ Walkthrough successfully analyzed by ${engine}!`;
         }
         this.showToast(
           (this.dictationLang === "fr-FR")
-            ? "✨ Audio analysé avec succès par Google Gemini !"
-            : "✨ Audio analyzed by Google Gemini!",
+            ? `✨ Analyse audio réussie (${engine}) !`
+            : `✨ Audio analyzed successfully (${engine})!`,
           "success"
         );
 
@@ -383,7 +502,16 @@ class ContractorPilotApp {
         if (statusText) {
           statusText.innerText = "⚠️ " + err.message;
         }
-        this.showToast("Erreur Gemini Audio: " + err.message, "error");
+        if (textarea && textarea.value.trim().length > 0) {
+          this.showToast(
+            (this.dictationLang === "fr-FR")
+              ? "Transcription prête ! Cliquez sur 'Analyze Walkthrough' pour générer les devis."
+              : "Transcript ready! Click 'Analyze Walkthrough' to generate scopes.",
+            "info"
+          );
+        } else {
+          this.showToast("Gemini Audio: " + err.message, "error");
+        }
       }
     };
   }

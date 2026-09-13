@@ -102,8 +102,9 @@ class VoiceExtractRequest(BaseModel):
 
 class VoiceExtractAudioRequest(BaseModel):
     audio_base64: str
-    mime_type: str = "audio/webm"
+    mime_type: str = "audio/wav"
     replace_existing: bool = True
+    voice_text: Optional[str] = ""
 
 
 class UpdateRequirementRequest(BaseModel):
@@ -719,56 +720,102 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
 
 @app.post("/api/projects/{project_id}/voice-extract-audio")
 async def voice_extract_audio_needs(project_id: str, req: VoiceExtractAudioRequest) -> Dict[str, Any]:
-    """Transcribes and analyzes raw recorded audio directly using Google Gemini Multimodal Audio API."""
+    """Transcribes and analyzes raw recorded audio directly using Google Gemini Multimodal Audio API with live text fallback."""
     proj = store.projects.get(project_id)
     if not proj:
         raise HTTPException(status_code=404, detail="Project not found")
 
-    if not gemini_service.is_configured():
-        raise HTTPException(status_code=400, detail="Gemini API Key is not configured on the server")
+    parsed = None
+    ai_engine = f"Google Gemini ({gemini_service.model_name})"
 
-    parsed = await gemini_service.analyze_walkthrough_audio(req.audio_base64, req.mime_type)
+    # 1. Primary path: Direct multimodal audio analysis via Gemini API
+    if gemini_service.is_configured():
+        try:
+            parsed = await gemini_service.analyze_walkthrough_audio(req.audio_base64, req.mime_type)
+            if parsed and parsed.get("ai_model"):
+                ai_engine = f"Google Gemini ({parsed['ai_model']}) [Direct Audio]"
+        except Exception as e:
+            print(f"[Gemini Audio] Error during direct audio analysis: {e}")
+
+    # 2. Resilient fallback: If audio analysis didn't extract scopes, but client speech recognition captured text
+    if not parsed and req.voice_text and req.voice_text.strip():
+        print("[Gemini Audio] Falling back to text walkthrough extraction using live transcribed text")
+        if gemini_service.is_configured():
+            try:
+                gemini_text_result = await gemini_service.analyze_walkthrough(req.voice_text.strip())
+                if gemini_text_result:
+                    parsed = gemini_text_result
+                    used_model = gemini_text_result.get("ai_model", gemini_service.model_name)
+                    ai_engine = f"Google Gemini ({used_model}) [Voice-to-Text Fallback]"
+            except Exception as e:
+                print(f"[Gemini Audio] Fallback Gemini text analysis failed: {e}")
+        if not parsed:
+            parsed = parse_voice_note_into_requirements(req.voice_text.strip())
+            ai_engine = "ContractorPilot Heuristic Engine [Voice-to-Text Fallback]"
+
+    # 3. If neither direct audio nor text fallback succeeded
     if not parsed:
-        raise HTTPException(status_code=500, detail="Gemini audio analysis did not return structured results")
+        raise HTTPException(
+            status_code=422,
+            detail="Gemini audio analysis did not detect structured scopes in this recording. Please speak clearly into your microphone, or use one of the one-click demo presets below."
+        )
 
-    transcription = str(parsed.get("transcription", "")).strip() or "Jobsite audio walkthrough note"
+    transcription = str(parsed.get("transcription", "")).strip()
+    if not transcription and req.voice_text:
+        transcription = req.voice_text.strip()
+    if not transcription:
+        transcription = "Jobsite audio walkthrough note"
 
-    gemini_rooms = [
-        Room(
-            name=str(r.get("name", "Remodel Area")),
-            length=float(r.get("length", 15.0)),
-            width=float(r.get("width", 12.0)),
-            height=float(r.get("height", 9.0)),
-            surface=float(r.get("surface", float(r.get("length", 15.0)) * float(r.get("width", 12.0)))),
-            renovation_types=list(r.get("renovation_types", ["General Remodel"])),
-            notes=str(r.get("notes", "Extracted from Audio by Gemini AI")),
-        )
-        for r in parsed.get("rooms", [])
-    ]
-    gemini_labor = [
-        Requirement(
-            category=str(t.get("category", "General Trade")),
-            item_name=str(t.get("item_name", "Subcontractor Scope")),
-            quantity=float(t.get("quantity", 2.0)),
-            unit=str(t.get("unit", "days")),
-            item_type="labor",
-            estimated_unit_price=float(t.get("estimated_unit_price", 400.0)),
-            notes=str(t.get("notes", "Estimated by Gemini AI")),
-        )
-        for t in parsed.get("tasks_by_trade", [])
-    ]
-    gemini_materials = [
-        Requirement(
-            category=str(m.get("category", "Supplies")),
-            item_name=str(m.get("item_name", "Construction Material")),
-            quantity=float(m.get("quantity", 1.0)),
-            unit=str(m.get("unit", "units")),
-            item_type="material",
-            estimated_unit_price=float(m.get("estimated_unit_price", 50.0)),
-            notes=str(m.get("notes", "Takeoff by Gemini AI")),
-        )
-        for m in parsed.get("materials", [])
-    ]
+    gemini_rooms: List[Room] = []
+    for r in parsed.get("rooms", []):
+        if isinstance(r, Room):
+            gemini_rooms.append(r)
+        elif isinstance(r, dict):
+            gemini_rooms.append(
+                Room(
+                    name=str(r.get("name", "Remodel Area")),
+                    length=float(r.get("length", 15.0)),
+                    width=float(r.get("width", 12.0)),
+                    height=float(r.get("height", 9.0)),
+                    surface=float(r.get("surface", float(r.get("length", 15.0)) * float(r.get("width", 12.0)))),
+                    renovation_types=list(r.get("renovation_types", ["General Remodel"])),
+                    notes=str(r.get("notes", "Extracted by Gemini AI")),
+                )
+            )
+
+    gemini_labor: List[Requirement] = []
+    for t in parsed.get("tasks_by_trade", []):
+        if isinstance(t, Requirement):
+            gemini_labor.append(t)
+        elif isinstance(t, dict):
+            gemini_labor.append(
+                Requirement(
+                    category=str(t.get("category", "General Trade")),
+                    item_name=str(t.get("item_name", "Subcontractor Scope")),
+                    quantity=float(t.get("quantity", 2.0)),
+                    unit=str(t.get("unit", "days")),
+                    item_type="labor",
+                    estimated_unit_price=float(t.get("estimated_unit_price", 400.0)),
+                    notes=str(t.get("notes", "Estimated by Gemini AI")),
+                )
+            )
+
+    gemini_materials: List[Requirement] = []
+    for m in parsed.get("materials", []):
+        if isinstance(m, Requirement):
+            gemini_materials.append(m)
+        elif isinstance(m, dict):
+            gemini_materials.append(
+                Requirement(
+                    category=str(m.get("category", "Supplies")),
+                    item_name=str(m.get("item_name", "Construction Material")),
+                    quantity=float(m.get("quantity", 1.0)),
+                    unit=str(m.get("unit", "units")),
+                    item_type="material",
+                    estimated_unit_price=float(m.get("estimated_unit_price", 50.0)),
+                    notes=str(m.get("notes", "Takeoff by Gemini AI")),
+                )
+            )
 
     proj.voice_notes = transcription
 
@@ -787,10 +834,9 @@ async def voice_extract_audio_needs(project_id: str, req: VoiceExtractAudioReque
     proj.status = "REQUIREMENTS_READY"
     store.save()
 
-    used_model = parsed.get("ai_model", gemini_service.model_name)
     return {
         "success": True,
-        "ai_engine": f"Google Gemini ({used_model}) [Direct Audio]",
+        "ai_engine": ai_engine,
         "transcription": transcription,
         "rooms": [r.model_dump() for r in proj.rooms],
         "tasks_by_trade": [t.model_dump() for t in proj.requirements if t.item_type == "labor"],

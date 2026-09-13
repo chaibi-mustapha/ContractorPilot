@@ -116,6 +116,9 @@ class GeminiService:
                                 return parsed
                     else:
                         logger.warning(f"Gemini API returned status {response.status_code} for {model}: {response.text[:200]}")
+                        if response.status_code in [401, 403] or "API key not valid" in response.text:
+                            logger.error(f"Gemini API key rejected: {response.text[:200]}")
+                            break
                         # If 404 (model not found), continue to next candidate model
                         if response.status_code in [404, 400]:
                             continue
@@ -125,7 +128,7 @@ class GeminiService:
 
         return None
 
-    async def analyze_walkthrough_audio(self, audio_base64: str, mime_type: str = "audio/webm") -> Optional[Dict[str, Any]]:
+    async def analyze_walkthrough_audio(self, audio_base64: str, mime_type: str = "audio/wav") -> Optional[Dict[str, Any]]:
         """
         Uses Google Gemini Multimodal Audio to directly listen to the recorded jobsite walkthrough voice note,
         transcribe it verbatim, and extract structured renovation scopes, rooms, and materials.
@@ -160,7 +163,20 @@ class GeminiService:
             "}"
         )
 
-        clean_mime = (mime_type or "audio/webm").split(";")[0].strip()
+        raw_mime = (mime_type or "audio/wav").split(";")[0].strip().lower()
+        mime_mapping = {
+            "audio/wave": "audio/wav",
+            "audio/x-wav": "audio/wav",
+            "audio/mp3": "audio/mp3",
+            "audio/mpeg": "audio/mp3",
+            "audio/m4a": "audio/aac",
+            "audio/mp4": "audio/aac",
+            "audio/ogg": "audio/ogg",
+            "audio/flac": "audio/flac",
+            "audio/aiff": "audio/aiff",
+            "audio/webm": "audio/webm",
+        }
+        clean_mime = mime_mapping.get(raw_mime, raw_mime or "audio/wav")
 
         payload = {
             "contents": [
@@ -186,7 +202,6 @@ class GeminiService:
         audio_candidates = [
             "gemini-2.0-flash",
             "gemini-1.5-flash",
-            "gemini-2.5-flash",
             "gemini-1.5-pro",
             self.model_name
         ]
@@ -199,7 +214,7 @@ class GeminiService:
             for model in candidates:
                 url = f"{GEMINI_API_BASE}/{model}:generateContent?key={self.api_key}"
                 try:
-                    logger.info(f"Calling Gemini Audio API with model: {model}")
+                    logger.info(f"Calling Gemini Audio API with model: {model} (mime: {clean_mime})")
                     response = await client.post(url, json=payload)
                     if response.status_code == 200:
                         data = response.json()
@@ -224,6 +239,9 @@ class GeminiService:
                                 logger.info(f"Successfully processed direct audio walkthrough using {model}")
                                 parsed["ai_model"] = model
                                 return parsed
+                    elif response.status_code in [401, 403] or "API key not valid" in response.text:
+                        logger.error(f"Gemini API key rejected during audio analysis: {response.text[:200]}")
+                        break
                     else:
                         logger.warning(f"Gemini Audio API returned {response.status_code} for {model}: {response.text[:300]}")
                 except Exception as e:
