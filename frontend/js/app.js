@@ -476,6 +476,15 @@ class ContractorPilotApp {
         }
 
         const data = await res.json();
+        if (data.is_off_topic || data.success === false) {
+          if (textarea && data.transcription) {
+            textarea.value = data.transcription;
+            this.updateWordCount();
+          }
+          this.handleOffTopicWalkthrough(data.message);
+          return;
+        }
+
         if (textarea && data.transcription) {
           textarea.value = data.transcription;
           this.updateWordCount();
@@ -766,6 +775,11 @@ class ContractorPilotApp {
       }
 
       const data = await res.json();
+      if (data.is_off_topic || data.success === false) {
+        this.handleOffTopicWalkthrough(data.message);
+        return;
+      }
+
       await this.loadProjectDetails(this.currentProjectId);
       this.goToStep(2);
       const engine = data.ai_engine || "AI";
@@ -778,6 +792,56 @@ class ContractorPilotApp {
         btnExtract.innerHTML = originalText;
       }
     }
+  }
+
+  handleOffTopicWalkthrough(message) {
+    const modal = document.getElementById("modal-off-topic");
+    const msgEl = document.getElementById("off-topic-message-text");
+    const titleEl = document.getElementById("off-topic-title");
+    const btnConfirm = document.getElementById("btn-confirm-off-topic");
+
+    const isFr = (this.dictationLang === "fr-FR");
+
+    if (titleEl) {
+      titleEl.innerText = isFr ? "Sujet hors métier détecté" : "Off-Topic Dictation Detected";
+    }
+    if (msgEl) {
+      msgEl.innerHTML = (message || (
+        isFr
+          ? "Le contenu dicté ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état.<br><br>Veuillez dicter les pièces, mesures, matériaux ou prestations d'artisans à réaliser."
+          : "The dictation does not appear to be related to a remodel, construction, or trade work project.<br><br>Please describe rooms, dimensions, materials, or contractor scopes."
+      )).replace(/\n/g, "<br>");
+    }
+    if (btnConfirm) {
+      btnConfirm.innerText = isFr ? "OK, recommencer la dictée" : "OK, restart dictation";
+      btnConfirm.onclick = () => {
+        if (modal) modal.classList.remove("active");
+        this.clearWalkthroughInput();
+      };
+    }
+
+    if (modal) {
+      modal.classList.add("active");
+    } else {
+      alert(message || "Sujet hors métier détecté.");
+      this.clearWalkthroughInput();
+    }
+  }
+
+  clearWalkthroughInput() {
+    const textarea = document.getElementById("voice-transcription-input");
+    const statusText = document.getElementById("mic-status-text");
+    if (textarea) {
+      textarea.value = "";
+      this.updateWordCount();
+      textarea.focus();
+    }
+    if (statusText) {
+      statusText.innerText = (this.dictationLang === "fr-FR")
+        ? "🎙️ Prêt pour une nouvelle dictée de chantier..."
+        : "🎙️ Ready for a new jobsite walkthrough dictation...";
+    }
+    this.speechFinalTranscript = "";
   }
 
   renderNeedsLists() {

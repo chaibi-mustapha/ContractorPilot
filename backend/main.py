@@ -301,8 +301,41 @@ async def delete_requirement(project_id: str, requirement_id: str) -> Dict[str, 
     return {"success": True, "deleted_id": requirement_id}
 
 
+def is_construction_related(text: str) -> bool:
+    """Verifies whether the text pertains to home renovation, remodeling, or contractor construction trades."""
+    if not text or len(text.strip()) < 4:
+        return False
+    t = text.lower()
+    keywords = [
+        # French
+        "renov", "chantier", "travaux", "salon", "sejour", "cuisine", "chambre", "bain", "douche",
+        "peintre", "peinture", "carrel", "plomb", "electr", "menuis", "sol", "mur", "plafond",
+        "parquet", "faience", "credence", "cloison", "platre", "macon", "spot", "led", "evier",
+        "lavabo", "baignoire", "robinet", "porte", "fenetre", "m2", "metre", "surface", "devis",
+        "isolation", "toiture", "charpente", "facade", "terrasse", "amenagement", "bricolage",
+        # English
+        "remodel", "construct", "walkthrough", "living", "kitchen", "bath", "shower", "bed",
+        "tiler", "tile", "paint", "painter", "electric", "plumb", "drywall", "floor", "wall",
+        "ceiling", "fixture", "sq ft", "sqft", "ft", "gal", "cabinet", "countertop", "framing",
+        "subcontractor", "demo", "demolition", "insulation", "roof", "deck", "patio", "scope"
+    ]
+    return any(k in t for k in keywords)
+
+
 def parse_voice_note_into_requirements(voice_text: str) -> Dict[str, Any]:
     """Analyzes jobsite walkthrough notes and extracts rooms, trade subcontractor tasks, and materials."""
+    if not is_construction_related(voice_text):
+        return {
+            "is_relevant": False,
+            "rejection_reason": (
+                "Le contenu dicté ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état. "
+                "Veuillez dicter les pièces, dimensions, matériaux ou travaux d'artisans à réaliser."
+            ),
+            "rooms": [],
+            "tasks_by_trade": [],
+            "materials": [],
+        }
+
     text_lower = voice_text.lower()
 
     # Room and area detection
@@ -621,6 +654,8 @@ def parse_voice_note_into_requirements(voice_text: str) -> Dict[str, Any]:
         ]
 
     return {
+        "is_relevant": True,
+        "rejection_reason": None,
         "rooms": rooms_found,
         "tasks_by_trade": tasks_by_trade,
         "materials": materials,
@@ -678,6 +713,8 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
                     for m in gemini_result.get("materials", [])
                 ]
                 parsed = {
+                    "is_relevant": gemini_result.get("is_relevant", True),
+                    "rejection_reason": gemini_result.get("rejection_reason"),
                     "rooms": gemini_rooms,
                     "tasks_by_trade": gemini_labor,
                     "materials": gemini_materials,
@@ -689,6 +726,22 @@ async def voice_extract_needs(project_id: str, req: VoiceExtractRequest) -> Dict
 
     if not parsed:
         parsed = parse_voice_note_into_requirements(req.voice_text)
+
+    # Validate topic relevance
+    if parsed.get("is_relevant") is False or (not parsed.get("rooms") and not parsed.get("tasks_by_trade") and not parsed.get("materials")):
+        rejection_reason = parsed.get("rejection_reason") or (
+            "Le contenu dicté ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état de chantier."
+        )
+        return {
+            "success": False,
+            "is_off_topic": True,
+            "message": rejection_reason,
+            "transcription": req.voice_text,
+            "rooms": [],
+            "tasks_by_trade": [],
+            "materials": [],
+            "all_requirements": [],
+        }
 
     proj.voice_notes = req.voice_text
 
@@ -765,6 +818,22 @@ async def voice_extract_audio_needs(project_id: str, req: VoiceExtractAudioReque
         transcription = req.voice_text.strip()
     if not transcription:
         transcription = "Jobsite audio walkthrough note"
+
+    # Validate topic relevance
+    if parsed.get("is_relevant") is False or (not parsed.get("rooms") and not parsed.get("tasks_by_trade") and not parsed.get("materials")):
+        rejection_reason = parsed.get("rejection_reason") or (
+            "L'enregistrement audio ne semble pas concerner un projet de rénovation, de bâtiment ou de corps d'état de chantier."
+        )
+        return {
+            "success": False,
+            "is_off_topic": True,
+            "message": rejection_reason,
+            "transcription": transcription,
+            "rooms": [],
+            "tasks_by_trade": [],
+            "materials": [],
+            "all_requirements": [],
+        }
 
     gemini_rooms: List[Room] = []
     for r in parsed.get("rooms", []):

@@ -51,8 +51,14 @@ class GeminiService:
 
         system_prompt = (
             "You are an expert American general contractor AI estimating assistant for residential and commercial remodels. "
-            "Analyze the jobsite walkthrough audio transcription and extract the renovation scope into structured JSON. "
-            "All measurements MUST use USA Customary Units and USD ($) currency:\n"
+            "Analyze the jobsite walkthrough audio transcription and extract the renovation scope into structured JSON.\n"
+            "\n"
+            "TOPIC RELEVANCE & SANITY CHECK:\n"
+            "First, verify whether this dictation describes actual home renovation, construction, remodeling, room dimensions, building materials, or contractor trades. "
+            "If the dictation is OFF-TOPIC, unrelated to construction/remodeling (e.g. food recipes, sports, politics, weather commentary, casual chit-chat, stories, poetry, or random gibberish):\n"
+            'Set "is_relevant": false, "rejection_reason": "Provide a clear, polite explanation in the language of the prompt explaining that the text does not contain remodel, jobsite, or construction trade instructions.", "rooms": [], "tasks_by_trade": [], "materials": [].\n'
+            "If the dictation IS related to renovation, construction, or remodeling:\n"
+            'Set "is_relevant": true, "rejection_reason": null, and extract the scopes as follows:\n'
             "- Surfaces in 'sq ft'\n"
             "- Dimensions in 'ft'\n"
             "- Liquid materials (paint, sealer) in 'gal' (assume ~350 sq ft per gal for 2 coats)\n"
@@ -62,6 +68,8 @@ class GeminiService:
             "\n"
             "Return ONLY a valid JSON object with this exact structure:\n"
             "{\n"
+            '  "is_relevant": boolean,\n'
+            '  "rejection_reason": "string or null",\n'
             '  "rooms": [\n'
             '    {"name": "string", "length": float, "width": float, "height": float, "surface": float, "renovation_types": ["string"], "notes": "string"}\n'
             "  ],\n"
@@ -110,8 +118,8 @@ class GeminiService:
                             parsed = json.loads(cleaned.strip())
                             
                             # Validate basic structure
-                            if "rooms" in parsed and ("tasks_by_trade" in parsed or "materials" in parsed):
-                                logger.info(f"Successfully analyzed walkthrough using {model}")
+                            if "rooms" in parsed or "tasks_by_trade" in parsed or "is_relevant" in parsed:
+                                logger.info(f"Successfully analyzed walkthrough using {model} (is_relevant={parsed.get('is_relevant', True)})")
                                 parsed["ai_model"] = model
                                 return parsed
                     else:
@@ -138,9 +146,15 @@ class GeminiService:
 
         system_prompt = (
             "You are an expert American general contractor AI estimating assistant for residential and commercial remodels. "
-            "Listen carefully to the recorded jobsite walkthrough audio. "
-            "1. In 'transcription', provide the verbatim transcript of what was spoken in the audio (in the language spoken by the user). "
-            "2. Extract the renovation scope into structured JSON with USA Customary Units and USD ($) currency:\n"
+            "Listen carefully to the recorded jobsite walkthrough audio.\n"
+            "1. In 'transcription', provide the verbatim transcript of what was spoken in the audio (in the language spoken by the user).\n"
+            "\n"
+            "TOPIC RELEVANCE & SANITY CHECK:\n"
+            "Determine if the spoken audio describes actual home renovation, construction, remodeling, room dimensions, building materials, or contractor trades. "
+            "If the audio is OFF-TOPIC, unrelated to construction/remodeling (e.g. food/cooking, sports, politics, weather chat, personal thoughts, casual chitchat, or random noises/gibberish):\n"
+            'Set "is_relevant": false, "rejection_reason": "Provide a clear, polite explanation in the language spoken in the audio explaining that the audio does not contain renovation, remodel, or construction trade instructions.", "rooms": [], "tasks_by_trade": [], "materials": [].\n'
+            "If the audio IS related to renovation, construction, or remodeling:\n"
+            'Set "is_relevant": true, "rejection_reason": null, and extract the scopes into structured JSON with USA Customary Units and USD ($) currency:\n'
             "- Surfaces in 'sq ft'\n"
             "- Dimensions in 'ft'\n"
             "- Liquid materials (paint, sealer) in 'gal'\n"
@@ -150,6 +164,8 @@ class GeminiService:
             "\n"
             "Return ONLY a valid JSON object with this exact structure:\n"
             "{\n"
+            '  "is_relevant": boolean,\n'
+            '  "rejection_reason": "string or null",\n'
             '  "transcription": "Verbatim transcript of the voice audio",\n'
             '  "rooms": [\n'
             '    {"name": "string", "length": float, "width": float, "height": float, "surface": float, "renovation_types": ["string"], "notes": "string"}\n'
