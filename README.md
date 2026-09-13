@@ -20,16 +20,23 @@ Every residential remodel starts with a walkthrough. But after measuring rooms a
 
 1. **🎙️ Voice Walkthrough Dictation (Step 1)**:
    - Dictate jobsite observations freely using the Web Speech API or preset recordings.
-   - Captures room dimensions (e.g. Living Room 400 sq ft, Kitchen 180 sq ft, Master Bath 96 sq ft) and renovation scopes.
+   - Captures room dimensions (e.g., Living Room 400 sq ft, Kitchen 180 sq ft, Master Bath 96 sq ft) and renovation scopes.
+   - Built-in instant preset (*The Miller Residence* 1,300 sq ft luxury remodel) for immediate zero-friction evaluation.
 
 2. **📋 AI Scope Breakdown by Trade & Materials (Step 2)**:
    - Instantly categorizes walkthrough notes into trade labor tasks (Master Tiler, Finish Painter, Licensed Plumber, Master Electrician) and material bills of quantities (sq ft of porcelain tile, gallons of paint, recessed LED downlights, brass fixtures).
 
 3. **📞 CALL-E Autonomous Voice Procurement (Step 3)**:
    - **Real Calling Mode**: Integrates the official `calle-ai` SDK (`CalleClient`) with custom task prompt engineering and structured JSON extraction schemas (`client.calls.create_and_wait`).
-   - **Interactive Live Sandbox**: An interactive browser-based phone simulator with dynamic canvas audio waveforms, Web Audio synthetic telephony tones, progressive turn-by-turn dialogue transcripts, and live data extraction.
+   - **Interactive Telephony Sandbox**: Browser-based phone simulator with dynamic canvas audio waveforms, Web Audio synthetic telephony tones, 14 studio voice recordings, and progressive turn-by-turn dialogue transcripts.
+   - **Real-Time Data Extraction**: Automatically extracts unit prices, volume trade discounts, stock quantities, and delivery lead times into structured cards.
 
-4. **⚖️ Multi-Criteria Offer Matrix & Scoring (Step 4)**:
+4. **📁 Subcontractor & Supplier Directory / Rolodex Import (⚙️ Settings)**:
+   - **Custom Trade Directory**: General Contractors can import their private rolodex via `.csv`, `.xlsx`, `.xls`, or comma-delimited `.txt`.
+   - **One-Click Sample CSV Template**: Download a standardized US construction directory template (`Company_Name,Trade_or_Category,Phone,Email,Type,ZipCode`).
+   - **Priority Calling**: CALL-E prioritizes dialing the contractor's preferred local tradespeople and wholesale account reps (e.g. Apex Tile, Sherwin-Williams Pro) before fallback suppliers.
+
+5. **⚖️ Multi-Criteria Offer Matrix & Scoring (Step 4)**:
    - Evaluates vendor and trade bids on a 100-point weighted score:
      - **40%** Net Price
      - **20%** Warehouse Stock Availability
@@ -39,7 +46,7 @@ Every residential remodel starts with a walkthrough. But after measuring rooms a
      - **5%** Volume Trade Discount
    - Automatically recommends the highest-value option.
 
-5. **📑 Proposal Studio & Markup Slider (Step 4)**:
+6. **📑 Proposal Studio & Markup Slider (Step 4)**:
    - Interactive contractor gross markup slider (0% to 45%, standard 20%).
    - Generates official proposal **N° CP-2026-001** ready to print or export as PDF.
    - Single-click clipboard summary export.
@@ -48,10 +55,10 @@ Every residential remodel starts with a walkthrough. But after measuring rooms a
 
 ## 🛠️ Technical Architecture
 
-- **Backend**: FastAPI (Python 3.13), Uvicorn, WebSockets for live call streaming.
-- **Voice Agent**: Official `calle-ai` Python SDK (`v0.7.0`).
-- **Frontend**: Responsive Single-Page App with Vanilla HTML5/CSS3/JavaScript (Deep luxury dark theme, glassmorphism, Outfit/Inter typography, Web Audio API sound generator).
-- **Data Persistence**: JSON/SQLite local datastore pre-seeded with *The Miller Residence* 1,300 sq ft luxury condo remodel.
+- **Backend**: FastAPI (Python 3.10+ / 3.13), Uvicorn, WebSockets for live call streaming.
+- **Voice Agent**: Official `calle-ai` Python SDK (`v0.7.0`) + structured JSON schemas.
+- **Frontend**: Responsive Single-Page App with Vanilla HTML5/CSS3/JavaScript (Deep luxury dark theme, glassmorphism, Outfit/Inter typography, Web Audio API sound generator, Canvas waveform engine).
+- **Data Persistence**: JSON/SQLite local datastore pre-seeded with *The Miller Residence* luxury condo remodel and extensible via custom Rolodex CSV imports.
 
 ---
 
@@ -104,12 +111,12 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configure Environment (Optional)
-If you want to place real phone calls to your own phone number:
+If you want to place real phone calls with CALL-E:
 ```bash
 cp .env.example .env
 # Edit .env and set your CALLE_API_KEY
 ```
-*(Without an API key, ContractorPilot automatically runs in interactive sandbox demo mode).*
+*(Without an API key, ContractorPilot automatically runs in interactive sandbox demo mode with 14 recorded voice tracks and realistic telephony simulation).*
 
 ### 3. Launch Server
 ```bash
@@ -148,4 +155,3 @@ docker run -p 8000:8000 contractorpilot
 ## 👥 Authors
 - **Mustapha Chaibi** ([@chaibi-mustapha](https://github.com/chaibi-mustapha))
 - Built for the **Devpost CALL-E Hackathon** (September 2026).
-
