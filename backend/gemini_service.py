@@ -216,7 +216,9 @@ class GeminiService:
 
         # Models with native multimodal audio support in Google AI Studio
         audio_candidates = [
+            "gemini-2.5-flash",
             "gemini-2.0-flash",
+            "gemini-2.5-pro",
             "gemini-1.5-flash",
             "gemini-1.5-pro",
             self.model_name
@@ -225,6 +227,8 @@ class GeminiService:
         for m in audio_candidates:
             if m and m not in candidates:
                 candidates.append(m)
+
+        self.last_audio_error = None
 
         async with httpx.AsyncClient(timeout=45.0) as client:
             for model in candidates:
@@ -256,8 +260,13 @@ class GeminiService:
                                 parsed["ai_model"] = model
                                 return parsed
                     elif response.status_code in [401, 403] or "API key not valid" in response.text:
+                        self.last_audio_error = "auth_error"
                         logger.error(f"Gemini API key rejected during audio analysis: {response.text[:200]}")
                         break
+                    elif response.status_code == 429 or "RESOURCE_EXHAUSTED" in response.text:
+                        self.last_audio_error = "rate_limit"
+                        logger.warning(f"Gemini Audio API quota/rate limit (429) hit for {model}, trying next model in cascade...")
+                        continue
                     else:
                         logger.warning(f"Gemini Audio API returned {response.status_code} for {model}: {response.text[:300]}")
                 except Exception as e:

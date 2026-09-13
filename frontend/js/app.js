@@ -15,28 +15,61 @@ class WavAudioRecorder {
     this.audioCtx = null;
     this.sourceNode = null;
     this.processorNode = null;
+    this.silenceGain = null;
     this.chunks = [];
     this.sampleRate = 16000;
+    this.maxVolume = 0;
+    this.totalEnergy = 0;
+    this.processCount = 0;
   }
 
   async start(stream) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) return false;
     try {
-      this.audioCtx = new AudioContextClass({ sampleRate: 16000 });
+      try {
+        this.audioCtx = new AudioContextClass({ sampleRate: 16000 });
+      } catch (e) {
+        this.audioCtx = new AudioContextClass();
+      }
+
+      // CRITICAL: Ensure audio context is running (browsers often suspend after getUserMedia)
+      if (this.audioCtx.state === "suspended") {
+        await this.audioCtx.resume();
+      }
+
       this.sampleRate = this.audioCtx.sampleRate || 16000;
       this.sourceNode = this.audioCtx.createMediaStreamSource(stream);
       // 4096 buffer size, 1 channel in, 1 channel out
       this.processorNode = this.audioCtx.createScriptProcessor(4096, 1, 1);
       this.chunks = [];
+      this.maxVolume = 0;
+      this.totalEnergy = 0;
+      this.processCount = 0;
 
       this.processorNode.onaudioprocess = (e) => {
         const inputData = e.inputBuffer.getChannelData(0);
+        let sumSquares = 0;
+        for (let i = 0; i < inputData.length; i++) {
+          const v = inputData[i];
+          sumSquares += v * v;
+          if (Math.abs(v) > this.maxVolume) {
+            this.maxVolume = Math.abs(v);
+          }
+        }
+        const rms = Math.sqrt(sumSquares / inputData.length);
+        this.totalEnergy += rms;
+        this.processCount++;
         this.chunks.push(new Float32Array(inputData));
       };
 
+      // Connect via muted gain node: keeps ScriptProcessor active without speaker feedback
+      this.silenceGain = this.audioCtx.createGain();
+      this.silenceGain.gain.value = 0;
+
       this.sourceNode.connect(this.processorNode);
-      this.processorNode.connect(this.audioCtx.destination);
+      this.processorNode.connect(this.silenceGain);
+      this.silenceGain.connect(this.audioCtx.destination);
       return true;
     } catch (e) {
       console.warn("[WavAudioRecorder] init failed, fallback to MediaRecorder:", e);
@@ -45,6 +78,9 @@ class WavAudioRecorder {
   }
 
   async stop() {
+    const avgVolume = this.processCount > 0 ? (this.totalEnergy / this.processCount) : 0;
+    const peakVolume = this.maxVolume;
+
     if (this.sourceNode) {
       try { this.sourceNode.disconnect(); } catch (e) {}
       this.sourceNode = null;
@@ -53,6 +89,10 @@ class WavAudioRecorder {
       try { this.processorNode.disconnect(); } catch (e) {}
       this.processorNode = null;
     }
+    if (this.silenceGain) {
+      try { this.silenceGain.disconnect(); } catch (e) {}
+      this.silenceGain = null;
+    }
     if (this.audioCtx && this.audioCtx.state !== "closed") {
       try { await this.audioCtx.close(); } catch (e) {}
       this.audioCtx = null;
@@ -60,7 +100,7 @@ class WavAudioRecorder {
 
     let totalLength = 0;
     for (const c of this.chunks) totalLength += c.length;
-    if (totalLength === 0) return null;
+    if (totalLength === 0) return { blob: null, avgVolume: 0, peakVolume: 0 };
 
     const merged = new Float32Array(totalLength);
     let offset = 0;
@@ -70,7 +110,8 @@ class WavAudioRecorder {
     }
     this.chunks = [];
 
-    return this.encodeWav(merged, this.sampleRate);
+    const blob = this.encodeWav(merged, this.sampleRate);
+    return { blob, avgVolume, peakVolume, durationSec: totalLength / this.sampleRate };
   }
 
   encodeWav(samples, sampleRate) {
@@ -357,17 +398,26 @@ class ContractorPilotApp {
 
     // 2. Setup MediaRecorder as universal cross-browser backup
     try {
-      const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-        ? "audio/webm;codecs=opus"
-        : (MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "audio/mp4");
-      this.currentAudioMimeType = mimeType;
-      this.mediaRecorder = new MediaRecorder(this.mediaStream, { mimeType });
-      this.mediaRecorder.ondataavailable = (e) => {
-        if (e.data && e.data.size > 0) {
-          this.audioChunks.push(e.data);
+      let mimeType = "audio/webm";
+      if (typeof MediaRecorder !== "undefined") {
+        if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
+          mimeType = "audio/webm;codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/ogg;codecs=opus")) {
+          mimeType = "audio/ogg;codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/webm")) {
+          mimeType = "audio/webm";
+        } else if (MediaRecorder.isTypeSupported("audio/mp4")) {
+          mimeType = "audio/mp4";
         }
-      };
-      this.mediaRecorder.start(250);
+        this.currentAudioMimeType = mimeType;
+        this.mediaRecorder = new MediaRecorder(this.mediaStream, { mimeType });
+        this.mediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            this.audioChunks.push(e.data);
+          }
+        };
+        this.mediaRecorder.start(250);
+      }
     } catch (e) {
       console.warn("[MediaRecorder] start error:", e);
     }
@@ -401,30 +451,57 @@ class ContractorPilotApp {
     }
 
     // Stop high-fidelity WAV recorder
-    let wavBlob = null;
+    let wavResult = null;
     try {
-      wavBlob = await this.wavRecorder.stop();
+      wavResult = await this.wavRecorder.stop();
     } catch (e) {
       console.warn("[WavRecorder] stop error:", e);
     }
 
-    // Stop mediaRecorder & release microphone tracks
+    // Stop mediaRecorder
     if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
-      this.mediaRecorder.stop();
-    }
-    if (this.mediaStream) {
-      this.mediaStream.getTracks().forEach((track) => track.stop());
-      this.mediaStream = null;
+      try {
+        this.mediaRecorder.stop();
+      } catch (e) {}
     }
 
     if (statusText) {
       statusText.innerText = (this.dictationLang === "fr-FR")
-        ? "✨ Envoi de votre enregistrement à Google Gemini AI..."
-        : "✨ Sending audio note to Google Gemini AI for direct analysis...";
+        ? "✨ Finalisation et envoi à Google Gemini..."
+        : "✨ Finalizing and sending to Google Gemini...";
     }
 
-    // Allow recorders to flush final chunks
+    // Allow recorders to flush final chunks before releasing hardware tracks
     await new Promise((resolve) => setTimeout(resolve, 350));
+
+    // Release microphone hardware tracks safely
+    if (this.mediaStream) {
+      try {
+        this.mediaStream.getTracks().forEach((track) => track.stop());
+      } catch (e) {}
+      this.mediaStream = null;
+    }
+
+    const wavBlob = wavResult ? wavResult.blob : null;
+    const avgVol = wavResult ? wavResult.avgVolume : 1;
+    const peakVol = wavResult ? wavResult.peakVolume : 1;
+
+    // Check for near-total silence (muted mic, disconnected audio input)
+    if (wavBlob && wavBlob.size > 800 && avgVol < 0.0015 && peakVol < 0.008 && this.recordSeconds >= 2) {
+      console.warn("[Microphone] Detected silence, avgVolume:", avgVol, "peak:", peakVol);
+      if (statusText) {
+        statusText.innerText = (this.dictationLang === "fr-FR")
+          ? "⚠️ Aucun son détecté. Vérifiez que votre micro n'est pas en sourdine et parlez plus fort."
+          : "⚠️ No voice sound detected. Please verify your microphone is unmuted and speak louder.";
+      }
+      this.showToast(
+        (this.dictationLang === "fr-FR")
+          ? "Microphone silencieux ou muet. Vérifiez vos réglages micro."
+          : "Microphone silent. Please check your microphone input level.",
+        "warning"
+      );
+      return;
+    }
 
     if (wavBlob && wavBlob.size > 800) {
       await this.sendAudioToGemini(wavBlob, "audio/wav");
@@ -508,10 +585,18 @@ class ContractorPilotApp {
 
       } catch (err) {
         console.error("[sendAudioToGemini] Error:", err);
+        const errMsg = err.message || "Erreur d'analyse audio";
         if (statusText) {
-          statusText.innerText = "⚠️ " + err.message;
+          statusText.innerText = "⚠️ " + errMsg;
         }
-        if (textarea && textarea.value.trim().length > 0) {
+        if (errMsg.toLowerCase().includes("quota") || errMsg.includes("429")) {
+          this.showToast(
+            (this.dictationLang === "fr-FR")
+              ? "⏳ Quota Gemini temporairement atteint. Attendez 15 à 20s avant de relancer."
+              : "⏳ Gemini quota rate limit reached. Please wait 15-20s before trying again.",
+            "warning"
+          );
+        } else if (textarea && textarea.value.trim().length > 0) {
           this.showToast(
             (this.dictationLang === "fr-FR")
               ? "Transcription prête ! Cliquez sur 'Analyze Walkthrough' pour générer les devis."
@@ -519,7 +604,7 @@ class ContractorPilotApp {
             "info"
           );
         } else {
-          this.showToast("Gemini Audio: " + err.message, "error");
+          this.showToast(errMsg, "error");
         }
       }
     };

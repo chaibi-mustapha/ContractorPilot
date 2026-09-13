@@ -808,10 +808,22 @@ async def voice_extract_audio_needs(project_id: str, req: VoiceExtractAudioReque
 
     # 3. If neither direct audio nor text fallback succeeded
     if not parsed:
-        raise HTTPException(
-            status_code=422,
-            detail="Gemini audio analysis did not detect structured scopes in this recording. Please speak clearly into your microphone, or use one of the one-click demo presets below."
-        )
+        last_err = getattr(gemini_service, "last_audio_error", None)
+        if last_err == "rate_limit":
+            raise HTTPException(
+                status_code=429,
+                detail="Le quota de requêtes Google Gemini est temporairement atteint (15 req/min). Veuillez patienter 15 à 20 secondes avant de relancer l'enregistrement."
+            )
+        elif last_err == "auth_error":
+            raise HTTPException(
+                status_code=401,
+                detail="Clé API Google Gemini invalide ou manquante. Veuillez vérifier votre clé API dans les réglages."
+            )
+        else:
+            raise HTTPException(
+                status_code=422,
+                detail="L'analyse audio Gemini n'a pas détecté d'instructions exploitables dans cet enregistrement. Parlez distinctement dans votre micro (au moins 10 secondes) ou utilisez un scénario démo 1-clic ci-dessous."
+            )
 
     transcription = str(parsed.get("transcription", "")).strip()
     if not transcription and req.voice_text:
