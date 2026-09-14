@@ -13,6 +13,9 @@ venv.bak/
 # Environment Variables & Secrets
 .env
 .env.local
+CALL E_API_KEY.txt
+*API_KEY*
+test_real_call.py
 
 # IDE & OS
 .vscode/
